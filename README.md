@@ -1,124 +1,215 @@
-# Turborepo starter
+# PTP (PabloTor Platform)
 
-This is a community-maintained example. If you experience a problem, please submit a pull request with a fix. GitHub Issues will be closed.
+An opinionated TypeScript platform architecture built from real-world consulting experience.
 
-## Using this example
+PTP is a monorepo starter focused on helping teams avoid common foundation mistakes when building modern web applications. It combines proven architectural patterns, production-ready defaults, and extensive documentation to provide a solid starting point for scalable products.
 
-Run the following command:
+The goal is simple:
+
+> Start with an architecture that can grow with your product instead of fighting it six months later.
+
+---
+
+## Why PTP?
+
+After working on many startups, I noticed the same issues appearing repeatedly:
+
+- Authentication implemented differently in every project
+- Validation scattered throughout the application
+- ORM models leaking into business logic
+- Weak module boundaries
+- Difficult-to-maintain frontend/backend contracts
+- Infrastructure decisions that become expensive to change later
+
+PTP exists to capture the patterns and decisions that consistently worked in production systems.
+
+This is not a boilerplate marketplace.
+
+This is not a low-code platform.
+
+This is an opinionated foundation for TypeScript applications.
+
+---
+
+## Current Architecture
+
+PTP is currently built on top of the official Turborepo + NestJS example and extends it into a production-oriented platform architecture. The original example demonstrates a Turborepo monorepo with a Next.js frontend, a NestJS backend, and shared packages.
+
+### Applications
+
+```text
+apps/
+├── web      # Next.js frontend
+└── api      # NestJS backend
+```
+
+### Packages
+
+```text
+packages/
+├── api      # Shared DTOs, entities, contracts
+├── eslint-config
+└── typescript-config
+```
+
+The shared package approach allows frontend and backend applications to use the same contracts and types while remaining independently deployable.
+
+---
+
+## Principles
+
+PTP follows a small set of architectural principles:
+
+### Explicit Boundaries
+
+Frontend, backend, domain logic, and infrastructure concerns should be clearly separated.
+
+### Type Safety
+
+Types should flow across the entire stack whenever possible.
+
+### Self-Hosted First
+
+Applications should be able to run locally and in self-managed environments without depending on proprietary services.
+
+### Documentation Matters
+
+Understanding why a decision exists is often more valuable than the implementation itself.
+
+### Sensible Defaults
+
+Every default should have a reason.
+
+---
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 22+
+- yarn
+- Docker (recommended)
+
+### Installation
 
 ```bash
-npx create-turbo@latest -e with-nestjs
+git clone <repository-url>
+cd ptp
+
+yarn install
 ```
 
-## What's inside?
+### Development
 
-This Turborepo includes the following packages & apps:
-
-### Apps and Packages
-
-```shell
-.
-├── apps
-│   ├── api                       # NestJS app (https://nestjs.com).
-│   └── web                       # Next.js app (https://nextjs.org).
-└── packages
-    ├── @repo/api                 # Shared `NestJS` resources.
-    ├── @repo/eslint-config       # `eslint` configurations (includes `prettier`)
-    ├── @repo/jest-config         # `jest` configurations
-    ├── @repo/typescript-config   # `tsconfig.json`s used throughout the monorepo
-    └── @repo/ui                  # Shareable stub React component library.
-```
-
-Each package and application are mostly written in [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This `Turborepo` has some additional tools already set for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type-safety
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-- [Jest](https://prettier.io) & [Playwright](https://playwright.dev/) for testing
-
-### Commands
-
-This `Turborepo` already configured useful commands for all your apps and packages.
-
-#### Build
+Run all applications:
 
 ```bash
-# Will build all the app & packages with the supported `build` script.
-yarn run build
-
-# ℹ️ If you plan to only build apps individually,
-# Please make sure you've built the packages first.
+yarn dev
 ```
 
-#### Develop
+This starts:
+
+- Next.js frontend
+- NestJS API
+- Shared package watchers
+
+### Build
 
 ```bash
-# Will run the development server for all the app & packages with the supported `dev` script.
-yarn run dev
+yarn build
 ```
 
-#### test
+### Lint
 
 ```bash
-# Will launch a test suites for all the app & packages with the supported `test` script.
-yarn run test
-
-# You can launch e2e testes with `test:e2e`
-yarn run test:e2e
-
-# See `@repo/jest-config` to customize the behavior.
+yarn lint
 ```
 
-#### Lint
+### Type Check
 
 ```bash
-# Will lint all the app & packages with the supported `lint` script.
-# See `@repo/eslint-config` to customize the behavior.
-yarn run lint
+yarn check-types
 ```
 
-#### Format
+---
 
-```bash
-# Will format all the supported `.ts,.js,json,.tsx,.jsx` files.
-# See `@repo/eslint-config/prettier-base.js` to customize the behavior.
-yarn format
-```
+## Project Vision
 
-### Remote Caching
+PTP is being developed incrementally.
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+Planned areas include:
 
-Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+- Flexible database adapters
+  - PostgreSQL + Prisma
+  - MongoDB + Mongoose
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
+- Authentication modules
+  - BetterAuth
+  - Keycloak
 
-```bash
-npx turbo login
-```
+- Docker-first local environments
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+- Accessible UI components
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+- Shared validation strategies
 
-```bash
-npx turbo link
-```
+- Architecture documentation
 
-## Useful Links
+- Project bootstrap tooling
 
-This example take some inspiration the [with-nextjs](https://github.com/vercel/turborepo/tree/main/examples/with-nextjs) `Turbo` example and [01-cats-app](https://github.com/nestjs/nest/tree/master/sample/01-cats-app) `NestJs` sample.
+The goal is not to support every possible architecture.
 
-Learn more about the power of Turborepo:
+The goal is to provide a curated set of well-documented options.
 
-- [Tasks](https://turborepo.dev/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.dev/docs/reference/configuration)
-- [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)
+---
+
+## Documentation
+
+Documentation is a first-class part of the project.
+
+Future documentation topics include:
+
+- Architecture decisions
+- Authentication strategies
+- DTO design
+- Validation patterns
+- Monorepo organization
+- API boundaries
+- Database tradeoffs
+- Deployment approaches
+
+Each topic will focus not only on implementation but also on the reasoning behind the decision.
+
+---
+
+## Consulting
+
+PTP is also available as a consulting engagement.
+
+If your team needs:
+
+- Architecture reviews
+- Platform setup
+- Monorepo migrations
+- Authentication design
+- TypeScript platform guidance
+
+feel free to reach out through:
+
+https://pablotor.dev
+
+---
+
+## Status
+
+🚧 Early development
+
+PTP is actively evolving. Expect architectural changes while the foundation is being established.
+
+Feedback, discussions, and contributions are welcome.
+
+---
+
+## License
+
+MIT
