@@ -1,10 +1,10 @@
 {
-  "name": "my-turborepo",
-  "version": "0.0.0",
+  "name": "pablotor-platform",
+  "version": "0.0.2",
   "private": true,
-  "description": "",
-  "author": "",
-  "license": "UNLICENSED",
+  "description": "An elegant foundation for a more civilized age",
+  "author": "pablotor",
+  "license": "MIT",
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build",
@@ -20,11 +20,14 @@
     "turbo": "^2.9.16"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=22"
   },
   "packageManager": "yarn@1.22.22",
   "workspaces": [
     "apps/*",
     "packages/*"
-  ]
+  ],
+  "resolutions": {
+    "postcss": "8.5"
+  }
 }
