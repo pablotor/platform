@@ -10,6 +10,9 @@
     "build": "turbo run build",
     "test": "turbo run test",
     "test:e2e": "turbo run test:e2e",
+    "infra:dev:up": "docker compose -f infra/docker-compose.local.yml up -d",
+    "infra:dev:down": "docker compose -f infra/docker-compose.local.yml down",
+    "infra:dev:logs": "docker compose -f infra/docker-compose.local.yml logs -f",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },

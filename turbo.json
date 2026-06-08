@@ -8,7 +8,18 @@
     },
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
+      "outputs": [".next/**", "!.next/cache/**", "dist/**"],
+      "inputs": ["$TURBO_DEFAULT$", ".env.local", ".env.development"],
+      "env": [
+        "DATABASE_URL",
+        "PORT",
+        "CORS_ENABLED",
+        "SWAGGER_ENABLED",
+        "SWAGGER_TITLE",
+        "SWAGGER_DESCRIPTION",
+        "SWAGGER_VERSION",
+        "SWAGGER_PATH"
+      ]
     },
     "lint": {},
     "test": {},

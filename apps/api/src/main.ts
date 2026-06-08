@@ -1,11 +1,47 @@
-import { NestFactory } from '@nestjs/core';
+import { cleanupOpenApiDoc } from 'nestjs-zod';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 
 import { AppModule } from './app.module';
+import { ConfigService } from '@nestjs/config';
+import {
+  CorsConfig,
+  NestConfig,
+  SwaggerConfig,
+} from './common/config/config.interface';
+import { PrismaClientExceptionFilter } from './common/prisma/prisma-client-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  // Prisma Client Exception Filter for unhandled exceptions
+  const { httpAdapter } = app.get(HttpAdapterHost);
+  app.useGlobalFilters(new PrismaClientExceptionFilter(httpAdapter));
+
+  const configService = app.get(ConfigService);
+  const nestConfig = configService.getOrThrow<NestConfig>('nest');
+  const corsConfig = configService.getOrThrow<CorsConfig>('cors');
+  const swaggerConfig = configService.getOrThrow<SwaggerConfig>('swagger');
+
+  // Swagger Api
+  if (swaggerConfig.enabled) {
+    const options = new DocumentBuilder()
+      .setTitle(swaggerConfig.title)
+      .setDescription(swaggerConfig.description)
+      .setVersion(swaggerConfig.version)
+      .build();
+    const openApiDoc = SwaggerModule.createDocument(app, options);
+
+    SwaggerModule.setup(swaggerConfig.path, app, cleanupOpenApiDoc(openApiDoc));
+  }
+
+  // Cors
+  if (corsConfig.enabled) {
+    app.enableCors();
+  }
+
   app.enableCors();
-  await app.listen(3000);
+  await app.listen(nestConfig.port);
 }
 
 void bootstrap();
