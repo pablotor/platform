@@ -11,6 +11,9 @@
       "outputs": [".next/**", "!.next/cache/**", "dist/**"],
       "inputs": ["$TURBO_DEFAULT$", ".env.local", ".env.development"],
       "env": [
+        "AUTH_SECRET",
+        "AUTH_URL",
+        "AUTH_TRUSTED_URLS",
         "DATABASE_URL",
         "PORT",
         "CORS_ENABLED",
