@@ -24,6 +24,7 @@ import { AppController } from './app.controller';
 
 import appConfig from './common/config/config';
 import { PrismaService } from './common/prisma/prisma.service';
+import { AuthModule } from './common/auth/auth.module';
 
 @Catch(HttpException)
 class HttpExceptionFilter extends BaseExceptionFilter {
@@ -44,6 +45,7 @@ class HttpExceptionFilter extends BaseExceptionFilter {
 
 @Module({
   imports: [
+    AuthModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: [

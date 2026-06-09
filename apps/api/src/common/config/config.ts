@@ -21,6 +21,11 @@ export default (): Config => ({
     path: process.env.SWAGGER_PATH || 'api',
   },
   database: {
-    url: process.env.DATABASE_URL,
+    url: process.env.DATABASE_URL!,
+  },
+  authentication: {
+    secret: process.env.AUTH_SECRET!,
+    trusted: JSON.parse(process.env.AUTH_TRUSTED_URLS!),
+    url: process.env.AUTH_URL!,
   },
 });

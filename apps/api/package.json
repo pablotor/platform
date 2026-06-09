@@ -29,6 +29,8 @@
     "@prisma/adapter-pg": "^7.8.0",
     "@prisma/client": "^7.8.0",
     "@repo/api": "*",
+    "@thallesp/nestjs-better-auth": "^2.6.1",
+    "better-auth": "^1.6.15",
     "escape-html": "^1.0.3",
     "nestjs-zod": "^5.4.0",
     "pg": "^8.21.0",

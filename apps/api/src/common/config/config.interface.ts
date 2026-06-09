@@ -2,7 +2,8 @@ export interface Config {
   nest: NestConfig;
   cors: CorsConfig;
   swagger: SwaggerConfig;
-  database: Database;
+  database: DatabaseConfig;
+  authentication: AuthenticationConfig;
 }
 
 export interface NestConfig {
@@ -21,6 +22,12 @@ export interface SwaggerConfig {
   path: string;
 }
 
-export interface Database {
-  url?: string;
+export interface DatabaseConfig {
+  url: string;
+}
+
+export interface AuthenticationConfig {
+  secret: string;
+  trusted: string[];
+  url: string;
 }
