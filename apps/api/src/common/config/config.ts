@@ -7,6 +7,9 @@
 import type { Config } from './config.interface';
 
 export default (): Config => ({
+  general: {
+    webUrl: process.env.WEB_URL!,
+  },
   nest: {
     port: Number(process.env.PORT) || 3000,
   },
@@ -21,11 +24,16 @@ export default (): Config => ({
     path: process.env.SWAGGER_PATH || 'api',
   },
   database: {
-    url: process.env.DATABASE_URL!,
+    url: `postgresql://${process.env.POSTGRES_USER!}:${process.env.POSTGRES_PASSWORD!}@${process.env.DB_HOST!}:${process.env.DB_PORT!}/${process.env.POSTGRES_DB!}?schema=${process.env.DB_SCHEMA!}`,
   },
   authentication: {
     secret: process.env.AUTH_SECRET!,
-    trusted: JSON.parse(process.env.AUTH_TRUSTED_URLS!),
-    url: process.env.AUTH_URL!,
+    trusted: [
+      process.env.WEB_URL!,
+      ...(process.env.AUTH_TRUSTED_URLS
+        ? JSON.parse(process.env.AUTH_TRUSTED_URLS)
+        : []),
+    ],
+    url: process.env.API_URL!,
   },
 });

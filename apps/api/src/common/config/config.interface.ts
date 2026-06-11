@@ -1,4 +1,5 @@
 export interface Config {
+  general: GeneralConfig;
   nest: NestConfig;
   cors: CorsConfig;
   swagger: SwaggerConfig;
@@ -6,6 +7,9 @@ export interface Config {
   authentication: AuthenticationConfig;
 }
 
+export interface GeneralConfig {
+  webUrl: string;
+}
 export interface NestConfig {
   port: number;
 }

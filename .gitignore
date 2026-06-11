@@ -3,6 +3,9 @@
 # Services data
 .data/
 
+# Prisma client
+generated/
+
 # Dependencies
 node_modules
 .pnp
@@ -22,7 +25,6 @@ coverage
 test-results/
 playwright/.cache/
 playwright-report/
-
 
 # Turbo
 .turbo

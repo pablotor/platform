@@ -3,6 +3,7 @@
   "globalDependencies": ["**/.env.*local"],
   "tasks": {
     "dev": {
+      "dependsOn": ["^build"],
       "cache": false,
       "persistent": true
     },
@@ -14,14 +15,22 @@
         "AUTH_SECRET",
         "AUTH_URL",
         "AUTH_TRUSTED_URLS",
-        "DATABASE_URL",
-        "PORT",
         "CORS_ENABLED",
+        "DATABASE_URL",
+        "DB_HOST",
+        "DB_PORT",
+        "DB_SCHEMA",
+        "PORT",
+        "POSTGRES_USER",
+        "POSTGRES_PASSWORD",
+        "POSTGRES_DB",
         "SWAGGER_ENABLED",
         "SWAGGER_TITLE",
         "SWAGGER_DESCRIPTION",
         "SWAGGER_VERSION",
-        "SWAGGER_PATH"
+        "SWAGGER_PATH",
+        "API_URL",
+        "WEB_URL"
       ]
     },
     "lint": {},

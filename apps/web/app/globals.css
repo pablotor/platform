@@ -1,50 +1,58 @@
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@import 'tailwindcss';
+@import '@repo/ui/styles.css';
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@custom-variant dark (&: is(.dark *));
+
+@theme inline {
+  --font-heading: var(--font-ubuntu-sans), 'Ubuntu', var(--font-sans);
+  --font-sans:
+    var(--font-ubuntu-sans), 'Ubuntu', var(--font-geist-sans), 'Geist Fallback';
+  --font-mono: var(--font-geist-mono), 'Geist Mono';
+
+  --animate-vercel-text-a: vercel-text 8s infinite;
+  --animate-vercel-text-b: vercel-text 8s infinite 4s;
+  --animate-switch-gradient: switch-gradient 10s infinite;
+  --animate-fade-in: fade-in 2s;
+
+  @keyframes vercel-text {
+    0%,
+    55% {
+      color: inherit;
+    }
+    5%,
+    50% {
+      color: transparent;
+    }
   }
-}
-
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-}
-
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-.imgDark {
-  display: none;
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
+  @keyframes switch-gradient {
+    0%,
+    37%,
+    50%,
+    87%,
+    100% {
+      color: inherit;
+    }
+    3%,
+    35%,
+    53%,
+    85% {
+      color: transparent;
+    }
+    0%,
+    37% {
+      background-image: linear-gradient(to right, #3b82f6 0%, #4338ca 100%);
+    }
+    50%,
+    87% {
+      background-image: linear-gradient(to right, #a855f7 0%, #be185d 100%);
+    }
   }
-
-  .imgLight {
-    display: none;
-  }
-  .imgDark {
-    display: unset;
+  @keyframes fade-in {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
   }
 }

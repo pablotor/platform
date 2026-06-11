@@ -11,7 +11,7 @@ import {
 } from './common/config/config.interface';
 import { PrismaClientExceptionFilter } from './common/prisma/prisma-client-exception.filter';
 
-async function bootstrap() {
+const bootstrap = async () => {
   const app = await NestFactory.create(AppModule, {
     bodyParser: false, // Required for Better Auth
   });
@@ -24,6 +24,7 @@ async function bootstrap() {
   const nestConfig = configService.getOrThrow<NestConfig>('nest');
   const corsConfig = configService.getOrThrow<CorsConfig>('cors');
   const swaggerConfig = configService.getOrThrow<SwaggerConfig>('swagger');
+  const webUrl = configService.getOrThrow<string>('general.webUrl');
 
   // Swagger Api
   if (swaggerConfig.enabled) {
@@ -39,11 +40,14 @@ async function bootstrap() {
 
   // Cors
   if (corsConfig.enabled) {
-    app.enableCors();
+    app.enableCors({
+      origin: webUrl,
+      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+      credentials: true,
+    });
   }
 
-  app.enableCors();
   await app.listen(nestConfig.port);
-}
+};
 
 void bootstrap();
