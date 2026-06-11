@@ -66,7 +66,7 @@ const AuthForm = ({ mode }: { mode: Mode }) => {
         if (error) throw new Error(error.message ?? 'Could not sign in');
       }
       router.refresh();
-      router.push('/');
+      router.push('/dashboard');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong');
     } finally {

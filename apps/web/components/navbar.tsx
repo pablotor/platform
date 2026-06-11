@@ -2,8 +2,9 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { LogOut, User } from 'lucide-react';
+import { LogOut, Settings } from 'lucide-react';
 import Button from '@repo/ui/button';
+import UserMenu, { type UserMenuItem } from '@repo/ui/userMenu';
 import authClient from '../lib/auth-client';
 
 const Navbar = () => {
@@ -16,8 +17,24 @@ const Navbar = () => {
     router.push('/');
   };
 
+  const items: UserMenuItem = [
+    {
+      label: 'Settings',
+      icon: <Settings size={15} strokeWidth={2} />,
+      // onSelect: () => router.push('/settings'),
+      disabled: true,
+    },
+    {
+      label: 'Log out',
+      icon: <LogOut size={15} strokeWidth={2} />,
+      onSelect: handleSignOut,
+      variant: 'destructive',
+      separatorBefore: true,
+    },
+  ];
+
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/80 backdrop-blur-md">
+    <header className="sticky top-0 z-10 w-full border-b border-border bg-background/80 backdrop-blur-md">
       <nav className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6">
         <Link href="/" className="flex items-center gap-2">
           <span className="text-lg font-bold tracking-tight">
@@ -33,22 +50,13 @@ const Navbar = () => {
               aria-hidden="true"
             />
           ) : session?.user ? (
-            <div className="flex items-center gap-3">
-              <span className="hidden items-center gap-2 text-sm text-muted-foreground sm:flex">
-                <User className="size-4" aria-hidden="true" />
-                {session.user.name || session.user.email}
-              </span>
-              <Button variant="outline" size="sm" onClick={handleSignOut}>
-                <LogOut aria-hidden="true" />
-                Sign out
-              </Button>
-            </div>
+            <UserMenu user={session.user} items={items} />
           ) : (
             <>
-              <Button variant="ghost" size="sm" as="nextLink" href="/signin">
+              <Button variant="ghost" as="nextLink" href="/signin">
                 Sign in
               </Button>
-              <Button size="sm" as="nextLink" href="/signup">
+              <Button as="nextLink" href="/signup">
                 Sign up
               </Button>
             </>
