@@ -4,9 +4,10 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-import authClient from '../lib/auth-client';
+import authClient from '../lib/authClient';
 import Input from '@repo/ui/input';
 import Button from '@repo/ui/button';
+import { DEFAULT_AUTHENTICATED_ROUTE } from '../common/routes';
 
 type Mode = 'signin' | 'signup';
 
@@ -66,7 +67,7 @@ const AuthForm = ({ mode }: { mode: Mode }) => {
         if (error) throw new Error(error.message ?? 'Could not sign in');
       }
       router.refresh();
-      router.push('/dashboard');
+      router.push(DEFAULT_AUTHENTICATED_ROUTE);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong');
     } finally {

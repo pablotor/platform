@@ -5,7 +5,8 @@ import { useRouter } from 'next/navigation';
 import { LogOut, Settings } from 'lucide-react';
 import Button from '@repo/ui/button';
 import UserMenu, { type UserMenuItem } from '@repo/ui/userMenu';
-import authClient from '../lib/auth-client';
+import authClient from '../lib/authClient';
+import ROUTES from '../common/routes';
 
 const Navbar = () => {
   const { data: session, isPending } = authClient.useSession();
@@ -53,10 +54,14 @@ const Navbar = () => {
             <UserMenu user={session.user} items={items} />
           ) : (
             <>
-              <Button variant="ghost" as="nextLink" href="/signin">
+              <Button
+                variant="ghost"
+                as="nextLink"
+                href={ROUTES.public.auth.signin}
+              >
                 Sign in
               </Button>
-              <Button as="nextLink" href="/signup">
+              <Button as="nextLink" href={ROUTES.public.auth.signin}>
                 Sign up
               </Button>
             </>

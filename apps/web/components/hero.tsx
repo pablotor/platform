@@ -1,4 +1,5 @@
 import Button from '@repo/ui/button';
+import ROUTES from '../common/routes';
 
 const Hero = () => (
   <section className="mx-auto flex min-h-[calc(100vh-4rem)] max-w-5xl flex-col items-center justify-center px-6 py-10 text-center">
@@ -19,10 +20,15 @@ const Hero = () => (
     </p>
 
     <div className="mt-10 flex items-center gap-3">
-      <Button size="lg" as="nextLink" href="/signup">
+      <Button size="lg" as="nextLink" href={ROUTES.public.auth.signup}>
         Get started
       </Button>
-      <Button variant="outline" size="lg" as="nextLink" href="/signin">
+      <Button
+        variant="outline"
+        size="lg"
+        as="nextLink"
+        href={ROUTES.public.auth.signin}
+      >
         Sign in
       </Button>
     </div>
