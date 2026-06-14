@@ -1,16 +1,21 @@
 'use client';
 
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { LogOut, Settings } from 'lucide-react';
 import Button from '@repo/ui/button';
 import UserMenu, { type UserMenuItem } from '@repo/ui/userMenu';
 import authClient from '../lib/authClient';
+import { UserContextData } from '../lib/userContext';
 import ROUTES from '../common/routes';
 
-const Navbar = () => {
-  const { data: session, isPending } = authClient.useSession();
+type NavbarProps = {
+  user: UserContextData | null;
+};
+const Navbar = ({ user }: NavbarProps) => {
   const router = useRouter();
+  const path = usePathname();
+  console.log({ user });
 
   const handleSignOut = async () => {
     await authClient.signOut();
@@ -45,14 +50,7 @@ const Navbar = () => {
         </Link>
 
         <div className="flex items-center gap-2">
-          {isPending ? (
-            <div
-              className="h-8 w-20 animate-pulse rounded-lg bg-muted"
-              aria-hidden="true"
-            />
-          ) : session?.user ? (
-            <UserMenu user={session.user} items={items} />
-          ) : (
+          {path === ROUTES.public.root ? (
             <>
               <Button
                 variant="ghost"
@@ -65,6 +63,8 @@ const Navbar = () => {
                 Sign up
               </Button>
             </>
+          ) : (
+            user && <UserMenu user={user} items={items} />
           )}
         </div>
       </nav>

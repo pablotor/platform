@@ -19,6 +19,7 @@ const ROUTES = {
 };
 
 export const PUBLIC_ROUTES = objectValuesDeep(ROUTES.public);
+export const DEFAULT_PUBLIC_ROUTE = ROUTES.public.root;
 export const AUTHENTICATED_ROUTES = objectValuesDeep(ROUTES.authenticated);
 export const DEFAULT_AUTHENTICATED_ROUTE = ROUTES.authenticated.dashboard;
 

@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import clsx from 'clsx';
 import './globals.css';
+import Navbar from '../components/navbar';
+import { getUser } from '../lib/userContext';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -42,11 +44,12 @@ export const metadata: Metadata = {
   description: process.env.NEXT_PUBLIC_META_DESCRIPTION,
 };
 
-const RootLayout = ({
+const RootLayout = async ({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
+  const user = await getUser();
   return (
     <html lang="en">
       <body
@@ -56,7 +59,10 @@ const RootLayout = ({
           ubuntuSans.variable,
         )}
       >
-        {children}
+        <main className="min-h-screen bg-background">
+          <Navbar user={user} />
+          {children}
+        </main>
       </body>
     </html>
   );

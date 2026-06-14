@@ -131,7 +131,13 @@ const AuthForm = ({ mode }: { mode: Mode }) => {
           </p>
         )}
 
-        <Button type="submit" size="lg" disabled={loading} className="mt-2">
+        <Button
+          variant="default"
+          type="submit"
+          size="lg"
+          disabled={loading}
+          className="mt-2"
+        >
           {loading ? 'Please wait…' : t.cta}
         </Button>
       </form>
