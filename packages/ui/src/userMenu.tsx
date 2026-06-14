@@ -11,7 +11,7 @@ type UserMenuProps = {
   user: {
     name: string;
     email: string;
-    imageUrl?: string;
+    image?: string | null;
   };
   items: UserMenuItem;
 };
@@ -62,7 +62,7 @@ const UserAvatar = ({
 
 const UserMenuHeader = ({ user }: { user: UserMenuProps['user'] }) => (
   <div className="flex items-center gap-2.5 px-2 pt-2 pb-2.5">
-    <UserAvatar imageUrl={user.imageUrl} name={user.name} size="lg" />
+    <UserAvatar imageUrl={user.image || undefined} name={user.name} size="lg" />
     <div className="flex flex-col gap-0.5 min-w-0">
       <span className="text-sm font-semibold text-popover-foreground truncate">
         {user.name}
@@ -76,7 +76,7 @@ const UserMenuHeader = ({ user }: { user: UserMenuProps['user'] }) => (
 
 const UserMenuTrigger = ({ user }: { user: UserMenuProps['user'] }) => (
   <>
-    <UserAvatar imageUrl={user.imageUrl} name={user.name} />
+    <UserAvatar imageUrl={user.image || undefined} name={user.name} />
     <span className="text-sm font-medium leading-none">{user.name}</span>
     <ChevronDown
       size={14}
