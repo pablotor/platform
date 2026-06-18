@@ -1,3 +1,3 @@
-export { Link } from './links/entities/link.entity';
-export { CreateLinkDto } from './links/dto/create-link.dto';
-export { UpdateLinkDto } from './links/dto/update-link.dto';
+export { PasswordSchema } from './validation/primitives';
+export { UserSchema } from './validation/entities/user.schema';
+export * from './validation/contracts/auth.contract';

@@ -1,0 +1,124 @@
+'use client';
+
+import { useRouter } from 'next/navigation';
+import { PasswordSchema, type SignUpContract, SignUpSchema } from '@repo/api';
+import Button from '@repo/ui/button';
+import Input from '@repo/ui/input';
+import PasswordCreationInput, {
+  type PasswordRequirement,
+  type PasswordStrength,
+} from '@repo/ui/passwordCreationInput';
+
+import { DEFAULT_AUTHENTICATED_ROUTE } from '../../common/routes';
+import useForm from '../../hooks/useForm';
+import authClient from '../../lib/authClient';
+import AuthFormWrapper from './authFormWrapper';
+
+const PASSWORD_REQUIREMENTS: PasswordRequirement[] = [
+  {
+    id: 'length',
+    label: 'At least 8 characters',
+  },
+  {
+    id: 'upper',
+    label: 'One uppercase letter',
+  },
+  {
+    id: 'number',
+    label: 'One number',
+  },
+  {
+    id: 'special',
+    label: 'One special character (!@#$%^&*…)',
+  },
+];
+
+const PASSWORD_STRENGTH_CONFIG: PasswordStrength[] = [
+  {
+    label: 'Weak',
+    barColor: 'bg-brand-pink-700',
+    textColor: 'text-brand-pink-700/90',
+    width: 'w-1/4',
+  },
+  {
+    label: 'Fair',
+    barColor: 'bg-brand-pink',
+    textColor: 'text-brand-pink/90',
+    width: 'w-1/2',
+  },
+  {
+    label: 'Good',
+    barColor: 'bg-brand-purple',
+    textColor: 'text-brand-purple/90',
+    width: 'w-3/4',
+  },
+  {
+    label: 'Strong',
+    barColor: 'bg-brand-indigo',
+    textColor: 'text-brand-indigo/90',
+    width: 'w-full',
+  },
+];
+
+const SignUpForm = () => {
+  const router = useRouter();
+  const { action, register, isSubmitting, submitError } =
+    useForm<SignUpContract>(async (payload: SignUpContract) => {
+      await authClient.signUp.email(payload);
+      router.refresh();
+      router.push(DEFAULT_AUTHENTICATED_ROUTE);
+    }, SignUpSchema);
+
+  return (
+    <AuthFormWrapper mode="signup">
+      <form action={action} className="flex flex-col gap-4">
+        <Input
+          id="name"
+          label="Name"
+          type="text"
+          autoComplete="name"
+          placeholder="Enter your name"
+          showErrorText
+          {...register('name')}
+        />
+        <Input
+          id="email"
+          label="Email"
+          type="email"
+          autoComplete="email"
+          placeholder="Enter your email"
+          showErrorText
+          {...register('email')}
+        />
+
+        <PasswordCreationInput
+          requirements={PASSWORD_REQUIREMENTS}
+          strengthConfig={PASSWORD_STRENGTH_CONFIG}
+          validationSchema={PasswordSchema}
+          {...register('password')}
+        />
+
+        {submitError && (
+          <p
+            role="alert"
+            className="rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive"
+          >
+            {submitError}
+          </p>
+        )}
+
+        <Button
+          variant="default"
+          type="submit"
+          size="lg"
+          disabled={isSubmitting}
+          className="mt-2"
+        >
+          {isSubmitting ? 'Please wait…' : 'Sign up'}
+        </Button>
+      </form>
+    </AuthFormWrapper>
+  );
+};
+
+export default SignUpForm;

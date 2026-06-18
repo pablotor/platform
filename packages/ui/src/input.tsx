@@ -10,9 +10,9 @@ const inputVariants = cva(
         ghost: 'border-transparent bg-muted/50',
       },
       inputSize: {
-        sm: 'h-8 px-2.5 text-sm',
-        default: 'h-10 px-3 text-sm',
-        lg: 'h-11 px-3.5 text-base',
+        sm: 'h-8 px-2.5 text-body-sm',
+        default: 'h-10 px-3 text-body-sm',
+        lg: 'h-11 px-3.5 text-body',
       },
     },
     defaultVariants: {
@@ -22,35 +22,42 @@ const inputVariants = cva(
   },
 );
 
-export type ButtonProps = {
+export type InputProps = {
   label: string | ReactNode;
-  error?: string | ReactNode;
+  showErrorText?: boolean;
+  error?: string;
+  adornment?: ReactNode;
 } & VariantProps<typeof inputVariants> &
   React.ComponentProps<'input'>;
 
 const Input = ({
   label,
+  showErrorText,
   error,
+  adornment,
   name,
   variant,
   inputSize,
   ...etc
-}: ButtonProps) => (
+}: InputProps) => (
   <div>
     <label htmlFor={name} className="mb-2 block text-label">
       {label}
     </label>
-    <div className="relative">
+    <div className="relative flex items-center">
       <input
         name={name}
         className={inputVariants({ variant, inputSize })}
-        {...etc}
         aria-invalid={!!error}
+        {...etc}
       />
+      {adornment}
     </div>
-    <div className="min-h-3 mt-2 text-overline">
-      <p>{error && <span className="text-danger">{error}</span>}</p>
-    </div>
+    {showErrorText && (
+      <div className="min-h-4 mt-2 text-overline">
+        {error && <p className="text-destructive text-xs">{error}</p>}
+      </div>
+    )}
   </div>
 );
 

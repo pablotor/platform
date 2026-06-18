@@ -12,7 +12,7 @@ const HTTP_METHODS = [
 
 type HttpMethod = (typeof HTTP_METHODS)[number];
 
-type RequestPayload = Record<string, unknown>;
+type RequestPayload = Record<string, unknown> | FormData;
 type RequestReturnType = unknown;
 
 export class FetchError extends Error {
@@ -37,15 +37,19 @@ export class FetchError extends Error {
   }
 }
 
-const payloadToQueryString = (payload: RequestPayload): string =>
-  '?'.concat(
-    Object.entries(payload)
-      .map(
-        ([paranName, paramValue]) =>
-          `${paranName}=${encodeURIComponent(paramValue as string | number | boolean)}`,
-      )
-      .join('&'),
-  );
+const payloadToQueryString = (payload: RequestPayload): string => {
+  const payloadEntries =
+    payload instanceof FormData
+      ? Array.from(payload.entries())
+      : Object.entries(payload);
+  const queryString = payloadEntries
+    .map(
+      ([paranName, paramValue]) =>
+        `${paranName}=${encodeURIComponent(paramValue as string | number | boolean)}`,
+    )
+    .join('&');
+  return `?${queryString}`;
+};
 
 const baseRequest = async <
   R extends RequestReturnType,
@@ -70,7 +74,11 @@ const baseRequest = async <
   };
 
   if (method !== 'get' && payload) {
-    requestOptions.body = JSON.stringify(payload);
+    if (payload instanceof FormData) {
+      requestOptions.body = payload;
+    } else {
+      requestOptions.body = JSON.stringify(payload);
+    }
   }
 
   const response = await fetch(url, requestOptions);

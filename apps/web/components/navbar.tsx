@@ -15,7 +15,6 @@ type NavbarProps = {
 const Navbar = ({ user }: NavbarProps) => {
   const router = useRouter();
   const path = usePathname();
-  console.log({ user });
 
   const handleSignOut = async () => {
     await authClient.signOut();
@@ -59,7 +58,7 @@ const Navbar = ({ user }: NavbarProps) => {
               >
                 Sign in
               </Button>
-              <Button as="nextLink" href={ROUTES.public.auth.signin}>
+              <Button as="nextLink" href={ROUTES.public.auth.signup}>
                 Sign up
               </Button>
             </>
