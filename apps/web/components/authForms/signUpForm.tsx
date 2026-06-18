@@ -64,9 +64,19 @@ const SignUpForm = () => {
   const router = useRouter();
   const { action, register, isSubmitting, submitError } =
     useForm<SignUpContract>(async (payload: SignUpContract) => {
-      await authClient.signUp.email(payload);
-      router.refresh();
-      router.push(DEFAULT_AUTHENTICATED_ROUTE);
+      await authClient.signUp.email(payload, {
+        onSuccess: () => {
+          router.refresh();
+          router.push(DEFAULT_AUTHENTICATED_ROUTE);
+        },
+        onError: ({ error }) => {
+          console.error('Signup error: ', error.message);
+          throw new Error(
+            error.message ||
+              "We couldn't sign you up. If this error persist contact support",
+          );
+        },
+      });
     }, SignUpSchema);
 
   return (
@@ -101,7 +111,7 @@ const SignUpForm = () => {
         {submitError && (
           <p
             role="alert"
-            className="rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive"
+            className="rounded-lg bg-destructive/10 px-3 py-2 text-body-sm text-destructive"
           >
             {submitError}
           </p>

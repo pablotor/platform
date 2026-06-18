@@ -29,19 +29,33 @@ const useForm = <U extends Record<keyof U, unknown>>(
       setErrorObject({
         formSubmit: '',
       });
+      setErrorObject((prev) => ({
+        ...prev,
+        formSubmit: '',
+      }));
       const rawData = Object.fromEntries(formData.entries()) as Partial<U>;
       try {
         const submitPayload = validationSchema.parse(rawData) as U;
         await onSubmit(submitPayload);
       } catch (e) {
-        if (!(e instanceof ZodError)) throw e;
-        console.warn('Validation failed', e.message);
-        setErrorObject({
-          formSubmit: '',
-          ...Object.fromEntries(
-            e.issues.map((innerError) => [innerError.path, innerError.message]),
-          ),
-        });
+        if (e instanceof ZodError) {
+          console.warn('Validation failed', e.message);
+          setErrorObject({
+            formSubmit: '',
+            ...Object.fromEntries(
+              e.issues.map((innerError) => [
+                innerError.path,
+                innerError.message,
+              ]),
+            ),
+          });
+        } else if (e instanceof Error) {
+          setErrorObject({
+            formSubmit: e.message,
+          });
+        } else {
+          throw e;
+        }
       }
       return rawData;
     },

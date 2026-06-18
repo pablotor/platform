@@ -14,9 +14,19 @@ const SignInForm = () => {
 
   const { action, register, isSubmitting, submitError } =
     useForm<SignInContract>(async (payload: SignInContract) => {
-      await authClient.signIn.email(payload);
-      router.refresh();
-      router.push(DEFAULT_AUTHENTICATED_ROUTE);
+      await authClient.signIn.email(payload, {
+        onSuccess: () => {
+          router.refresh();
+          router.push(DEFAULT_AUTHENTICATED_ROUTE);
+        },
+        onError: ({ error }) => {
+          console.error('Signin error: ', error.message);
+          throw new Error(
+            error.message ||
+              "We couldn't sign you in. If this error persist contact support",
+          );
+        },
+      });
     }, SignInSchema);
 
   return (
