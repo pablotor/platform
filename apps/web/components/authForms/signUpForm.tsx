@@ -62,8 +62,8 @@ const PASSWORD_STRENGTH_CONFIG: PasswordStrength[] = [
 
 const SignUpForm = () => {
   const router = useRouter();
-  const { action, register, isSubmitting, submitError } =
-    useForm<SignUpContract>(async (payload: SignUpContract) => {
+  const { action, register, isSubmitting } = useForm<SignUpContract>(
+    async (payload: SignUpContract) => {
       await authClient.signUp.email(payload, {
         onSuccess: () => {
           router.refresh();
@@ -77,7 +77,9 @@ const SignUpForm = () => {
           );
         },
       });
-    }, SignUpSchema);
+    },
+    SignUpSchema,
+  );
 
   return (
     <AuthFormWrapper mode="signup">
@@ -107,16 +109,6 @@ const SignUpForm = () => {
           validationSchema={PasswordSchema}
           {...register('password')}
         />
-
-        {submitError && (
-          <p
-            role="alert"
-            className="rounded-lg bg-destructive/10 px-3 py-2 text-body-sm text-destructive"
-          >
-            {submitError}
-          </p>
-        )}
-
         <Button
           variant="default"
           type="submit"

@@ -12,8 +12,8 @@ import AuthFormWrapper from './authFormWrapper';
 const SignInForm = () => {
   const router = useRouter();
 
-  const { action, register, isSubmitting, submitError } =
-    useForm<SignInContract>(async (payload: SignInContract) => {
+  const { action, register, isSubmitting } = useForm<SignInContract>(
+    async (payload: SignInContract) => {
       await authClient.signIn.email(payload, {
         onSuccess: () => {
           router.refresh();
@@ -27,7 +27,9 @@ const SignInForm = () => {
           );
         },
       });
-    }, SignInSchema);
+    },
+    SignInSchema,
+  );
 
   return (
     <AuthFormWrapper mode="signin">
@@ -48,16 +50,6 @@ const SignInForm = () => {
           placeholder="••••••••"
           {...register('password')}
         />
-
-        {submitError && (
-          <p
-            role="alert"
-            className="rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive"
-          >
-            {submitError}
-          </p>
-        )}
-
         <Button
           variant="default"
           type="submit"

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import clsx from 'clsx';
+import { ToastProvider } from '@repo/ui/toast/provider';
 import Navbar from '../components/navbar';
 import { getUser } from '../lib/userContext';
 import './globals.css';
@@ -60,8 +61,10 @@ const RootLayout = async ({
         )}
       >
         <main className="min-h-screen bg-background">
-          <Navbar user={user} />
-          {children}
+          <ToastProvider>
+            <Navbar user={user} />
+            {children}
+          </ToastProvider>
         </main>
       </body>
     </html>

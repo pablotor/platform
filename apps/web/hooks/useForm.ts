@@ -1,5 +1,6 @@
 import { ComponentProps, useActionState, useCallback, useState } from 'react';
 import { z, ZodError } from 'zod';
+import { useToast } from '@repo/ui/toast/handler';
 
 /**
  * useForm is a simplified version of the useForm library. It is:
@@ -12,7 +13,10 @@ import { z, ZodError } from 'zod';
 const useForm = <U extends Record<keyof U, unknown>>(
   onSubmit: (formPayload: U) => void | Promise<void>,
   validationSchema: z.ZodObject,
-  defaultValues?: Partial<U>,
+  options: {
+    defaultValues?: Partial<U>;
+    successMessage?: string;
+  } = {},
 ) => {
   const [errorObject, setErrorObject] = useState<{
     formSubmit: string;
@@ -21,23 +25,27 @@ const useForm = <U extends Record<keyof U, unknown>>(
     formSubmit: '',
   });
 
+  const { toast } = useToast();
+
   const [actionState, action, isSubmitting] = useActionState<
     Partial<U>,
     FormData
   >(
     async (_state, formData) => {
+      const submitToast = toast({ mode: 'loading' });
       setErrorObject({
         formSubmit: '',
       });
-      setErrorObject((prev) => ({
-        ...prev,
-        formSubmit: '',
-      }));
       const rawData = Object.fromEntries(formData.entries()) as Partial<U>;
       try {
         const submitPayload = validationSchema.parse(rawData) as U;
         await onSubmit(submitPayload);
+        submitToast.update({
+          mode: 'success',
+          content: options.successMessage,
+        });
       } catch (e) {
+        submitToast.update({ mode: 'error' });
         if (e instanceof ZodError) {
           console.warn('Validation failed', e.message);
           setErrorObject({
@@ -50,6 +58,11 @@ const useForm = <U extends Record<keyof U, unknown>>(
             ),
           });
         } else if (e instanceof Error) {
+          submitToast.update({
+            mode: 'error',
+            content: e.message,
+            duration: Infinity,
+          });
           setErrorObject({
             formSubmit: e.message,
           });
@@ -59,7 +72,7 @@ const useForm = <U extends Record<keyof U, unknown>>(
       }
       return rawData;
     },
-    (defaultValues || {}) as Awaited<Partial<U>>,
+    (options.defaultValues || {}) as Awaited<Partial<U>>,
   );
 
   const register = useCallback(
