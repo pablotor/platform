@@ -1,10 +1,10 @@
 import { ToastRecord } from './types';
 
-export type ToastState = {
+type ToastState = {
   toasts: ToastRecord[];
 };
 
-export type ToastAction =
+type ToastAction =
   | { type: 'ADD_TOAST'; toast: ToastRecord }
   | { type: 'UPDATE_TOAST'; toast: Partial<ToastRecord> & { id: string } }
   | { type: 'DISMISS_TOAST'; toastId?: string }

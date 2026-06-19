@@ -79,6 +79,9 @@ const SignUpForm = () => {
       });
     },
     SignUpSchema,
+    {
+      successMessage: 'Registration complete',
+    },
   );
 
   return (
@@ -102,7 +105,6 @@ const SignUpForm = () => {
           showErrorText
           {...register('email')}
         />
-
         <PasswordCreationInput
           requirements={PASSWORD_REQUIREMENTS}
           strengthConfig={PASSWORD_STRENGTH_CONFIG}
@@ -116,7 +118,7 @@ const SignUpForm = () => {
           disabled={isSubmitting}
           className="mt-2"
         >
-          {isSubmitting ? 'Please wait…' : 'Sign up'}
+          {isSubmitting ? 'Please wait' : 'Sign up'}
         </Button>
       </form>
     </AuthFormWrapper>

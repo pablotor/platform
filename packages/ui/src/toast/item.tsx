@@ -48,7 +48,6 @@ const ToastItem = ({
       open={open}
       duration={duration === Infinity ? undefined : duration}
       onOpenChange={(nextOpen) => {
-        console.log({ nextOpen });
         if (!nextOpen) dismiss(id);
       }}
       className={clsx(
@@ -74,7 +73,7 @@ const ToastItem = ({
         </RadixToast.Description>
       )}
 
-      {mode !== 'loading' && (
+      {mode !== 'loading' && content && (
         <RadixToast.Close
           aria-label="Dismiss"
           className={clsx(

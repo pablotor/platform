@@ -29,6 +29,9 @@ const SignInForm = () => {
       });
     },
     SignInSchema,
+    {
+      successMessage: 'Welcome back',
+    },
   );
 
   return (

@@ -25,6 +25,14 @@ const genId = (): string => `toast-${++count}`;
 // the existing toast instead of creating a new one
 const keyToId = new Map<string, string>();
 
+const getId = (toastKey?: string): string => {
+  if (!toastKey) return genId();
+  if (keyToId.has(toastKey)) return keyToId.get(toastKey)!;
+  const id = genId();
+  keyToId.set(toastKey, id);
+  return id;
+};
+
 interface ToastHandle {
   id: string;
   update: (props: Partial<Omit<ToastRecord, 'id'>>) => void;
@@ -46,12 +54,7 @@ const toast = ({
   content,
   duration,
 }: ToastOptions): ToastHandle => {
-  const id =
-    toastKey && keyToId.has(toastKey)
-      ? (keyToId.get(toastKey) as string)
-      : genId();
-  if (toastKey) keyToId.set(toastKey, id);
-
+  const id = getId(toastKey);
   const resolvedDuration = duration ?? DEFAULT_DURATIONS[mode];
   const exists = store.exists(id);
 
