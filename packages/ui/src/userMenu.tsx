@@ -77,12 +77,14 @@ const UserMenuHeader = ({ user }: { user: UserMenuProps['user'] }) => (
 const UserMenuTrigger = ({ user }: { user: UserMenuProps['user'] }) => (
   <>
     <UserAvatar imageUrl={user.image || undefined} name={user.name} />
-    <span className="text-sm font-medium leading-none">{user.name}</span>
-    <ChevronDown
-      size={14}
-      strokeWidth={2.5}
-      className="text-muted-foreground ml-px transition-transform duration-200 group-data-[state=open]:rotate-180"
-    />
+    <div className="md:flex hidden">
+      <span className="text-sm font-medium leading-none">{user.name}</span>
+      <ChevronDown
+        size={14}
+        strokeWidth={2.5}
+        className="text-muted-foreground ml-px transition-transform duration-200 group-data-[state=open]:rotate-180"
+      />
+    </div>
   </>
 );
 
@@ -93,8 +95,8 @@ const UserMenu = ({ user, items }: UserMenuProps) => (
     triggerButtonProps={{
       'aria-label': 'User menu',
       className: clsx(
-        'group flex items-center gap-1 pl-1 pr-2.5 py-1',
-        'rounded-full border border-border bg-background text-foreground',
+        'group flex items-center gap-1 md:p-1 md:pr-2.5',
+        'rounded-full border-2 md:border border-border bg-background text-foreground',
         'cursor-pointer outline-none font-sans',
         'transition-colors duration-120 ease-in-out',
         'hover:bg-muted hover:border-input',

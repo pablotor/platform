@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Eye, EyeOff, Check, Circle } from 'lucide-react';
+import { ZodString } from 'zod';
 import clsx from 'clsx';
 import Input, { InputProps } from './input';
-import { ZodString } from 'zod';
 
 export type PasswordRequirement = {
   id: string;
@@ -103,7 +103,7 @@ const PasswordCreationInput = ({
                   isPending
                     ? inputProps.error
                       ? 'text-destructive'
-                      : 'text-foreground-muted'
+                      : 'text-muted-foreground'
                     : 'text-brand-indigo/90',
                 )}
               >
@@ -119,7 +119,7 @@ const PasswordCreationInput = ({
                   isPending
                     ? inputProps.error
                       ? 'text-destructive'
-                      : 'text-foreground-muted'
+                      : 'text-muted-foreground'
                     : 'text-brand-indigo',
                 )}
               >

@@ -1,9 +1,10 @@
+import { PropsWithChildren } from 'react';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import clsx from 'clsx';
 import { ToastProvider } from '@repo/ui/toast/provider';
-import Navbar from '../components/navbar';
-import { getUser } from '../lib/userContext';
+
+import '@repo/ui/styles.css';
 import './globals.css';
 
 const geistSans = localFont({
@@ -45,30 +46,18 @@ export const metadata: Metadata = {
   description: process.env.NEXT_PUBLIC_META_DESCRIPTION,
 };
 
-const RootLayout = async ({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) => {
-  const user = await getUser();
-  return (
-    <html lang="en">
-      <body
-        className={clsx(
-          geistMono.variable,
-          geistSans.variable,
-          ubuntuSans.variable,
-        )}
-      >
-        <main className="min-h-screen bg-background">
-          <ToastProvider>
-            <Navbar user={user} />
-            {children}
-          </ToastProvider>
-        </main>
-      </body>
-    </html>
-  );
-};
+const RootLayout = async ({ children }: Readonly<PropsWithChildren>) => (
+  <html lang="en">
+    <body
+      className={clsx(
+        geistMono.variable,
+        geistSans.variable,
+        ubuntuSans.variable,
+      )}
+    >
+      <ToastProvider>{children}</ToastProvider>
+    </body>
+  </html>
+);
 
 export default RootLayout;

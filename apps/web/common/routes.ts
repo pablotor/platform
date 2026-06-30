@@ -1,10 +1,18 @@
-type RouteObject = string | { [key: string]: RouteObject };
+type RouteLeaf = string | ((...args: string[]) => string);
+type RouteTree = { readonly [key: string]: RouteLeaf | RouteTree };
 
-const objectValuesDeep = (route: RouteObject): string[] =>
-  typeof route === 'string'
-    ? [route]
-    : Object.values(route).flatMap(objectValuesDeep);
+const staticValuesDeep = (tree: RouteTree): string[] =>
+  Object.values(tree).flatMap((v) =>
+    typeof v === 'string'
+      ? [v]
+      : typeof v === 'function'
+        ? []
+        : staticValuesDeep(v as RouteTree),
+  );
 
+/**
+ *
+ */
 const ROUTES = {
   public: {
     root: '/',
@@ -15,12 +23,18 @@ const ROUTES = {
   },
   authenticated: {
     dashboard: '/dashboard',
+    examples: {
+      base: '/examples',
+      get design() {
+        return `${this.base}/design`;
+      },
+    },
   },
-};
+} as const;
 
-export const PUBLIC_ROUTES = objectValuesDeep(ROUTES.public);
+export const PUBLIC_ROUTES = staticValuesDeep(ROUTES.public);
 export const DEFAULT_PUBLIC_ROUTE = ROUTES.public.root;
-export const AUTHENTICATED_ROUTES = objectValuesDeep(ROUTES.authenticated);
+export const AUTHENTICATED_ROUTES = staticValuesDeep(ROUTES.authenticated);
 export const DEFAULT_AUTHENTICATED_ROUTE = ROUTES.authenticated.dashboard;
 
 export default ROUTES;
