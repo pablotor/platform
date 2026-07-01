@@ -44,12 +44,24 @@ const TypeRow = ({
 // ─────────────────────────────────────────────────────────────────────────
 
 const BRAND_SWATCHES = [
-  { bg: 'bg-brand-blue', label: 'brand-blue', hex: '#3b82f6' },
-  { bg: 'bg-brand-indigo', label: 'brand-indigo', hex: '#4338ca' },
-  { bg: 'bg-brand-indigo-600', label: 'brand-indigo-600', hex: '#4f46e5' },
-  { bg: 'bg-brand-purple', label: 'brand-purple', hex: '#a855f7' },
-  { bg: 'bg-brand-pink', label: 'brand-pink', hex: '#ec4899' },
-  { bg: 'bg-brand-pink-700', label: 'brand-pink-700', hex: '#be185d' },
+  { bg: 'bg-brand-primary-from', label: 'brand-primary-from', hex: '#3b82f6' },
+  { bg: 'bg-brand-primary', label: 'brand-primary', hex: '#4338ca' },
+  {
+    bg: 'bg-brand-primary-accent',
+    label: 'brand-primary-accent',
+    hex: '#4f46e5',
+  },
+  {
+    bg: 'bg-brand-secondary-from',
+    label: 'brand-secondary-from',
+    hex: '#a855f7',
+  },
+  { bg: 'bg-brand-secondary', label: 'brand-secondary', hex: '#be185d' },
+  {
+    bg: 'bg-brand-secondary-accent',
+    label: 'brand-secondary-accent',
+    hex: '#ec4899',
+  },
 ] as const;
 
 const SEMANTIC_SWATCHES = [
@@ -92,7 +104,9 @@ const DesignPage = () => (
       <span className="text-label text-muted-foreground">
         pablotor.dev / examples
       </span>
-      <h1 className="text-display gradient-text gradient-a">Design system</h1>
+      <h1 className="text-display text-gradient gradient-primary">
+        Design system
+      </h1>
       <p className="text-lead text-muted-foreground max-w-lg">
         How type, color, and gradient utilities compose — from individual tokens
         to finished UI patterns.
@@ -183,16 +197,16 @@ const DesignPage = () => (
     {/* ── Gradients: backgrounds ───────────────────────────────────────── */}
     <Section label="03 — Gradients · Backgrounds">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <div className="gradient-a flex h-40 flex-col justify-end gap-1 rounded-2xl p-6">
-          <span className="text-h3 text-white">.gradient-a</span>
+        <div className="gradient-primary flex h-40 flex-col justify-end gap-1 rounded-2xl p-6">
+          <span className="text-h3 text-white">.gradient-primary</span>
           <span className="text-body-xs text-white/70">
-            brand-blue → brand-indigo
+            brand-primary-from → brand-primary
           </span>
         </div>
-        <div className="gradient-b flex h-40 flex-col justify-end gap-1 rounded-2xl p-6">
-          <span className="text-h3 text-white">.gradient-b</span>
+        <div className="gradient-secondary flex h-40 flex-col justify-end gap-1 rounded-2xl p-6">
+          <span className="text-h3 text-white">.gradient-secondary</span>
           <span className="text-body-xs text-white/70">
-            brand-purple → brand-pink-700
+            brand-secondary-from → brand-secondary
           </span>
         </div>
       </div>
@@ -204,38 +218,40 @@ const DesignPage = () => (
     <Section label="04 — Gradients · Text clipping">
       <div className="flex flex-col gap-3">
         <p className="text-body-sm text-muted-foreground">
-          <span className="text-mono">.gradient-text</span> clips a gradient
+          <span className="text-mono">.text-gradient</span> clips a gradient
           background to the text outline. Compose it with{' '}
-          <span className="text-mono">.gradient-a</span> or{' '}
-          <span className="text-mono">.gradient-b</span>.
+          <span className="text-mono">.gradient-primary</span> or{' '}
+          <span className="text-mono">.gradient-secondary</span>.
         </p>
         <div className="flex flex-col gap-2 pt-4">
           <span className="text-mono text-muted-foreground text-xs">
-            .text-display .gradient-text .gradient-a
+            .text-display .text-gradient .gradient-primary
           </span>
-          <span className="text-display gradient-text gradient-a">Craft.</span>
+          <span className="text-display text-gradient gradient-primary">
+            Craft.
+          </span>
         </div>
         <div className="flex flex-col gap-2 pt-4">
           <span className="text-mono text-muted-foreground text-xs">
-            .text-h1 .gradient-text .gradient-a
+            .text-h1 .text-gradient .gradient-primary
           </span>
-          <span className="text-h1 gradient-text gradient-a">
+          <span className="text-h1 text-gradient gradient-primary">
             Built with intention.
           </span>
         </div>
         <div className="flex flex-col gap-2 pt-4">
           <span className="text-mono text-muted-foreground text-xs">
-            .text-h1 .gradient-text .gradient-b
+            .text-h1 .text-gradient .gradient-secondary
           </span>
-          <span className="text-h1 gradient-text gradient-b">
+          <span className="text-h1 text-gradient gradient-secondary">
             Designed to last.
           </span>
         </div>
         <div className="flex flex-col gap-2 pt-4">
           <span className="text-mono text-muted-foreground text-xs">
-            .text-h2 .gradient-text .gradient-b
+            .text-h2 .text-gradient .gradient-secondary
           </span>
-          <span className="text-h2 gradient-text gradient-b">
+          <span className="text-h2 text-gradient gradient-secondary">
             Every pixel earns its place.
           </span>
         </div>
@@ -248,10 +264,11 @@ const DesignPage = () => (
     <Section label="05 — Links">
       <div className="flex flex-col gap-6 max-w-2xl">
         <p className="text-body-sm text-muted-foreground">
-          Links use <span className="text-mono">highlight-a</span> (indigo) at
-          rest and shift to <span className="text-mono">highlight-b</span>{' '}
-          (pink) with an underline on hover — color alone never carries the
-          signal, the underline confirms it. Just{' '}
+          Links use <span className="text-mono">text-brand-primary-accent</span>{' '}
+          at rest and shift to{' '}
+          <span className="text-mono">text-brand-secondary-accent</span>
+          with an underline on hover — color alone never carries the signal, the
+          underline confirms it. Just{' '}
           <span className="text-mono">className=&quot;text-link&quot;</span> on
           an anchor or <span className="text-mono">next/link</span> — no
           component needed.
@@ -379,7 +396,7 @@ const DesignPage = () => (
     <Section label="09 — Composition · Hero pattern">
       <div className="rounded-2xl border border-border bg-card p-10 flex flex-col gap-6">
         <span className="text-label text-muted-foreground">New release</span>
-        <h2 className="text-display gradient-text gradient-a max-w-sm leading-[1.05]">
+        <h2 className="text-display text-gradient gradient-primary max-w-sm leading-[1.05]">
           Build for the long run.
         </h2>
         <p className="text-lead text-muted-foreground max-w-md">
@@ -403,14 +420,14 @@ const DesignPage = () => (
         {[
           {
             eyebrow: 'Typography',
-            eyebrowClass: 'gradient-text gradient-a',
+            eyebrowClass: 'text-gradient gradient-primary',
             title: 'Why type scale matters more than typeface',
             body: 'Most teams agonize over font selection and breeze past the scale. The opposite order produces better results.',
             meta: '5 min read',
           },
           {
             eyebrow: 'Color',
-            eyebrowClass: 'gradient-text gradient-b',
+            eyebrowClass: 'text-gradient gradient-secondary',
             title: 'Semantic tokens over raw values',
             body: 'Naming colors by role rather than value is the single change that makes a design system actually portable.',
             meta: '4 min read',
@@ -442,19 +459,19 @@ const DesignPage = () => (
       <div className="flex flex-col gap-3">
         <p className="text-body-sm text-muted-foreground">
           Wrap a <span className="text-mono">bg-card</span> element in a{' '}
-          <span className="text-mono">gradient-b p-px</span> container. The 1 px
-          gradient shell reads as a border.
+          <span className="text-mono">gradient-secondary p-px</span> container.
+          The 1 px gradient shell reads as a border.
         </p>
-        <div className="gradient-b rounded-2xl p-px">
+        <div className="gradient-secondary rounded-2xl p-px">
           <div className="flex flex-col gap-3 rounded-[calc(1rem-1px)] bg-card p-8 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex flex-col gap-1">
-              <span className="text-label gradient-text gradient-b">
+              <span className="text-label text-gradient gradient-secondary">
                 Pro tip
               </span>
               <p className="text-h4">
                 Pair{' '}
                 <Link href="#" className="text-link text-h4">
-                  .gradient-text
+                  .text-gradient
                 </Link>{' '}
                 with a 1 px gradient border.
               </p>

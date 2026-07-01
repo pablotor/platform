@@ -25,11 +25,11 @@ const buttonVariants = cva(
         // gradients can't crossfade between two different backgrounds, so we
         // push the existing one rather than swap it.
         default:
-          'border-transparent gradient-a text-background hover:saturate-150 hover:brightness-110 aria-expanded:saturate-150 aria-expanded:brightness-110',
-        // Same idea, opposite brand gradient — use where gradient-b carries
+          'border-transparent gradient-primary text-background hover:saturate-150 hover:brightness-110 aria-expanded:saturate-150 aria-expanded:brightness-110',
+        // Same idea, opposite brand gradient — use where gradient-secondary carries
         // meaning elsewhere on the page (e.g. a secondary CTA family).
         accent:
-          'border-transparent gradient-b text-background hover:saturate-150 hover:brightness-110 aria-expanded:saturate-150 aria-expanded:brightness-110',
+          'border-transparent gradient-secondary text-background hover:saturate-150 hover:brightness-110 aria-expanded:saturate-150 aria-expanded:brightness-110',
         // Outline: the only variant with a real visible border.
         outline:
           'border-border bg-background hover:bg-accent hover:text-accent-foreground aria-expanded:bg-accent aria-expanded:text-accent-foreground',

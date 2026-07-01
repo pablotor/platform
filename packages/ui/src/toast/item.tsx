@@ -26,7 +26,7 @@ const MODE_CONFIG: Record<
   },
   success: {
     icon: CheckCircle2,
-    iconClassName: 'text-brand-indigo',
+    iconClassName: 'text-brand-primary',
   },
   error: {
     icon: XCircle,

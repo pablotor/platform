@@ -36,26 +36,26 @@ const PASSWORD_REQUIREMENTS: PasswordRequirement[] = [
 const PASSWORD_STRENGTH_CONFIG: PasswordStrength[] = [
   {
     label: 'Weak',
-    barColor: 'bg-brand-pink-700',
-    textColor: 'text-brand-pink-700/90',
+    barColor: 'bg-brand-secondary',
+    textColor: 'text-brand-secondary/90',
     width: 'w-1/4',
   },
   {
     label: 'Fair',
-    barColor: 'bg-brand-pink',
-    textColor: 'text-brand-pink/90',
+    barColor: 'bg-brand-secondary-accent',
+    textColor: 'text-brand-secondary-accent/90',
     width: 'w-1/2',
   },
   {
     label: 'Good',
-    barColor: 'bg-brand-purple',
-    textColor: 'text-brand-purple/90',
+    barColor: 'bg-brand-secondary-from',
+    textColor: 'text-brand-secondary-from/90',
     width: 'w-3/4',
   },
   {
     label: 'Strong',
-    barColor: 'bg-brand-indigo',
-    textColor: 'text-brand-indigo/90',
+    barColor: 'bg-brand-primary',
+    textColor: 'text-brand-primary/90',
     width: 'w-full',
   },
 ];

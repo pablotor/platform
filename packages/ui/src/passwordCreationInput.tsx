@@ -104,7 +104,7 @@ const PasswordCreationInput = ({
                     ? inputProps.error
                       ? 'text-destructive'
                       : 'text-muted-foreground'
-                    : 'text-brand-indigo/90',
+                    : 'text-brand-primary/90',
                 )}
               >
                 {isPending ? (
@@ -120,7 +120,7 @@ const PasswordCreationInput = ({
                     ? inputProps.error
                       ? 'text-destructive'
                       : 'text-muted-foreground'
-                    : 'text-brand-indigo',
+                    : 'text-brand-primary',
                 )}
               >
                 {req.label}

@@ -38,7 +38,7 @@ const AuthFormWrapper = ({
   return (
     <div className="w-full max-w-sm">
       <div className="mb-8 text-center">
-        <h1 className="text-h3 gradient-a gradient-text">{t.title}</h1>
+        <h1 className="text-h3 gradient-primary text-gradient">{t.title}</h1>
         <p className="mt-2 text-body-sm text-muted-foreground">{t.subtitle}</p>
       </div>
       {children}
@@ -46,7 +46,7 @@ const AuthFormWrapper = ({
         {t.altText}{' '}
         <Link
           href={t.altHref}
-          className="font-medium text-brand-indigo-600 underline-offset-4 hover:underline"
+          className="font-medium text-brand-primary-accent underline-offset-4 hover:underline"
         >
           {t.altLabel}
         </Link>

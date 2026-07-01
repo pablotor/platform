@@ -29,7 +29,7 @@ const Header = ({ variant, user }: HeaderProps) => (
         className="flex items-center gap-2"
       >
         <span className="text-lg font-bold tracking-tight">
-          <span className="gradient-a gradient-text">PabloTor</span>{' '}
+          <span className="gradient-primary text-gradient">PabloTor</span>{' '}
           <span className="text-muted-foreground font-light">Platform</span>
         </span>
       </Button>

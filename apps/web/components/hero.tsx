@@ -10,7 +10,7 @@ const Hero = () => (
     <h1 className="max-w-3xl text-balance text-4xl font-bold leading-tight tracking-tight sm:text-6xl">
       Build, ship and scale the platform of your{' '}
       {/* gradient that cycles blue→indigo then purple→pink */}
-      <span className="gradient-text animate-switch-gradient">tech utopia</span>
+      <span className="text-gradient animate-switch-gradient">tech utopia</span>
       .
     </h1>
 
