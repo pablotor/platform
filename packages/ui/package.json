@@ -10,6 +10,7 @@
   ],
   "exports": {
     "./styles.css": "./dist/index.css",
+    "./theme.css": "./src/theme.css",
     "./*": "./dist/*.js"
   },
   "license": "MIT",

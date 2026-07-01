@@ -4,7 +4,6 @@ import localFont from 'next/font/local';
 import clsx from 'clsx';
 import { ToastProvider } from '@repo/ui/toast/provider';
 
-import '@repo/ui/styles.css';
 import './globals.css';
 
 const geistSans = localFont({
