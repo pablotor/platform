@@ -1,9 +1,9 @@
-import { PropsWithChildren } from 'react';
 import { NavItem, NavSidebar, NavSidebarProvider } from '@repo/ui/navSidebar';
-import Header from '../../components/header';
-import { getUser } from '../../lib/userContext';
+import { PropsWithChildren } from 'react';
 
 import ROUTES from '../../common/routes';
+import Header from '../../components/header';
+import { getUser } from '../../lib/userContext';
 
 const NAV_ITEMS: NavItem[] = [
   {

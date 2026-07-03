@@ -1,10 +1,11 @@
 import Button from '@repo/ui/button';
 import { NavSidebarButton } from '@repo/ui/navSidebar';
-import { UserContextData } from '../lib/userContext';
+
 import ROUTES, {
   DEFAULT_AUTHENTICATED_ROUTE,
   DEFAULT_PUBLIC_ROUTE,
 } from '../common/routes';
+import { UserContextData } from '../lib/userContext';
 import UserMenu from './userMenu';
 
 type HeaderVariant = 'public' | 'authenticated' | 'authFlow';

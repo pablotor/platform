@@ -3,12 +3,7 @@
  */
 
 import UserAvatar from './userAvatar';
-
-export type UserMenuUser = {
-  name: string;
-  email: string;
-  image?: string | null;
-};
+import { UserMenuUser } from './UserMenuUser';
 
 const UserMenuHeader = ({ user }: { user: UserMenuUser }) => (
   <div className="flex items-center gap-2.5 px-2 pb-2.5 pt-2">

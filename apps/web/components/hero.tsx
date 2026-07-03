@@ -1,4 +1,5 @@
 import Button from '@repo/ui/button';
+
 import ROUTES from '../common/routes';
 
 const Hero = () => (

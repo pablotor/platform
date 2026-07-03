@@ -1,6 +1,6 @@
+import { useToast } from '@repo/ui/toast/handler';
 import { ComponentProps, useActionState, useCallback, useState } from 'react';
 import { z, ZodError } from 'zod';
-import { useToast } from '@repo/ui/toast/handler';
 
 /**
  * useForm is a simplified version of the useForm library. It is:

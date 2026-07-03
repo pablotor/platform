@@ -1,5 +1,6 @@
-import { cache } from 'react';
 import { headers } from 'next/headers';
+import { cache } from 'react';
+
 import authClient from './authClient';
 
 export type UserContextData = Pick<

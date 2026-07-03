@@ -1,9 +1,10 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { SignInContract, SignInSchema } from '@repo/api';
 import Button from '@repo/ui/button';
 import Input from '@repo/ui/input';
+import { useRouter } from 'next/navigation';
+
 import { DEFAULT_AUTHENTICATED_ROUTE } from '../../common/routes';
 import useForm from '../../hooks/useForm';
 import authClient from '../../lib/authClient';

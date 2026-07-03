@@ -10,9 +10,6 @@ const staticValuesDeep = (tree: RouteTree): string[] =>
         : staticValuesDeep(v as RouteTree),
   );
 
-/**
- *
- */
 const ROUTES = {
   public: {
     root: '/',

@@ -1,10 +1,10 @@
-import { PropsWithChildren } from 'react';
+import './globals.css';
+
+import { ToastProvider } from '@repo/ui/toast/provider';
+import clsx from 'clsx';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
-import clsx from 'clsx';
-import { ToastProvider } from '@repo/ui/toast/provider';
-
-import './globals.css';
+import { PropsWithChildren } from 'react';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',

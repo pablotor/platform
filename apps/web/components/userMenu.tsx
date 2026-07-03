@@ -1,7 +1,8 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { LogOut, Settings } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+
 import BaseUserMenu, {
   type UserMenuItem,
 } from '../../../packages/ui/dist/userMenu/userMenu';

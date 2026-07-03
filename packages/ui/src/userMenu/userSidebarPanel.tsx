@@ -1,7 +1,9 @@
 import clsx from 'clsx';
 import { X } from 'lucide-react';
+
 import { DropdownItem } from '../dropdown';
-import UserMenuHeader, { UserMenuUser } from './userMenuHeader';
+import UserMenuHeader from './userMenuHeader';
+import { UserMenuUser } from './UserMenuUser';
 import { useUserSidebar } from './userSidebarProvider';
 
 /**
