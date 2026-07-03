@@ -1,7 +1,5 @@
 import { PropsWithChildren } from 'react';
-import { SidebarProvider } from '@repo/ui/sidebar/provider';
-import Sidebar from '@repo/ui/sidebar/sidebar';
-import { NavItem } from '@repo/ui/sidebar/item';
+import { NavItem, NavSidebar, NavSidebarProvider } from '@repo/ui/navSidebar';
 import Header from '../../components/header';
 import { getUser } from '../../lib/userContext';
 
@@ -31,15 +29,15 @@ const AuthenticatedLayout = async ({
 }: Readonly<PropsWithChildren>) => {
   const user = await getUser();
   return (
-    <SidebarProvider>
+    <NavSidebarProvider>
       <div className="flex h-screen flex-col bg-background">
         <Header variant="authenticated" user={user} />
         <div className="flex flex-1 min-h-0">
-          <Sidebar items={NAV_ITEMS} />
+          <NavSidebar items={NAV_ITEMS} />
           <main className="flex-1 min-w-0 overflow-y-auto">{children}</main>
         </div>
       </div>
-    </SidebarProvider>
+    </NavSidebarProvider>
   );
 };
 

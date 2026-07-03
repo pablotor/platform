@@ -1,5 +1,5 @@
 import Button from '@repo/ui/button';
-import HamburgerButton from '@repo/ui/sidebar/hamburgerButton';
+import { NavSidebarButton } from '@repo/ui/navSidebar';
 import { UserContextData } from '../lib/userContext';
 import ROUTES, {
   DEFAULT_AUTHENTICATED_ROUTE,
@@ -17,7 +17,7 @@ type HeaderProps = {
 const Header = ({ variant, user }: HeaderProps) => (
   <header className="sticky top-0 z-50 shrink-0 w-full border-b border-border bg-background/80 backdrop-blur-md">
     <nav className="mx-auto flex h-(--header-height) max-w-5xl items-center justify-between px-6">
-      {variant === 'authenticated' && <HamburgerButton />}
+      {variant === 'authenticated' && <NavSidebarButton />}
 
       <Button
         variant="ghost"

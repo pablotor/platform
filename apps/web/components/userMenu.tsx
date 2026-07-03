@@ -2,7 +2,9 @@
 
 import { useRouter } from 'next/navigation';
 import { LogOut, Settings } from 'lucide-react';
-import BaseUserMenu, { type UserMenuItem } from '@repo/ui/userMenu';
+import BaseUserMenu, {
+  type UserMenuItem,
+} from '../../../packages/ui/dist/userMenu/userMenu';
 import authClient from '../lib/authClient';
 import { UserContextData } from '../lib/userContext';
 
