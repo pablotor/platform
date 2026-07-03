@@ -1,10 +1,12 @@
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+import clsx from 'clsx';
+import { AnimatePresence, motion } from 'framer-motion';
 import {
   ComponentProps,
   type ComponentPropsWithoutRef,
   type ReactNode,
+  useState,
 } from 'react';
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
-import clsx from 'clsx';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -22,7 +24,6 @@ export type DropdownItem = {
 
 export type DropdownProps = {
   /** The element that opens the menu */
-  // Not really elegant, but passing the button element breaks the trigger
   triggerButtonProps: ComponentProps<'button'>;
   items: DropdownItem[];
   /** Optional header rendered above the first item */
@@ -34,43 +35,18 @@ export type DropdownProps = {
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
-const DropdownContent = ({
-  children,
-  align = 'end',
-  sideOffset = 8,
-}: {
-  children: ReactNode;
-  align?: DropdownProps['align'];
-  sideOffset?: number;
-}) => (
-  <DropdownMenu.Portal>
-    <DropdownMenu.Content
-      align={align}
-      sideOffset={sideOffset}
-      className="
-        z-50 min-w-55 rounded-xl border border-border bg-popover p-2
-        shadow-lg shadow-black/10
-        origin-[--radix-dropdown-menu-content-transform-origin]
-        animate-in fade-in-0 zoom-in-95 duration-130
-      "
-    >
-      {children}
-    </DropdownMenu.Content>
-  </DropdownMenu.Portal>
-);
-
 const DropdownItemRow = ({ item }: { item: DropdownItem }) => (
   <DropdownMenu.Item
     onSelect={item.onSelect}
+    disabled={item.disabled}
     className={clsx(
-      'flex items-center gap-2 px-2.5 py-2 rounded-lg',
-      'text-sm font-normal data-disabled:text-foreground/60 cursor-pointer data-disabled:pointer-events-none outline-none select-none',
-      'transition-colors duration-75',
+      'flex cursor-pointer select-none items-center gap-2 rounded-lg px-2.5 py-2 outline-none',
+      'text-sm font-normal transition-colors duration-75',
+      'data-disabled:pointer-events-none data-disabled:text-foreground/60',
       item.variant === 'destructive'
         ? 'text-destructive data-highlighted:bg-destructive/10 data-highlighted:text-destructive'
         : 'text-popover-foreground data-highlighted:bg-accent data-highlighted:text-accent-foreground',
     )}
-    disabled={item.disabled}
   >
     {item.icon}
     {item.label}
@@ -85,27 +61,64 @@ const Dropdown = ({
   header,
   align = 'end',
   sideOffset = 8,
-}: DropdownProps) => (
-  <DropdownMenu.Root>
-    <DropdownMenu.Trigger {...triggerButtonProps} />
-    <DropdownContent align={align} sideOffset={sideOffset}>
-      {header && (
-        <>
-          {header}
-          <DropdownMenu.Separator className="h-px bg-border my-1" />
-        </>
-      )}
+}: DropdownProps) => {
+  // Controlled open state so AnimatePresence knows exactly when to trigger
+  // the exit animation before Radix unmounts the content.
+  const [open, setOpen] = useState(false);
 
-      {items.map((item, i) => (
-        <div key={i}>
-          {item.separatorBefore && (
-            <DropdownMenu.Separator className="h-px bg-border my-1" />
-          )}
-          <DropdownItemRow item={item} />
-        </div>
-      ))}
-    </DropdownContent>
-  </DropdownMenu.Root>
-);
+  return (
+    <DropdownMenu.Root open={open} onOpenChange={setOpen}>
+      <DropdownMenu.Trigger {...triggerButtonProps} />
+
+      <AnimatePresence>
+        {open && (
+          // forceMount keeps Portal + Content in the DOM during the exit
+          // animation — without it Radix removes the node immediately on
+          // close and Framer never gets to play the exit.
+          <DropdownMenu.Portal forceMount>
+            <DropdownMenu.Content
+              asChild
+              forceMount
+              align={align}
+              sideOffset={sideOffset}
+            >
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95, y: -4 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: -4 }}
+                transition={{ duration: 0.15, ease: 'easeOut' }}
+                // Radix sets this CSS var so the zoom origin tracks the
+                // trigger position rather than animating from the center.
+                style={{
+                  transformOrigin:
+                    'var(--radix-dropdown-menu-content-transform-origin)',
+                }}
+                className={clsx(
+                  'z-50 min-w-55 rounded-xl border border-border bg-popover p-2',
+                  'shadow-lg shadow-black/10',
+                )}
+              >
+                {header && (
+                  <>
+                    {header}
+                    <DropdownMenu.Separator className="my-1 h-px bg-border" />
+                  </>
+                )}
+                {items.map((item, i) => (
+                  <div key={i}>
+                    {item.separatorBefore && (
+                      <DropdownMenu.Separator className="my-1 h-px bg-border" />
+                    )}
+                    <DropdownItemRow item={item} />
+                  </div>
+                ))}
+              </motion.div>
+            </DropdownMenu.Content>
+          </DropdownMenu.Portal>
+        )}
+      </AnimatePresence>
+    </DropdownMenu.Root>
+  );
+};
 
 export default Dropdown;
