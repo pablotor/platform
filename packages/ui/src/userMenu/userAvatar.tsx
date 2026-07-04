@@ -32,8 +32,8 @@ const UserAvatar = ({
     <Avatar.Fallback
       delayMs={0}
       className={clsx(
-        'flex h-full w-full items-center justify-center bg-primary font-semibold tracking-wide text-primary-foreground',
-        size === 'lg' ? 'text-sm' : 'text-xs',
+        'flex h-full w-full items-center justify-center bg-primary text-label text-primary-foreground',
+        size === 'lg' && 'text-sm',
       )}
     >
       {getInitials(name)}

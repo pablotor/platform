@@ -124,24 +124,24 @@ const DesignPage = () => (
           meta=".text-display — 6xl · bold · tracking −0.03em · leading 1.05"
         />
         <TypeRow
-          className="text-h1"
+          className="text-title"
           sample="The interface is the argument."
-          meta=".text-h1 — 4xl · bold · tracking −0.02em · leading 1.15"
+          meta=".text-title — 4xl · bold · tracking −0.02em · leading 1.15"
         />
         <TypeRow
-          className="text-h2"
+          className="text-heading"
           sample="The interface is the argument."
-          meta=".text-h2 — 3xl · semibold · tracking −0.015em"
+          meta=".text-heading — 3xl · semibold · tracking −0.015em"
         />
         <TypeRow
-          className="text-h3"
+          className="text-subheading"
           sample="The interface is the argument."
-          meta=".text-h3 — 2xl · semibold · tracking −0.01em · leading 1.3"
+          meta=".text-subheading — 2xl · semibold · tracking −0.01em · leading 1.3"
         />
         <TypeRow
-          className="text-h4"
+          className="text-subtitle"
           sample="The interface is the argument."
-          meta=".text-h4 — xl · semibold · leading 1.4"
+          meta=".text-subtitle — xl · semibold · leading 1.4"
         />
       </div>
     </Section>
@@ -198,13 +198,15 @@ const DesignPage = () => (
     <Section label="03 — Gradients · Backgrounds">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div className="gradient-primary flex h-40 flex-col justify-end gap-1 rounded-2xl p-6">
-          <span className="text-h3 text-white">.gradient-primary</span>
+          <span className="text-subheading text-white">.gradient-primary</span>
           <span className="text-body-xs text-white/70">
             brand-primary-from → brand-primary
           </span>
         </div>
         <div className="gradient-secondary flex h-40 flex-col justify-end gap-1 rounded-2xl p-6">
-          <span className="text-h3 text-white">.gradient-secondary</span>
+          <span className="text-subheading text-white">
+            .gradient-secondary
+          </span>
           <span className="text-body-xs text-white/70">
             brand-secondary-from → brand-secondary
           </span>
@@ -233,25 +235,25 @@ const DesignPage = () => (
         </div>
         <div className="flex flex-col gap-2 pt-4">
           <span className="text-mono text-muted-foreground text-xs">
-            .text-h1 .text-gradient .gradient-primary
+            .text-title .text-gradient .gradient-primary
           </span>
-          <span className="text-h1 text-gradient gradient-primary">
+          <span className="text-title text-gradient gradient-primary">
             Built with intention.
           </span>
         </div>
         <div className="flex flex-col gap-2 pt-4">
           <span className="text-mono text-muted-foreground text-xs">
-            .text-h1 .text-gradient .gradient-secondary
+            .text-title .text-gradient .gradient-secondary
           </span>
-          <span className="text-h1 text-gradient gradient-secondary">
+          <span className="text-title text-gradient gradient-secondary">
             Designed to last.
           </span>
         </div>
         <div className="flex flex-col gap-2 pt-4">
           <span className="text-mono text-muted-foreground text-xs">
-            .text-h2 .text-gradient .gradient-secondary
+            .text-heading .text-gradient .gradient-secondary
           </span>
-          <span className="text-h2 text-gradient gradient-secondary">
+          <span className="text-heading text-gradient gradient-secondary">
             Every pixel earns its place.
           </span>
         </div>
@@ -294,7 +296,7 @@ const DesignPage = () => (
           <span className="text-label text-muted-foreground">
             Standalone link
           </span>
-          <Link href="/dashboard" className="text-link text-h4 w-fit">
+          <Link href="/dashboard" className="text-link text-subtitle w-fit">
             Go to dashboard →
           </Link>
         </div>
@@ -440,7 +442,7 @@ const DesignPage = () => (
             <span className={`text-label ${card.eyebrowClass}`}>
               {card.eyebrow}
             </span>
-            <h3 className="text-h4">{card.title}</h3>
+            <h3 className="text-subtitle">{card.title}</h3>
             <p className="text-body-sm text-muted-foreground flex-1">
               {card.body}
             </p>
@@ -468,9 +470,9 @@ const DesignPage = () => (
               <span className="text-label text-gradient gradient-secondary">
                 Pro tip
               </span>
-              <p className="text-h4">
+              <p className="text-subtitle">
                 Pair{' '}
-                <Link href="#" className="text-link text-h4">
+                <Link href="#" className="text-link text-subtitle">
                   .text-gradient
                 </Link>{' '}
                 with a 1 px gradient border.

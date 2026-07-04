@@ -38,7 +38,9 @@ const AuthFormWrapper = ({
   return (
     <div className="w-full max-w-sm">
       <div className="mb-8 text-center">
-        <h1 className="text-h3 gradient-primary text-gradient">{t.title}</h1>
+        <h1 className="text-subheading gradient-primary text-gradient">
+          {t.title}
+        </h1>
         <p className="mt-2 text-body-sm text-muted-foreground">{t.subtitle}</p>
       </div>
       {children}

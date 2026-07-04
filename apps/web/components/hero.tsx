@@ -4,18 +4,18 @@ import ROUTES from '../common/routes';
 
 const Hero = () => (
   <section className="mx-auto flex min-h-[calc(100vh-4rem)] max-w-5xl flex-col items-center justify-center px-6 py-10 text-center">
-    <span className="mb-6 inline-flex items-center rounded-full border border-border bg-muted/50 px-3 py-1 text-xs font-medium text-muted-foreground animate-fade-in">
+    <span className="mb-6 inline-flex items-center rounded-full border border-border bg-muted/50 px-3 py-1 text-ui text-muted-foreground animate-fade-in">
       An elegant platform... for a more civilized age
     </span>
 
-    <h1 className="max-w-3xl text-balance text-4xl font-bold leading-tight tracking-tight sm:text-6xl">
+    <h1 className="max-w-3xl text-balance text-title sm:text-display">
       Build, ship and scale the platform of your{' '}
       {/* gradient that cycles blue→indigo then purple→pink */}
       <span className="text-gradient animate-switch-gradient">tech utopia</span>
       .
     </h1>
 
-    <p className="mt-6 max-w-xl text-pretty text-lg leading-relaxed text-muted-foreground">
+    <p className="mt-6 max-w-xl text-pretty text-lead text-muted-foreground">
       PabloTor Platform Demo is a tiny showcase of authentication and clean,
       developer-first design. Create an account to see it in action.
     </p>
@@ -50,10 +50,8 @@ const Hero = () => (
         },
       ].map((f) => (
         <div key={f.title} className="bg-background p-6 text-left">
-          <h3 className="text-base font-medium">{f.title}</h3>
-          <p className="text-sm leading-relaxed text-muted-foreground">
-            {f.body}
-          </p>
+          <h3 className="font-medium">{f.title}</h3>
+          <p className="text-body-sm text-muted-foreground">{f.body}</p>
         </div>
       ))}
     </div>

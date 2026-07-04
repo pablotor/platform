@@ -5,7 +5,7 @@ import { ComponentProps, PropsWithChildren } from 'react';
 
 const buttonVariants = cva(
   clsx(
-    'group/button inline-flex shrink-0 items-center justify-center rounded-lg border bg-clip-padding text-sm font-medium whitespace-nowrap select-none cursor-pointer outline-none',
+    'group/button inline-flex shrink-0 items-center justify-center rounded-lg border bg-clip-padding text-ui whitespace-nowrap select-none cursor-pointer outline-none',
     // shared timing token — every interactive state (hover/focus/press) animates at this rate
     'transition-all duration-200 ease-out',
     // focus-visible — identical ring treatment across every variant

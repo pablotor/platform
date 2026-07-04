@@ -17,7 +17,7 @@ const SidebarItemRow = ({ item }: { item: DropdownItem }) => (
     disabled={item.disabled}
     className={clsx(
       'flex w-full items-center gap-2.5 rounded-lg px-3 py-2.5',
-      'text-sm font-normal outline-none transition-colors duration-75 select-none',
+      'text-ui outline-none transition-colors duration-75 select-none',
       'disabled:pointer-events-none disabled:opacity-50',
       item.variant === 'destructive'
         ? 'text-destructive hover:bg-destructive/10'

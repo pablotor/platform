@@ -2,7 +2,14 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { ReactNode } from 'react';
 
 const inputVariants = cva(
-  'flex w-full min-w-0 rounded-lg border bg-background text-foreground shadow-sm transition-[color,box-shadow] outline-none placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 focus-visible:focusable',
+  [
+    'flex w-full min-w-0 rounded-lg border bg-background text-foreground shadow-sm',
+    'transition-[color,box-shadow] outline-none placeholder:text-muted-foreground',
+    'selection:bg-primary selection:text-primary-foreground',
+    'disabled:pointer-events-none disabled:opacity-50',
+    'aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20',
+    'focus-visible:focusable',
+  ],
   {
     variants: {
       variant: {

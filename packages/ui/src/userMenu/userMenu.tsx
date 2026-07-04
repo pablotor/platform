@@ -41,7 +41,7 @@ const AvatarTriggerContent = ({ user }: { user: UserMenuUser }) => (
       className="md:hidden absolute inset-0 rounded-full transition-colors duration-200 group-hover:bg-accent/10"
     />
     <div className="hidden md:flex">
-      <span className="text-sm font-medium leading-none">{user.name}</span>
+      <span className="text-ui">{user.name}</span>
       <ChevronDown
         size={14}
         strokeWidth={2.5}

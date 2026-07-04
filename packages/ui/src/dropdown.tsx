@@ -41,7 +41,7 @@ const DropdownItemRow = ({ item }: { item: DropdownItem }) => (
     disabled={item.disabled}
     className={clsx(
       'flex cursor-pointer select-none items-center gap-2 rounded-lg px-2.5 py-2 outline-none',
-      'text-sm font-normal transition-colors duration-75',
+      'text-body-sm transition-colors duration-75',
       'data-disabled:pointer-events-none data-disabled:text-foreground/60',
       item.variant === 'destructive'
         ? 'text-destructive data-highlighted:bg-destructive/10 data-highlighted:text-destructive'
