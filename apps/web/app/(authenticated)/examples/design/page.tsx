@@ -266,8 +266,8 @@ const DesignPage = () => (
         <p className="text-body-sm text-muted-foreground">
           Links use <span className="text-mono">text-brand-primary-accent</span>{' '}
           at rest and shift to{' '}
-          <span className="text-mono">text-brand-secondary-accent</span>
-          with an underline on hover — color alone never carries the signal, the
+          <span className="text-mono">text-brand-secondary-accent</span> with an
+          underline on hover — color alone never carries the signal, the
           underline confirms it. Just{' '}
           <span className="text-mono">className=&quot;text-link&quot;</span> on
           an anchor or <span className="text-mono">next/link</span> — no

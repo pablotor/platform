@@ -9,7 +9,7 @@ const buttonVariants = cva(
     // shared timing token — every interactive state (hover/focus/press) animates at this rate
     'transition-all duration-200 ease-out',
     // focus-visible — identical ring treatment across every variant
-    'focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50',
+    'focus-visible:focusable',
     // pressed — tactile feedback independent of hover
     'active:not-aria-[haspopup]:translate-y-px active:not-aria-[haspopup]:scale-[0.98]',
     // disabled — one rule, never reinvented per variant
@@ -42,7 +42,7 @@ const buttonVariants = cva(
         // Destructive: darken on hover/press rather than lighten — signals
         // weight/caution instead of inviting the click.
         destructive:
-          'border-transparent bg-destructive/10 text-destructive hover:bg-destructive/20 hover:brightness-90 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40',
+          'border-transparent bg-destructive/10 text-destructive hover:bg-destructive/20 hover:brightness-90 focus-visible:focusable-destructive! dark:bg-destructive/20 dark:hover:bg-destructive/30',
       },
       size: {
         default:

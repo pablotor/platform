@@ -44,10 +44,7 @@ const AuthFormWrapper = ({
       {children}
       <p className="mt-6 text-center text-body-sm text-muted-foreground">
         {t.altText}{' '}
-        <Link
-          href={t.altHref}
-          className="font-medium text-brand-primary-accent underline-offset-4 hover:underline"
-        >
+        <Link href={t.altHref} className="font-medium text-link">
           {t.altLabel}
         </Link>
       </p>

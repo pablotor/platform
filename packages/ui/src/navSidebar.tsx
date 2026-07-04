@@ -33,6 +33,7 @@ const navLinkVariants = cva(
         idle: [
           'text-sidebar-foreground',
           'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground',
+          'focus-visible:focusable-outline',
         ],
       },
     },
@@ -48,6 +49,7 @@ const NavLinkItem = ({ item }: { item: NavLink }) => {
     <Link
       href={item.href}
       className={navLinkVariants({ state: active ? 'active' : 'idle' })}
+      tabIndex={active ? -1 : 0}
     >
       {item.icon && (
         <item.icon

@@ -27,8 +27,7 @@ const triggerClassName = clsx(
   'group flex cursor-pointer items-center gap-1 font-sans outline-none',
   'rounded-full border-2 border-border bg-background text-foreground md:border md:p-1 md:pr-2.5',
   'transition-colors duration-120 ease-in-out',
-  'hover:border-input hover:bg-muted',
-  'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1',
+  'hover:border-input hover:bg-muted focus-visible:focusable',
   'data-[state=open]:border-input data-[state=open]:bg-muted',
 );
 
