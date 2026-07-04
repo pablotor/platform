@@ -30,7 +30,7 @@
 
 /* Same as focusable-outline with custom offset. Use it for links */
 @utility focusable-outline-* {
-  @apply ring-1 ring-ring outline-3 outline-ring/50;
+  @apply focusable-outline;
 
   --tw-ring-offset-width: calc(--value(integer) * 1px);
   --tw-ring-offset-shadow: var(--tw-ring-inset,) 0 0 0
