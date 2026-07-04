@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 
+import Button from './button';
 import { createSidebar } from './sidebarFactory';
 
 type NavLink = {
@@ -29,7 +30,7 @@ const navLinkVariants = cva(
   {
     variants: {
       state: {
-        active: 'bg-sidebar-primary text-sidebar-primary-foreground',
+        active: 'bg-brand-primary-from/10 text-primary',
         idle: [
           'text-sidebar-foreground',
           'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground',
@@ -130,17 +131,17 @@ const NavSidebarButton = ({ className }: { className?: string }) => {
   const { open, toggle } = useNavSidebar();
 
   return (
-    <button
+    <Button
       id={navSidebarButtonId}
       type="button"
+      variant="ghost"
+      size="icon"
       aria-label={open ? 'Close navigation' : 'Open navigation'}
       aria-expanded={open}
       onClick={toggle}
       className={clsx(
-        'flex size-9 flex-col items-center justify-center gap-1.25 rounded-md md:hidden',
-        'text-muted-foreground transition-colors cursor-pointer',
-        'hover:bg-accent hover:text-accent-foreground',
-        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+        'flex flex-col items-center justify-center gap-1.25 md:hidden',
+        'text-muted-foreground hover:text-accent-foreground focus-visible:text-accent-foreground',
         className,
       )}
     >
@@ -162,7 +163,7 @@ const NavSidebarButton = ({ className }: { className?: string }) => {
           open && '-translate-y-1.75 -rotate-45',
         )}
       />
-    </button>
+    </Button>
   );
 };
 
