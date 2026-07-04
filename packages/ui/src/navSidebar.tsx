@@ -30,7 +30,7 @@ const navLinkVariants = cva(
   {
     variants: {
       state: {
-        active: 'bg-brand-primary-from/10 text-primary',
+        active: 'bg-sidebar-primary text-sidebar-primary-foreground',
         idle: [
           'text-sidebar-foreground',
           'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground',
