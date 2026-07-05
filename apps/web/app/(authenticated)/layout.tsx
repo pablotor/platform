@@ -13,12 +13,27 @@ const NAV_ITEMS: NavItem[] = [
   },
   {
     type: 'group',
-    label: 'Examples',
+    label: 'Design',
     children: [
       {
         type: 'link',
-        label: 'Design',
-        href: ROUTES.authenticated.examples.design,
+        label: 'Fundamentals',
+        href: ROUTES.authenticated.design.fundamentals,
+      },
+      {
+        type: 'link',
+        label: 'Typography',
+        href: ROUTES.authenticated.design.typography,
+      },
+      {
+        type: 'link',
+        label: 'Colors',
+        href: ROUTES.authenticated.design.colors,
+      },
+      {
+        type: 'link',
+        label: 'Composition',
+        href: ROUTES.authenticated.design.composition,
       },
     ],
   },

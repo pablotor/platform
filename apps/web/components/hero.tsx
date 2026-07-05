@@ -3,7 +3,7 @@ import Button from '@repo/ui/button';
 import ROUTES from '../common/routes';
 
 const Hero = () => (
-  <section className="mx-auto flex min-h-[calc(100vh-4rem)] max-w-5xl flex-col items-center justify-center px-6 py-10 text-center">
+  <section className="mx-auto flex max-w-5xl flex-col items-center justify-center px-6 py-10 text-center">
     <span className="mb-6 inline-flex items-center rounded-full border border-border bg-muted/50 px-3 py-1 text-ui text-muted-foreground animate-fade-in">
       An elegant platform... for a more civilized age
     </span>
@@ -20,7 +20,7 @@ const Hero = () => (
       developer-first design. Create an account to see it in action.
     </p>
 
-    <div className="mt-10 flex items-center gap-3">
+    <div className="mt-8 flex items-center gap-3">
       <Button size="lg" as="nextLink" href={ROUTES.public.auth.signup}>
         Get started
       </Button>
@@ -34,7 +34,7 @@ const Hero = () => (
       </Button>
     </div>
 
-    <div className="mt-16 grid w-full max-w-3xl grid-cols-1 gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-3">
+    <div className="mt-14 grid w-full max-w-3xl grid-cols-1 gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-3">
       {[
         {
           title: 'Open-source',
@@ -50,8 +50,8 @@ const Hero = () => (
         },
       ].map((f) => (
         <div key={f.title} className="bg-background p-6 text-left">
-          <h3 className="font-medium">{f.title}</h3>
-          <p className="text-body-sm text-muted-foreground">{f.body}</p>
+          <h3 className="text-subtitle">{f.title}</h3>
+          <p className="text-body-sm text-muted-foreground mt-2">{f.body}</p>
         </div>
       ))}
     </div>

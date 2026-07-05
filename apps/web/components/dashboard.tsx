@@ -1,5 +1,5 @@
 const Dashboard = () => (
-  <section className="mx-auto flex min-h-[calc(100vh-4rem)] max-w-5xl flex-col items-center justify-center px-6 py-10 text-center">
+  <section className="mx-auto flex h-full max-w-5xl flex-col items-center justify-center px-6 py-10 text-center">
     <h4 className="max-w-2xl text-balance text-title sm:text-display">
       There&apos;s not a lot to do here yet
     </h4>

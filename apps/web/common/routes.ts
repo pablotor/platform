@@ -20,10 +20,19 @@ const ROUTES = {
   },
   authenticated: {
     dashboard: '/dashboard',
-    examples: {
-      base: '/examples',
-      get design() {
-        return `${this.base}/design`;
+    design: {
+      base: '/design',
+      get fundamentals() {
+        return `${this.base}/fundamentals`;
+      },
+      get typography() {
+        return `${this.base}/typography`;
+      },
+      get colors() {
+        return `${this.base}/colors`;
+      },
+      get composition() {
+        return `${this.base}/composition`;
       },
     },
   },

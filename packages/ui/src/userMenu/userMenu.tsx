@@ -27,8 +27,8 @@ const triggerClassName = clsx(
   'relative group flex cursor-pointer items-center gap-1 font-sans outline-none',
   'rounded-full border-2 border-border bg-background text-foreground md:border md:p-1 md:pr-2.5',
   'transition-colors duration-120 ease-in-out',
-  'hover:border-input hover:bg-muted focus-visible:focusable active:scale-95',
-  'data-[state=open]:border-input data-[state=open]:bg-muted',
+  'hover:border-input hover:bg-accent focus-visible:focusable active:scale-95',
+  'data-[state=open]:border-input data-[state=open]:bg-accent/50',
 );
 
 const AvatarTriggerContent = ({ user }: { user: UserMenuUser }) => (
@@ -40,7 +40,7 @@ const AvatarTriggerContent = ({ user }: { user: UserMenuUser }) => (
       aria-hidden="true"
       className="md:hidden absolute inset-0 rounded-full transition-colors duration-200 group-hover:bg-accent/10"
     />
-    <div className="hidden md:flex">
+    <div className="hidden md:flex items-center">
       <span className="text-ui">{user.name}</span>
       <ChevronDown
         size={14}

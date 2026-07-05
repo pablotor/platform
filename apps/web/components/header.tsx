@@ -22,6 +22,7 @@ const Header = ({ variant, user }: HeaderProps) => (
 
       <Button
         variant="ghost"
+        as="nextLink"
         href={
           variant === 'authenticated'
             ? DEFAULT_AUTHENTICATED_ROUTE
@@ -29,6 +30,7 @@ const Header = ({ variant, user }: HeaderProps) => (
         }
         className="flex items-center gap-2"
       >
+        {/* one-off: logo — intentional, do not refactor */}
         <span className="text-lg font-bold tracking-tight">
           <span className="gradient-primary text-gradient">PabloTor</span>{' '}
           <span className="text-muted-foreground font-light">Platform</span>

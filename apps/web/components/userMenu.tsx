@@ -1,11 +1,9 @@
 'use client';
 
+import BaseUserMenu, { UserMenuItem } from '@repo/ui/userMenu/userMenu';
 import { LogOut, Settings } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
-import BaseUserMenu, {
-  type UserMenuItem,
-} from '../../../packages/ui/dist/userMenu/userMenu';
 import authClient from '../lib/authClient';
 import { UserContextData } from '../lib/userContext';
 

@@ -45,7 +45,7 @@ const useForm = <U extends Record<keyof U, unknown>>(
           content: options.successMessage,
         });
       } catch (e) {
-        submitToast.update({ mode: 'error' });
+        submitToast.update({ mode: 'error', content: 'Validation error' });
         if (e instanceof ZodError) {
           console.warn('Validation failed', e.message);
           setErrorObject({
