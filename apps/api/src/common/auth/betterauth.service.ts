@@ -1,9 +1,10 @@
+import { Injectable, Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
-import { PrismaService } from '../prisma/prisma.service';
-import { ConfigService } from '@nestjs/config';
-import { Injectable, Logger } from '@nestjs/common';
+
 import { AuthenticationConfig } from '../config/config.interface';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class BetterAuthService {

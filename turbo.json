@@ -35,6 +35,8 @@
     },
     "lint": {},
     "test": {},
-    "test:e2e": {}
+    "test:e2e": {
+      "env": ["__DATABASE_URL_FOR_TESTS__"]
+    }
   }
 }

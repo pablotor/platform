@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
-import { AuthModule as BetterAuthModule } from '@thallesp/nestjs-better-auth';
-import { BetterAuthService } from './betterauth.service';
-import { PrismaService } from '../prisma/prisma.service';
 import { ConfigService } from '@nestjs/config';
+import { AuthModule as BetterAuthModule } from '@thallesp/nestjs-better-auth';
+
+import { PrismaService } from '../prisma/prisma.service';
+import { BetterAuthService } from './betterauth.service';
 
 @Module({
   imports: [
