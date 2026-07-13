@@ -1,7 +1,7 @@
 import Header from '../components/header';
 import Hero from '../components/hero';
 
-const Home = async () => (
+const Home = () => (
   <div className="flex h-screen flex-col overflow-hidden bg-background">
     <Header variant="public" />
     <main className="flex-1 overflow-y-auto">

@@ -1,0 +1,24 @@
+{
+  "name": "@repo/contracts",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./src/entry.ts",
+  "types": "./src/entry.ts",
+  "exports": {
+    ".": "./src/entry.ts",
+    "./*": "./src/*.ts"
+  },
+  "scripts": {
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
+    "check-types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "*",
+    "@repo/typescript-config": "*",
+    "@types/node": "^22.10.7",
+    "typescript": "5.5.4"
+  }
+}

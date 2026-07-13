@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { headers } from 'next/headers';
+import { NextRequest, NextResponse } from 'next/server';
 
 import ROUTES, {
   DEFAULT_AUTHENTICATED_ROUTE,

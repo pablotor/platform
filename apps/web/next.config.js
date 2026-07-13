@@ -9,8 +9,7 @@ const nextConfig = {
       },
     ];
   },
-  allowedDevOrigins: ['http://localhost:3000'],
-  transpilePackages: ['@repo/ui'],
+  transpilePackages: ['@repo/contracts', '@repo/ui'],
   output: 'standalone',
 };
 

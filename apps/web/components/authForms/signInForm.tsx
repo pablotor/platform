@@ -1,6 +1,6 @@
 'use client';
 
-import { SignInContract, SignInSchema } from '@repo/api';
+import { SignInContract, SignInSchema } from '@repo/contracts';
 import Button from '@repo/ui/button';
 import Input from '@repo/ui/input';
 import { useRouter } from 'next/navigation';

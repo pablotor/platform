@@ -1,5 +1,6 @@
 // lib/validation/contracts/auth.ts
 import { string, z } from 'zod';
+
 import { UserSchema } from '../entities/user.schema';
 
 export const SignInSchema = UserSchema.pick({

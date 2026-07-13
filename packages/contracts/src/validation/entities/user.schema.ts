@@ -1,5 +1,6 @@
 import { z } from 'zod';
-import { NameSchema, EmailSchema, PasswordSchema } from '../primitives';
+
+import { EmailSchema, NameSchema, PasswordSchema } from '../primitives';
 
 export const UserSchema = z.object({
   name: NameSchema,

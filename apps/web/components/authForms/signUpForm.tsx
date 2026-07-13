@@ -1,6 +1,10 @@
 'use client';
 
-import { PasswordSchema, type SignUpContract, SignUpSchema } from '@repo/api';
+import {
+  PasswordSchema,
+  type SignUpContract,
+  SignUpSchema,
+} from '@repo/contracts';
 import Button from '@repo/ui/button';
 import Input from '@repo/ui/input';
 import PasswordCreationInput, {

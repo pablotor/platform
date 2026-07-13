@@ -11,7 +11,7 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
-    "@repo/api": "*",
+    "@repo/contracts": "*",
     "@repo/ui": "*",
     "better-auth": "^1.6.15",
     "class-variance-authority": "^0.7.1",

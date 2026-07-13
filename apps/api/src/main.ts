@@ -1,9 +1,9 @@
-import { cleanupOpenApiDoc } from 'nestjs-zod';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { ConfigService } from '@nestjs/config';
 import { HttpAdapterHost, NestFactory } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { cleanupOpenApiDoc } from 'nestjs-zod';
 
 import { AppModule } from './app.module';
-import { ConfigService } from '@nestjs/config';
 import {
   CorsConfig,
   NestConfig,

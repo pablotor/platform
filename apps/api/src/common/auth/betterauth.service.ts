@@ -13,12 +13,12 @@ export class BetterAuthService {
       configService.getOrThrow<AuthenticationConfig>('authentication');
     return betterAuth({
       baseURL: authConfig.url,
+      basePath: 'auth',
       database: prismaAdapter(prisma, {
         provider: 'postgresql',
       }),
       trustedOrigins: authConfig.trusted,
       secret: authConfig.secret,
-      basePath: 'auth',
       logger: new Logger('BetterAuth'),
       emailAndPassword: {
         enabled: true,
