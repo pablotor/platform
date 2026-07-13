@@ -34,7 +34,6 @@
     "@thallesp/nestjs-better-auth": "^2.6.1",
     "better-auth": "^1.6.15",
     "dotenv": "^17.4.2",
-    "escape-html": "^1.0.3",
     "nestjs-zod": "^5.4.0",
     "pg": "^8.21.0",
     "reflect-metadata": "^0.2.2",
@@ -70,8 +69,5 @@
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "5.8.2"
-  },
-  "prisma": {
-    "seed": "ts-node prisma/seed.ts"
   }
 }
