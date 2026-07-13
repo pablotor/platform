@@ -1,8 +1,8 @@
 {
   "name": "pablotor-platform",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "private": true,
-  "description": "An elegant foundation for a more civilized age",
+  "description": "An elegant platform for a more civilized age",
   "author": "pablotor",
   "license": "MIT",
   "scripts": {
@@ -31,7 +31,7 @@
     "packages/*"
   ],
   "resolutions": {
-    "postcss": "8.5",
-    "multer": "2.2"
+    "postcss": "^8.5",
+    "multer": "^2.2"
   }
 }

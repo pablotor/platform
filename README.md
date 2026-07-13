@@ -1,215 +1,109 @@
-# PTP (PabloTor Platform)
+# PabloTor Platform
 
-An opinionated TypeScript platform architecture built from real-world consulting experience.
-
-PTP is a monorepo starter focused on helping teams avoid common foundation mistakes when building modern web applications. It combines proven architectural patterns, production-ready defaults, and extensive documentation to provide a solid starting point for scalable products.
-
-The goal is simple:
-
-> Start with an architecture that can grow with your product instead of fighting it six months later.
+### _An elegant platform, for a more civilized age._
 
 ---
 
-## Why PTP?
+## What, why, and how?
 
-After working on many startups, I noticed the same issues appearing repeatedly:
+As a founder engineer, I've worked with fullstack JS platforms for a while. And the truth is, I've never felt completely happy with any of them.
 
-- Authentication implemented differently in every project
-- Validation scattered throughout the application
-- ORM models leaking into business logic
-- Weak module boundaries
-- Difficult-to-maintain frontend/backend contracts
-- Infrastructure decisions that become expensive to change later
+It's not that they were bad. But when building features is the most important part, building the platform itself suffers — sometimes in the form of poor UX, other times in the form of tech debt. I always thought that, if given the time, I could build something better.
 
-PTP exists to capture the patterns and decisions that consistently worked in production systems.
+This is when the idea of the **PabloTor Platform (PTP)** started. Its main goal is to get most of the things every platform needs done right, and through that, provide both users and developers the best experience. The basic concept is a general-purpose platform, like Django or AdonisJS, that, instead of creating its own framework, implements some of the most used ones in an opinionated way. This way, it works both as a foundation and as a recipe book.
 
-This is not a boilerplate marketplace.
+## Getting started
 
-This is not a low-code platform.
-
-This is an opinionated foundation for TypeScript applications.
-
----
-
-## Current Architecture
-
-PTP is currently built on top of the official Turborepo + NestJS example and extends it into a production-oriented platform architecture. The original example demonstrates a Turborepo monorepo with a Next.js frontend, a NestJS backend, and shared packages.
-
-### Applications
-
-```text
-apps/
-├── web      # Next.js frontend
-└── api      # NestJS backend
-```
-
-### Packages
-
-```text
-packages/
-├── api      # Shared DTOs, entities, contracts
-├── eslint-config
-└── typescript-config
-```
-
-The shared package approach allows frontend and backend applications to use the same contracts and types while remaining independently deployable.
-
----
-
-## Principles
-
-PTP follows a small set of architectural principles:
-
-### Explicit Boundaries
-
-Frontend, backend, domain logic, and infrastructure concerns should be clearly separated.
-
-### Type Safety
-
-Types should flow across the entire stack whenever possible.
-
-### Self-Hosted First
-
-Applications should be able to run locally and in self-managed environments without depending on proprietary services.
-
-### Documentation Matters
-
-Understanding why a decision exists is often more valuable than the implementation itself.
-
-### Sensible Defaults
-
-Every default should have a reason.
-
----
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js 22+
-- yarn
-- Docker (recommended)
-
-### Installation
+**Prerequisites:** Node 22+, Yarn 1.22, Docker
 
 ```bash
-git clone <repository-url>
-cd ptp
+# install dependencies
+yarn
 
-yarn install
+# copy environment files
+cp apps/web/.env.example apps/web/.env.local
+cp apps/api/.env.example apps/api/.env.local
+
+# generate and fill in a secure AUTH_SECRET
+# note: run this only once — re-running against an already-filled AUTH_SECRET will prepend a new value instead of replacing it
+sed -i.bak "s|AUTH_SECRET=|AUTH_SECRET=$(openssl rand -base64 32)|" apps/api/.env.local && rm apps/api/.env.local.bak
 ```
 
-### Development
-
-Run all applications:
+Then, to run the platform:
 
 ```bash
+# bring up local infrastructure
+yarn infra:dev:up
+
+# run the platform
 yarn dev
 ```
 
-This starts:
+## Philosophy
 
-- Next.js frontend
-- NestJS API
-- Shared package watchers
+> Do not reinvent the wheel. Just make sure you're using it the right way.
 
-### Build
+You will find little original source code here, but many production-ready implementations of proven-track libraries and technologies, with their testing and documentation included.
 
-```bash
-yarn build
-```
+My criteria while selecting them was roughly the following:
 
-### Lint
+- **Open source and self-hosted.** No company locks. You're in control of the whole stack.
+- **Proven track record.** There might be really good reasons to use that bleeding-edge new DB, but Postgres works just fine.
+- **My own experience.** Libraries that served me well before, like Prisma or lodash, were an auto-default. Others that are usually standard but gave me issues in the past, like NestJS's `class-validator`, were replaced.
 
-```bash
-yarn lint
-```
+None of this is written in stone — it's a guideline, not a checklist. BetterAuth is a good example of that. I've worked with Auth0 and Cognito before, and both lock you into their platform, each with its own set of issues on top. While researching what to use for PTP, I came across BetterAuth and liked its approach enough to make the exception: a younger project, but self-hosted and actively maintained, which fits the platform's principles better than the proven-track alternatives did.
 
-### Type Check
+I also try to follow conventions as long as they aren't harmful to the developer experience. For example, I'm aware kebab-case is now the default file naming convention for React components. But it makes my life awful while looking for component sources, which I do a lot. The simplicity of doing so by name, imho, outweighs the annoyance of case changes while renaming files.
 
-```bash
-yarn check-types
-```
+## Architecture
 
----
+PTP is a **contract-centered, domain-separated platform, with a modular monolith API.**
 
-## Project Vision
+- **Contracts are the starting point.** They allow a single definition of primitives, entities, and DTOs shared across the platform. They don't just reduce code duplication — they give you a single way to think about and implement new features, keeping the platform cohesive. Contracts stay framework-agnostic by design: no Nest, no Next, no React inside the contracts package. Just Zod.
+- **Domain separation.** "The platform" today consists of the API and the web app. An admin panel with user management and web telemetry is on the roadmap.
+- **Modular monolith API.** A monolith is the best architecture for almost any startup — it's simple, everyone knows it well, and it lets you grow the fastest. Built in a genuinely modular way, the transition to microservices later becomes an implementation detail rather than a rewrite.
 
-PTP is being developed incrementally.
+## What is included?
 
-Planned areas include:
+- Shared ESLint, Jest, and TypeScript configs
+- Contracts package (Zod, framework-agnostic)
+- UI package
+  - Shared theme
+  - Shared UI components — user menu, toast, and more
+- Web app ([Next.js](https://nextjs.org))
+  - Sign up / sign in flows
+  - Page security
+  - State management
+- API app ([NestJS](https://nestjs.com))
+  - Authentication endpoints, powered by [BetterAuth](https://www.better-auth.com/)
+  - PostgreSQL client with error handling
+- Demo blogging feature
+- Local development `docker-compose` setup
+- Terraform deployment config (Vercel + Oracle Free Tier)
 
-- Flexible database adapters
-  - PostgreSQL + Prisma
-  - MongoDB + Mongoose
+## What comes next?
 
-- Authentication modules
-  - BetterAuth
-  - Keycloak
+- [ ] Bootstrap CLI — pick your package manager, auto-scaffold the platform
+- [ ] CI/CD pipeline
+- [ ] API email integration
+- [ ] User reset password flow
+- [ ] API S3 integration
+- [ ] Document management
+- [ ] Role-based access control (RBAC)
 
-- Docker-first local environments
+## A note on the deployment stack
 
-- Accessible UI components
+The philosophy above is self-hosted, no lock-in. The reference deployment (Vercel for the web app, Oracle Free Tier for the API) isn't a contradiction of that so much as a bootstrapping constraint: running staging and production for the API inside the Oracle free tier's memory limits leaves little room to also host the web app there. The web app doesn't use any Vercel-specific APIs, so moving it off Vercel — onto that same box, or anywhere else — is a deployment change, not a rewrite.
 
-- Shared validation strategies
+## Support
 
-- Architecture documentation
+If PTP saves you time, consider supporting its development.
 
-- Project bootstrap tooling
+- GitHub Sponsors: _coming soon_
+- Buy Me a Coffee: _coming soon_
 
-The goal is not to support every possible architecture.
-
-The goal is to provide a curated set of well-documented options.
-
----
-
-## Documentation
-
-Documentation is a first-class part of the project.
-
-Future documentation topics include:
-
-- Architecture decisions
-- Authentication strategies
-- DTO design
-- Validation patterns
-- Monorepo organization
-- API boundaries
-- Database tradeoffs
-- Deployment approaches
-
-Each topic will focus not only on implementation but also on the reasoning behind the decision.
-
----
-
-## Consulting
-
-PTP is also available as a consulting engagement.
-
-If your team needs:
-
-- Architecture reviews
-- Platform setup
-- Monorepo migrations
-- Authentication design
-- TypeScript platform guidance
-
-feel free to reach out through:
-
-https://pablotor.dev
-
----
-
-## Status
-
-🚧 Early development
-
-PTP is actively evolving. Expect architectural changes while the foundation is being established.
-
-Feedback, discussions, and contributions are welcome.
-
----
+Available for consulting work on platform architecture, NestJS/Next.js implementations, and full-stack foundations — reach out via [GitHub](https://github.com/pablotor) or [email](mailto:me@pablotor.dev)
 
 ## License
 
-MIT
+[MIT](./LICENSE)
