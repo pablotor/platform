@@ -19,8 +19,6 @@ import {
 } from 'nestjs-zod';
 import { ZodError } from 'zod';
 
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { AuthModule } from './common/auth/auth.module';
 import appConfig from './common/config/config';
 import { PrismaService } from './common/prisma/prisma.service';
@@ -56,9 +54,8 @@ class HttpExceptionFilter extends BaseExceptionFilter {
       load: [appConfig],
     }),
   ],
-  controllers: [AppController],
+  controllers: [],
   providers: [
-    AppService,
     PrismaService,
     {
       provide: APP_PIPE,
