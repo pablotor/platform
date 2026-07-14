@@ -38,3 +38,7 @@ export const PostResponseSchema = PostEntitySchema.omit({
   }),
 });
 export type PostResponse = z.infer<typeof PostResponseSchema>;
+
+// List response: v1 returns a flat array, no pagination metadata.
+export const PostListResponseSchema = z.array(PostResponseSchema);
+export type PostListResponse = z.infer<typeof PostListResponseSchema>;

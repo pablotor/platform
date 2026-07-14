@@ -1,2 +1,2 @@
-export * from './auth.contract';
+export * from './auth.contracts';
 export * from './auth.primitives';
