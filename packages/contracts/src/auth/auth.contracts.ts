@@ -1,19 +1,22 @@
 // lib/validation/contracts/auth.ts
 import { string, z } from 'zod';
 
-import { UserSchema } from '../entities/user.schema';
+import { UserEntitySchema } from '../user';
+import { PasswordSchema } from './auth.primitives';
 
-export const SignInSchema = UserSchema.pick({
+export const SignInSchema = UserEntitySchema.pick({
   email: true,
 }).extend({
   // You do not want password format checking during signin
   password: string().nonempty(),
 });
 
-export const SignUpSchema = UserSchema.pick({
+export const SignUpSchema = UserEntitySchema.pick({
   name: true,
   email: true,
-  password: true,
+}).extend({
+  // You do not want password format checking during signin
+  password: PasswordSchema,
 });
 
 export type SignInContract = z.infer<typeof SignInSchema>;
