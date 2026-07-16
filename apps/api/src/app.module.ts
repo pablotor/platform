@@ -22,6 +22,7 @@ import { ZodError } from 'zod';
 import { AuthModule } from './common/auth/auth.module';
 import appConfig from './common/config/config';
 import { PrismaService } from './common/prisma/prisma.service';
+import { PostsModule } from './posts/posts.module';
 
 @Catch(HttpException)
 class HttpExceptionFilter extends BaseExceptionFilter {
@@ -53,6 +54,7 @@ class HttpExceptionFilter extends BaseExceptionFilter {
       ],
       load: [appConfig],
     }),
+    PostsModule,
   ],
   controllers: [],
   providers: [

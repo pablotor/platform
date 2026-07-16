@@ -1,4 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import type {
   CreatePost,
   PatchPost,
@@ -6,36 +11,75 @@ import type {
   PostResponse,
 } from '@repo/contracts';
 
-/**
- * Stub — method signatures only, matching the repository/service interface
- * from BLOG_FEATURE_PLAN.md. Real business logic (ownership checks, slug
- * generation/collision handling) lands in steps 7/8 of EXTENDING.md. This
- * exists now so PostsController has something real to inject and the test
- * suite has a class to mock against.
- */
+import { PostsRepository, PostWithAuthor } from './posts.repository';
+import { buildSlug } from './posts.slug';
+
+const MAX_SLUG_ATTEMPTS = 20;
+
 @Injectable()
 export class PostsService {
-  create(_data: CreatePost, _authorId: string): Promise<PostResponse> {
-    throw new Error('Not implemented — see EXTENDING.md steps 7/8');
+  constructor(private readonly postsRepository: PostsRepository) {}
+
+  async create(data: CreatePost, authorId: string): Promise<PostResponse> {
+    const slug = await this.resolveAvailableSlug(buildSlug(data.title));
+    return this.postsRepository.create({ ...data, slug, authorId });
   }
 
-  patch(
-    _slug: string,
-    _data: PatchPost,
-    _requesterId: string,
+  async patch(
+    slug: string,
+    data: PatchPost,
+    requesterId: string,
   ): Promise<PostResponse> {
-    throw new Error('Not implemented — see EXTENDING.md steps 7/8');
+    const post = await this.findPostOrThrow(slug);
+    this.assertOwnership(post, requesterId);
+    const { title, content } = data;
+    return this.postsRepository.update(post.id, { title, content });
   }
 
-  delete(_slug: string, _requesterId: string): Promise<void> {
-    throw new Error('Not implemented — see EXTENDING.md steps 7/8');
+  async delete(slug: string, requesterId: string): Promise<void> {
+    const post = await this.findPostOrThrow(slug);
+    this.assertOwnership(post, requesterId);
+    await this.postsRepository.delete(post.id);
   }
 
-  findMany(_query: PostQuery): Promise<PostResponse[]> {
-    throw new Error('Not implemented — see EXTENDING.md steps 7/8');
+  findMany(query: PostQuery): Promise<PostResponse[]> {
+    return this.postsRepository.findMany(query);
   }
 
-  findBySlug(_slug: string): Promise<PostResponse> {
-    throw new Error('Not implemented — see EXTENDING.md steps 7/8');
+  findBySlug(slug: string): Promise<PostResponse> {
+    return this.findPostOrThrow(slug);
+  }
+
+  private async findPostOrThrow(slug: string): Promise<PostWithAuthor> {
+    const post = await this.postsRepository.findBySlug(slug);
+    if (!post) {
+      throw new NotFoundException('Post not found');
+    }
+    return post;
+  }
+
+  private assertOwnership(post: PostWithAuthor, requesterId: string): void {
+    if (post.author.id !== requesterId) {
+      throw new ForbiddenException(
+        'You do not have permission to modify this post',
+      );
+    }
+  }
+
+  private async resolveAvailableSlug(baseSlug: string): Promise<string> {
+    let candidate = baseSlug;
+    let attempt = 1;
+
+    while (await this.postsRepository.findBySlug(candidate)) {
+      attempt += 1;
+      candidate = `${baseSlug}-${attempt}`;
+      if (attempt > MAX_SLUG_ATTEMPTS) {
+        throw new ConflictException(
+          'Could not generate a unique slug for this post',
+        );
+      }
+    }
+
+    return candidate;
   }
 }

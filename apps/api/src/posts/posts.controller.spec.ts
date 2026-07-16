@@ -8,6 +8,7 @@ import {
 } from '@jest/globals';
 import { ForbiddenException, NotFoundException } from '@nestjs/common';
 import type { UserSession } from '@thallesp/nestjs-better-auth';
+import { Public } from 'test/mock-types';
 
 import { buildControllerTestApp } from '../../test/controller-test-app';
 import { PostsController } from './posts.controller';
@@ -30,7 +31,7 @@ const fakePost = (overrides: Record<string, unknown> = {}) => ({
 });
 
 describe('PostsController', () => {
-  const postsService: jest.Mocked<PostsService> = {
+  const postsService: jest.Mocked<Public<PostsService>> = {
     create: jest.fn(),
     patch: jest.fn(),
     delete: jest.fn(),
