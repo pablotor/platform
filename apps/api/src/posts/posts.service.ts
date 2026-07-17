@@ -4,12 +4,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import type {
-  CreatePost,
-  PatchPost,
-  PostQuery,
-  PostResponse,
-} from '@repo/contracts';
+import type { CreatePost, PatchPost, PostQuery } from '@repo/contracts';
 
 import { PostsRepository, PostWithAuthor } from './posts.repository';
 import { buildSlug } from './posts.slug';
@@ -20,7 +15,7 @@ const MAX_SLUG_ATTEMPTS = 20;
 export class PostsService {
   constructor(private readonly postsRepository: PostsRepository) {}
 
-  async create(data: CreatePost, authorId: string): Promise<PostResponse> {
+  async create(data: CreatePost, authorId: string): Promise<PostWithAuthor> {
     const slug = await this.resolveAvailableSlug(buildSlug(data.title));
     return this.postsRepository.create({ ...data, slug, authorId });
   }
@@ -29,7 +24,7 @@ export class PostsService {
     slug: string,
     data: PatchPost,
     requesterId: string,
-  ): Promise<PostResponse> {
+  ): Promise<PostWithAuthor> {
     const post = await this.findPostOrThrow(slug);
     this.assertOwnership(post, requesterId);
     const { title, content } = data;
@@ -42,11 +37,11 @@ export class PostsService {
     await this.postsRepository.delete(post.id);
   }
 
-  findMany(query: PostQuery): Promise<PostResponse[]> {
+  findMany(query: PostQuery): Promise<PostWithAuthor[]> {
     return this.postsRepository.findMany(query);
   }
 
-  findBySlug(slug: string): Promise<PostResponse> {
+  findBySlug(slug: string): Promise<PostWithAuthor> {
     return this.findPostOrThrow(slug);
   }
 

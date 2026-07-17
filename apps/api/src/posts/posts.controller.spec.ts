@@ -92,6 +92,15 @@ describe('PostsController', () => {
         .expect(400);
     });
 
+    it('returns 400 when title cannot generate a valid slug', async () => {
+      testApp.setSession(fakeSession('user_1'));
+
+      await testApp.request
+        .post('/posts')
+        .send({ title: '!!!', content: 'Some content' })
+        .expect(400);
+    });
+
     it('returns 400 when content is empty', async () => {
       testApp.setSession(fakeSession('user_1'));
 

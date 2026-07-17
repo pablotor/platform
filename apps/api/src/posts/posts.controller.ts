@@ -12,12 +12,11 @@ import {
 } from '@nestjs/common';
 import type { UserSession } from '@thallesp/nestjs-better-auth';
 import { AllowAnonymous, Session } from '@thallesp/nestjs-better-auth';
-import { ZodSerializerDto } from 'nestjs-zod';
+import { ZodResponse } from 'nestjs-zod';
 
 import {
   CreatePostDto,
   PatchPostDto,
-  PostListResponseDto,
   PostQueryDto,
   PostResponseDto,
 } from './posts.dto';
@@ -28,13 +27,13 @@ export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
   @Post()
-  @ZodSerializerDto(PostResponseDto)
+  @ZodResponse({ type: PostResponseDto })
   create(@Body() dto: CreatePostDto, @Session() session: UserSession) {
     return this.postsService.create(dto, session.user.id);
   }
 
   @Patch(':slug')
-  @ZodSerializerDto(PostResponseDto)
+  @ZodResponse({ type: PostResponseDto })
   patch(
     @Param('slug') slug: string,
     @Body() dto: PatchPostDto,
@@ -53,14 +52,14 @@ export class PostsController {
   // Nest will never reach this one for a request to /posts.
   @Get()
   @AllowAnonymous()
-  @ZodSerializerDto(PostListResponseDto)
+  @ZodResponse({ type: [PostResponseDto] })
   findMany(@Query() query: PostQueryDto) {
     return this.postsService.findMany(query);
   }
 
   @Get(':slug')
   @AllowAnonymous()
-  @ZodSerializerDto(PostResponseDto)
+  @ZodResponse({ type: PostResponseDto })
   findBySlug(@Param('slug') slug: string) {
     return this.postsService.findBySlug(slug);
   }

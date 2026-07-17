@@ -5,23 +5,16 @@ import { PrismaService } from '../common/prisma/prisma.service';
 
 // A post as read from the DB, joined with the minimal author fields the
 // response contract needs (see PostResponseSchema in packages/contracts).
-// Structurally identical to PostResponse — the service can return this
-// straight through without any extra mapping step.
 export type PostWithAuthor = Omit<PostEntity, 'authorId'> & {
   author: { id: string; name: string };
 };
 
-export type CreatePostData = {
-  title: string;
-  slug: string;
-  content: string;
-  authorId: string;
-};
+export type CreatePostData = Pick<
+  PostEntity,
+  'title' | 'slug' | 'content' | 'authorId'
+>;
 
-export type UpdatePostData = Partial<{
-  title: string;
-  content: string;
-}>;
+export type UpdatePostData = Partial<Pick<PostEntity, 'title' | 'content'>>;
 
 const AUTHOR_SELECT = { id: true, name: true } as const;
 
