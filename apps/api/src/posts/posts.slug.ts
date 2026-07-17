@@ -10,5 +10,5 @@ export const buildSlug = (title: string): string => {
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '');
 
-  return slug || 'post';
+  return slug;
 };
