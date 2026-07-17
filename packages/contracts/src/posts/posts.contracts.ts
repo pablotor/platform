@@ -1,12 +1,25 @@
 import { z } from 'zod';
 
+import { responseTimestamp } from '../common/responseTimestamp';
 import { PostEntitySchema } from './posts.entity';
+import { PostTitleSchema } from './posts.primitives';
 
 // Create: client supplies title + content only. Server derives id, slug,
-// authorId, and timestamps.
+// authorId, and timestamps. Extra validations added to reject titles
+// like "!!!" that would generate an invalid slug
 export const CreatePostSchema = PostEntitySchema.pick({
-  title: true,
   content: true,
+}).extend({
+  title: PostTitleSchema.refine(
+    (value) =>
+      value
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '') // Remove diacritics
+        .replace(/[^a-zA-Z0-9]/g, '').length > 5,
+    {
+      message: 'must contain more than 5 letters or numbers',
+    },
+  ),
 });
 export type CreatePost = z.infer<typeof CreatePostSchema>;
 
@@ -31,14 +44,14 @@ export type PostQuery = z.infer<typeof PostQuerySchema>;
 // frontend can render "by <name>" without a second fetch.
 export const PostResponseSchema = PostEntitySchema.omit({
   authorId: true,
+  createdAt: true,
+  updatedAt: true,
 }).extend({
   author: z.object({
     id: z.string(),
     name: z.string(),
   }),
+  createdAt: responseTimestamp,
+  updatedAt: responseTimestamp,
 });
 export type PostResponse = z.infer<typeof PostResponseSchema>;
-
-// List response: v1 returns a flat array, no pagination metadata.
-export const PostListResponseSchema = z.array(PostResponseSchema);
-export type PostListResponse = z.infer<typeof PostListResponseSchema>;
