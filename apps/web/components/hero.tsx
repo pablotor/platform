@@ -1,4 +1,5 @@
 import Button from '@repo/ui/button';
+import Link from 'next/link';
 
 import ROUTES from '../common/routes';
 
@@ -21,13 +22,13 @@ const Hero = () => (
     </p>
 
     <div className="mt-8 flex items-center gap-3">
-      <Button size="lg" as="nextLink" href={ROUTES.public.auth.signup}>
+      <Button size="lg" as={Link} href={ROUTES.public.auth.signup}>
         Get started
       </Button>
       <Button
         variant="outline"
         size="lg"
-        as="nextLink"
+        as={Link}
         href={ROUTES.public.auth.signin}
       >
         Sign in

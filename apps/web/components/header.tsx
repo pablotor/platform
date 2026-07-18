@@ -1,5 +1,6 @@
 import Button from '@repo/ui/button';
 import { NavSidebarButton } from '@repo/ui/navSidebar';
+import Link from 'next/link';
 
 import ROUTES, {
   DEFAULT_AUTHENTICATED_ROUTE,
@@ -22,7 +23,7 @@ const Header = ({ variant, user }: HeaderProps) => (
 
       <Button
         variant="ghost"
-        as="nextLink"
+        as={Link}
         href={
           variant === 'authenticated'
             ? DEFAULT_AUTHENTICATED_ROUTE
@@ -42,12 +43,12 @@ const Header = ({ variant, user }: HeaderProps) => (
           <>
             <Button
               variant="outline"
-              as="nextLink"
+              as={Link}
               href={ROUTES.public.auth.signin}
             >
               Sign in
             </Button>
-            <Button as="nextLink" href={ROUTES.public.auth.signup}>
+            <Button as={Link} href={ROUTES.public.auth.signup}>
               Sign up
             </Button>
           </>

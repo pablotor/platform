@@ -2,7 +2,7 @@
 
 import BaseUserMenu, { UserMenuItem } from '@repo/ui/userMenu/userMenu';
 import { LogOut, Settings } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 import authClient from '../lib/authClient';
 import { UserContextData } from '../lib/userContext';
@@ -13,6 +13,7 @@ type UserMenuProps = {
 
 const UserMenu = ({ user }: UserMenuProps) => {
   const router = useRouter();
+  const pathname = usePathname();
 
   const handleSignOut = async () => {
     await authClient.signOut();
@@ -36,7 +37,7 @@ const UserMenu = ({ user }: UserMenuProps) => {
     },
   ];
 
-  return <BaseUserMenu user={user} items={items} />;
+  return <BaseUserMenu user={user} items={items} currentPath={pathname} />;
 };
 
 export default UserMenu;

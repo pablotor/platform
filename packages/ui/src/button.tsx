@@ -1,7 +1,6 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 import clsx from 'clsx';
-import Link, { LinkProps } from 'next/link';
-import { ComponentProps, PropsWithChildren } from 'react';
+import { ComponentProps, ElementType, PropsWithChildren } from 'react';
 
 const buttonVariants = cva(
   clsx(
@@ -65,47 +64,42 @@ const buttonVariants = cva(
   },
 );
 
-export type ButtonProps = PropsWithChildren<
-  VariantProps<typeof buttonVariants> & { className?: string } & (
-      | ({ as?: 'button' } & ComponentProps<'button'>)
-      | ({ as?: 'nextLink' } & LinkProps)
-      | ({ as?: 'a' } & ComponentProps<'a'>)
-    )
->;
+type AsProp<C extends ElementType> = {
+  as?: C;
+};
 
-const Button = ({
+// Omit props that will be overridden by our own explicit props
+type PropsToOmit<C extends ElementType, P> = keyof (AsProp<C> & P);
+
+type PolymorphicComponentProp<
+  C extends ElementType,
+  Props = object,
+> = PropsWithChildren<Props & AsProp<C>> &
+  Omit<ComponentProps<C>, PropsToOmit<C, Props>>;
+
+export type ButtonProps<C extends ElementType = 'button'> =
+  PolymorphicComponentProp<
+    C,
+    VariantProps<typeof buttonVariants> & { className?: string }
+  >;
+
+const Button = <C extends ElementType = 'button'>({
   variant = 'default',
   size = 'default',
   as,
   children,
   className,
   ...props
-}: ButtonProps) => {
-  const classNames = clsx(buttonVariants({ variant, size }), className);
+}: ButtonProps<C>) => {
+  const Component = as ?? 'button';
 
-  if (as === 'nextLink') {
-    const linkProps = props as LinkProps;
-    return (
-      <Link className={classNames} {...linkProps}>
-        {children}
-      </Link>
-    );
-  }
-
-  if (as === 'a') {
-    const aProps = props as ComponentProps<'a'>;
-    return (
-      <a className={classNames} {...aProps}>
-        {children}
-      </a>
-    );
-  }
-
-  const buttonProps = props as ComponentProps<'button'>;
   return (
-    <button className={classNames} {...buttonProps}>
+    <Component
+      className={clsx(buttonVariants({ variant, size }), className)}
+      {...props}
+    >
       {children}
-    </button>
+    </Component>
   );
 };
 
