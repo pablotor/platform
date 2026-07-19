@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
-import ROUTES from '../../../../common/routes';
-import CodeDiff from '../../../../components/codeDiff';
+import ROUTES from '../../../../../common/routes';
+import CodeDiff from '../../../../../components/codeDiff';
 
 const Divider = () => <hr className="border-border" />;
 
@@ -175,19 +175,19 @@ const FundamentalsPage = () => (
       <div className="flex flex-col gap-2">
         {[
           {
-            href: ROUTES.authenticated.design.typography,
+            href: ROUTES.public.docs.design.typography,
             label: 'Typography',
             description:
               'The scale, the classes, how to combine them without thinking.',
           },
           {
-            href: ROUTES.authenticated.design.colors,
+            href: ROUTES.public.docs.design.colors,
             label: 'Colors',
             description:
               'Brand tokens, semantic tokens, when each one applies.',
           },
           {
-            href: ROUTES.authenticated.design.composition,
+            href: ROUTES.public.docs.design.composition,
             label: 'Composition',
             description: 'Real UI patterns built from nothing but the system.',
           },

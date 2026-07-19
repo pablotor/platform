@@ -1,4 +1,4 @@
-const Dashboard = () => (
+const Placeholder = () => (
   <section className="mx-auto flex h-full max-w-5xl flex-col items-center justify-center px-6 py-10 text-center">
     <h4 className="max-w-2xl text-balance text-title sm:text-display">
       There&apos;s not a lot to do here yet
@@ -10,4 +10,4 @@ const Dashboard = () => (
   </section>
 );
 
-export default Dashboard;
+export default Placeholder;

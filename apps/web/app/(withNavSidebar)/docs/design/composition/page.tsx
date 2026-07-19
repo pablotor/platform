@@ -2,7 +2,7 @@ import Button from '@repo/ui/button';
 import { ArrowRight, Settings, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 
-import ROUTES from '../../../../common/routes';
+import ROUTES from '../../../../../common/routes';
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -104,7 +104,7 @@ const CompositionPage = () => (
               Typography isn&apos;t about picking a nice font. It&apos;s about
               making{' '}
               <Link
-                href={ROUTES.authenticated.design.typography}
+                href={ROUTES.public.docs.design.typography}
                 className="text-link"
               >
                 hierarchy legible
@@ -119,7 +119,7 @@ const CompositionPage = () => (
               Standalone
             </span>
             <Link
-              href={ROUTES.authenticated.design.fundamentals}
+              href={ROUTES.public.docs.design.fundamentals}
               className="text-link text-body-sm"
             >
               ← Back to fundamentals
@@ -132,7 +132,7 @@ const CompositionPage = () => (
               At heading scale
             </span>
             <Link
-              href={ROUTES.authenticated.design.colors}
+              href={ROUTES.public.docs.design.colors}
               className="text-link text-subtitle"
             >
               Explore the color system →
@@ -240,7 +240,7 @@ const CompositionPage = () => (
           <span className="text-label text-muted-foreground">Typography</span>
           <div className="flex flex-col gap-1.5">
             <Link
-              href={ROUTES.authenticated.design.typography}
+              href={ROUTES.public.docs.design.typography}
               className="text-link text-subtitle"
             >
               Why type scale matters more than typeface
@@ -448,7 +448,7 @@ const CompositionPage = () => (
         three ideas applied repeatedly. When something feels off, it&apos;s
         almost always one of the three rules from{' '}
         <Link
-          href={ROUTES.authenticated.design.fundamentals}
+          href={ROUTES.public.docs.design.fundamentals}
           className="text-link"
         >
           Fundamentals

@@ -2,8 +2,8 @@
 
 import Link from 'next/link';
 
-import ROUTES from '../../../../common/routes';
-import CodeDiff from '../../../../components/codeDiff';
+import ROUTES from '../../../../../common/routes';
+import CodeDiff from '../../../../../components/codeDiff';
 
 const Divider = () => <hr className="border-border" />;
 
@@ -349,7 +349,7 @@ const TypographyPage = () => (
 
     {/* ── Next ─────────────────────────────────────────────────────────── */}
     <Link
-      href={ROUTES.authenticated.design.colors}
+      href={ROUTES.public.docs.design.colors}
       className="group flex items-center justify-between gap-4 rounded-xl border border-border bg-card p-5 transition-colors duration-200 hover:bg-accent"
     >
       <div className="flex flex-col gap-0.5">

@@ -3,7 +3,8 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import ROUTES, {
   DEFAULT_AUTHENTICATED_ROUTE,
-  PUBLIC_ROUTES,
+  GUEST_ONLY_ROUTES,
+  PROTECTED_PATH_PREFIXES,
 } from './common/routes';
 import apiClient from './lib/apiClient';
 import authClient from './lib/authClient';
@@ -19,14 +20,19 @@ const protectedRoutesProxy = async (request: NextRequest) => {
   const isAuthenticated = requestHeaders
     .get('Cookie')
     ?.includes('better-auth.session_token');
-  const isProtectedPath = !PUBLIC_ROUTES.includes(request.nextUrl.pathname);
+  const isProtectedPath = PROTECTED_PATH_PREFIXES.some((protectedPathPrefix) =>
+    request.nextUrl.pathname.startsWith(protectedPathPrefix),
+  );
+  const isGuestOnlyPath = GUEST_ONLY_ROUTES.some(
+    (guestOnlyPaths) => request.nextUrl.pathname === guestOnlyPaths,
+  );
 
   if (isProtectedPath && !isAuthenticated) {
     return NextResponse.redirect(
       new URL(ROUTES.public.auth.signin, request.url),
     );
   }
-  if (!isProtectedPath && isAuthenticated) {
+  if (isGuestOnlyPath && isAuthenticated) {
     return NextResponse.redirect(
       new URL(DEFAULT_AUTHENTICATED_ROUTE, request.url),
     );

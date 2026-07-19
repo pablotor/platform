@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
-import ROUTES from '../../../../common/routes';
-import CodeDiff from '../../../../components/codeDiff';
+import ROUTES from '../../../../../common/routes';
+import CodeDiff from '../../../../../components/codeDiff';
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -425,7 +425,7 @@ const ColorsPage = () => (
 
     {/* ── Next ─────────────────────────────────────────────────────────── */}
     <Link
-      href={ROUTES.authenticated.design.composition}
+      href={ROUTES.public.docs.design.composition}
       className="group flex items-center justify-between gap-4 rounded-xl border border-border bg-card p-5 transition-colors duration-200 hover:bg-accent"
     >
       <div className="flex flex-col gap-0.5">
