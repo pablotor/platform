@@ -32,7 +32,7 @@ const ROUTES = {
       posts: {
         root: '/dashboard/posts',
         new: '/dashboard/posts/new',
-        post: (slug: string) => `/dashboard/posts/${slug}`,
+        info: (slug: string) => `/dashboard/posts/${slug}`,
         edit: (slug: string) => `/dashboard/posts/${slug}/edit`,
       },
     },
