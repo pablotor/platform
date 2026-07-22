@@ -5,9 +5,10 @@ import authClient from './authClient';
 
 export type UserContextData = Pick<
   (typeof authClient.$Infer.Session)['user'],
-  'email' | 'name' | 'image'
+  'id' | 'email' | 'name' | 'image'
 >;
 
+const USER_ID_HEADER = 'x-user-id';
 const USER_NAME_HEADER = 'x-user-name';
 const USER_EMAIL_HEADER = 'x-user-email';
 const USER_IMAGE_HEADER = 'x-user-image';
@@ -16,6 +17,7 @@ export const setUserHeaders = (
   requestHeaders: Headers,
   user: UserContextData,
 ) => {
+  requestHeaders.set(USER_ID_HEADER, user.id);
   requestHeaders.set(USER_NAME_HEADER, encodeURIComponent(user.name));
   requestHeaders.set(USER_EMAIL_HEADER, user.email);
   if (user.image) {
@@ -29,6 +31,7 @@ export const getUser = cache(async (): Promise<UserContextData | null> => {
   if (!email) return null;
 
   return {
+    id: decodeURIComponent(headersList.get(USER_ID_HEADER) ?? ''),
     name: decodeURIComponent(headersList.get(USER_NAME_HEADER) ?? ''),
     email,
     image: decodeURIComponent(headersList.get(USER_IMAGE_HEADER) ?? ''),
