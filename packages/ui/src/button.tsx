@@ -1,6 +1,11 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 import clsx from 'clsx';
-import { ComponentProps, ElementType, PropsWithChildren } from 'react';
+import {
+  ComponentProps,
+  ComponentPropsWithRef,
+  ElementType,
+  PropsWithChildren,
+} from 'react';
 
 const buttonVariants = cva(
   clsx(
@@ -80,7 +85,10 @@ type PolymorphicComponentProp<
 export type ButtonProps<C extends ElementType = 'button'> =
   PolymorphicComponentProp<
     C,
-    VariantProps<typeof buttonVariants> & { className?: string }
+    VariantProps<typeof buttonVariants> & {
+      className?: string;
+      ref?: ComponentPropsWithRef<C>['ref'];
+    }
   >;
 
 const Button = <C extends ElementType = 'button'>({
@@ -89,12 +97,14 @@ const Button = <C extends ElementType = 'button'>({
   as,
   children,
   className,
+  ref,
   ...props
 }: ButtonProps<C>) => {
   const Component = as ?? 'button';
 
   return (
     <Component
+      ref={ref}
       className={clsx(buttonVariants({ variant, size }), className)}
       {...props}
     >
