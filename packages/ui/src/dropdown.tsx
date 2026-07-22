@@ -10,17 +10,33 @@ import {
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-export type DropdownItem = {
-  label: string;
-  onSelect?: () => void;
-  icon?: ReactNode;
-  /** Renders the item in destructive (red) colours */
+type DropdownItemBase = {
   variant?: 'default' | 'destructive';
   /** Renders a separator line above this item */
   separatorBefore?: boolean;
   /** Disables this item */
   disabled?: boolean;
 };
+
+export type DropdownItem =
+  | (DropdownItemBase & {
+      label: string;
+      onSelect?: () => void;
+      icon?: ReactNode;
+      asChild?: false;
+    })
+  | (DropdownItemBase & {
+      /**
+       * Renders the item as a wrapper around a custom element (e.g. a
+       * next/link, for navigation items) instead of the built-in
+       * label+icon layout. The item's own classes — including the
+       * destructive variant, if set — are merged onto the child via
+       * Radix's Slot. No onSelect here: the child's own click/keyboard
+       * behavior (e.g. the anchor's) drives the action.
+       */
+      asChild: true;
+      children: ReactNode;
+    });
 
 export type DropdownProps = {
   /** The element that opens the menu */
@@ -35,23 +51,31 @@ export type DropdownProps = {
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
-const DropdownItemRow = ({ item }: { item: DropdownItem }) => (
-  <DropdownMenu.Item
-    onSelect={item.onSelect}
-    disabled={item.disabled}
-    className={clsx(
-      'flex cursor-pointer select-none items-center gap-2 rounded-lg px-2.5 py-2 outline-none',
-      'text-body-sm transition-colors duration-75',
-      'data-disabled:pointer-events-none data-disabled:text-foreground/60',
-      item.variant === 'destructive'
-        ? 'text-destructive data-highlighted:bg-destructive/10 data-highlighted:text-destructive'
-        : 'text-popover-foreground data-highlighted:bg-accent data-highlighted:text-accent-foreground',
-    )}
-  >
-    {item.icon}
-    {item.label}
-  </DropdownMenu.Item>
-);
+const DropdownItemRow = ({ item }: { item: DropdownItem }) => {
+  const className = clsx(
+    'flex cursor-pointer select-none items-center gap-2 rounded-lg px-2.5 py-2 outline-none',
+    'text-body-sm transition-colors duration-75',
+    'data-disabled:pointer-events-none data-disabled:text-foreground/60',
+    item.variant === 'destructive'
+      ? 'text-destructive data-highlighted:bg-destructive/10 data-highlighted:text-destructive'
+      : 'text-popover-foreground data-highlighted:bg-accent data-highlighted:text-accent-foreground',
+  );
+
+  return item.asChild ? (
+    <DropdownMenu.Item asChild disabled={item.disabled} className={className}>
+      {item.children}
+    </DropdownMenu.Item>
+  ) : (
+    <DropdownMenu.Item
+      onSelect={item.onSelect}
+      disabled={item.disabled}
+      className={className}
+    >
+      {item.icon}
+      {item.label}
+    </DropdownMenu.Item>
+  );
+};
 
 // ─── Main component ───────────────────────────────────────────────────────────
 
