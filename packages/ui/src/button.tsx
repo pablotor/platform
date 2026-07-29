@@ -47,6 +47,8 @@ const buttonVariants = cva(
         // weight/caution instead of inviting the click.
         destructive:
           'border-transparent bg-destructive/10 text-destructive hover:bg-destructive/20 hover:brightness-90 focus-visible:focusable-destructive! dark:bg-destructive/20 dark:hover:bg-destructive/30',
+        pressed:
+          'border-transparent bg-card text-foreground shadow-xs hover:bg-card/90',
       },
       size: {
         default:
