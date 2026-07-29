@@ -1,5 +1,4 @@
 'use client';
-
 import Button from '@repo/ui/button';
 import { ArrowDownNarrowWide, ArrowUpNarrowWide } from 'lucide-react';
 import { useQueryState } from 'nuqs';

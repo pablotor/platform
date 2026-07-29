@@ -1,5 +1,7 @@
 'use client';
 
+import Button from '@repo/ui/button';
+import ButtonGroup from '@repo/ui/buttonGroup';
 import { LayoutGrid, List, Rows3 } from 'lucide-react';
 import { useQueryState } from 'nuqs';
 
@@ -32,35 +34,27 @@ const ViewSwitcher = () => {
   const [view, setView] = useQueryState('view', postsSearchParamsParsers.view);
 
   return (
-    <div
-      className="flex items-center gap-1 rounded-lg border border-border bg-muted/50 p-1"
-      role="group"
-      aria-label="View"
-    >
-      {VIEWS.map(({ value, label, Icon, disabled, disabledReason }) => (
-        <button
-          key={value}
-          type="button"
-          disabled={disabled}
-          title={disabled ? disabledReason : label}
-          aria-pressed={view === value}
-          onClick={() => setView(value)}
-          className={`
-            flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-ui
-            transition-colors duration-200 disabled:cursor-not-allowed
-            disabled:opacity-40 focus-visible:focusable-outline
-            ${
-              view === value
-                ? 'bg-card text-foreground shadow-sm'
-                : 'text-muted-foreground hover:text-foreground'
-            }
-          `}
-        >
-          <Icon className="size-4" />
-          <span className="sr-only sm:not-sr-only">{label}</span>
-        </button>
-      ))}
-    </div>
+    <ButtonGroup aria-label="View">
+      {VIEWS.map(({ value, label, Icon, disabled, disabledReason }) => {
+        const isActive = view === value;
+
+        return (
+          <Button
+            key={value}
+            type="button"
+            variant={isActive ? 'pressed' : 'ghost'}
+            size="sm"
+            disabled={disabled}
+            title={disabled ? disabledReason : label}
+            aria-pressed={isActive}
+            onClick={() => setView(value)}
+          >
+            <Icon data-icon="inline-start" />
+            <span className="sr-only sm:not-sr-only">{label}</span>
+          </Button>
+        );
+      })}
+    </ButtonGroup>
   );
 };
 
