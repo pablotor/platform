@@ -14,7 +14,7 @@ const SignInForm = () => {
   const router = useRouter();
 
   const { action, register, isSubmitting } = useForm<SignInContract>(
-    async (payload: SignInContract) => {
+    async (payload) => {
       await authClient.signIn.email(payload, {
         onSuccess: () => {
           router.refresh();

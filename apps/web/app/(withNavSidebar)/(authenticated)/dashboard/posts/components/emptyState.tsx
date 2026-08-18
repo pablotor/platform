@@ -12,7 +12,7 @@ const EmptyState = () => (
     <Button
       variant="default"
       as={Link}
-      href={ROUTES.authenticated.dashboard.posts.new}
+      href={ROUTES.authenticated.dashboard.posts.create}
     >
       New post
     </Button>

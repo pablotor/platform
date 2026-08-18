@@ -62,7 +62,7 @@ const Input = ({
     </div>
     {showErrorText && (
       <div className="min-h-4 mt-2 text-overline">
-        {error && <p className="text-destructive text-xs">{error}</p>}
+        {error && <p className="text-destructive text-body-xs">{error}</p>}
       </div>
     )}
   </div>

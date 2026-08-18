@@ -48,6 +48,7 @@ const useForm = <U extends Record<keyof U, unknown>>(
         submitToast.update({ mode: 'error', content: 'Validation error' });
         if (e instanceof ZodError) {
           console.warn('Validation failed', e.message);
+          console.warn({ rawData });
           setErrorObject({
             formSubmit: '',
             ...Object.fromEntries(
@@ -76,14 +77,15 @@ const useForm = <U extends Record<keyof U, unknown>>(
   );
 
   const register = useCallback(
-    (
-      name: keyof U,
-    ): Partial<ComponentProps<'input'>> & {
+    <K extends keyof U>(
+      name: K,
+    ): Partial<Omit<ComponentProps<'input'>, 'defaultValue' | 'name'>> & {
+      name: K;
+      defaultValue: U[K];
       error?: string;
     } => ({
-      name: name as string,
-      defaultValue:
-        (actionState[name] as string | number | readonly string[]) || '',
+      name,
+      defaultValue: (actionState[name] as unknown as U[K]) ?? ('' as U[K]),
       onBlur: (event) =>
         validationSchema
           .pick({ [name]: true } as Record<string, true>)
@@ -102,7 +104,7 @@ const useForm = <U extends Record<keyof U, unknown>>(
               }));
             }
           }),
-      error: errorObject[name],
+      error: errorObject[name as string],
     }),
     [actionState, errorObject, validationSchema],
   );

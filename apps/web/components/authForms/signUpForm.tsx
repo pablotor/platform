@@ -67,7 +67,7 @@ const PASSWORD_STRENGTH_CONFIG: PasswordStrength[] = [
 const SignUpForm = () => {
   const router = useRouter();
   const { action, register, isSubmitting } = useForm<SignUpContract>(
-    async (payload: SignUpContract) => {
+    async (payload) => {
       await authClient.signUp.email(payload, {
         onSuccess: () => {
           router.refresh();

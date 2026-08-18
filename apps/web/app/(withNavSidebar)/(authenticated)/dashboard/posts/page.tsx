@@ -43,7 +43,7 @@ const DashboardPostsPage = async ({ searchParams }: PageProps) => {
             variant="default"
             as={Link}
             size="sm"
-            href={ROUTES.authenticated.dashboard.posts.new}
+            href={ROUTES.authenticated.dashboard.posts.create}
           >
             <Plus strokeWidth={2.5} />
             New post
