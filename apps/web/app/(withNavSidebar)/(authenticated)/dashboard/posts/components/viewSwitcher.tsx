@@ -5,7 +5,7 @@ import ButtonGroup from '@repo/ui/buttonGroup';
 import { LayoutGrid, List, Rows3 } from 'lucide-react';
 import { useQueryState } from 'nuqs';
 
-import { postsSearchParamsParsers } from '../postsSearchParams';
+import { postsSearchParams } from '../postsSearchParams';
 
 const VIEWS = [
   {
@@ -31,7 +31,7 @@ const VIEWS = [
 ];
 
 const ViewSwitcher = () => {
-  const [view, setView] = useQueryState('view', postsSearchParamsParsers.view);
+  const [view, setView] = useQueryState('view', postsSearchParams.view);
 
   return (
     <ButtonGroup aria-label="View">

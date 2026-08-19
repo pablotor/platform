@@ -3,13 +3,10 @@ import Button from '@repo/ui/button';
 import { ArrowDownNarrowWide, ArrowUpNarrowWide } from 'lucide-react';
 import { useQueryState } from 'nuqs';
 
-import { postsSearchParamsParsers } from '../postsSearchParams';
+import { postsSearchParams } from '../postsSearchParams';
 
 const OrderControl = () => {
-  const [order, setOrder] = useQueryState(
-    'order',
-    postsSearchParamsParsers.order,
-  );
+  const [order, setOrder] = useQueryState('order', postsSearchParams.order);
   const isDesc = order === 'desc';
 
   return (
