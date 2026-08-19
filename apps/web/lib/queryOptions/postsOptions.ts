@@ -1,4 +1,4 @@
-import { PostQuery, PostResponse } from '@repo/contracts';
+import { CreatePost, PostQuery, PostResponse } from '@repo/contracts';
 import { Toast } from '@repo/ui/toast/handler';
 import { mutationOptions, queryOptions } from '@tanstack/react-query';
 
@@ -50,5 +50,31 @@ export const postDeleteMutationOptions = (
       queryClient.invalidateQueries({ queryKey: [postsKey] });
     },
     onSettled: options.onSettled,
+  });
+};
+
+export const postCreateMutationOptions = (
+  options: { toast?: Toast; onSuccess?: () => void } = {},
+) => {
+  const createPost = (payload: CreatePost) =>
+    apiClient.post<PostResponse, CreatePost>('/posts', payload);
+  const queryClient = getQueryClient();
+  const toastKey = 'post-create';
+
+  return mutationOptions({
+    mutationFn: (payload: CreatePost) =>
+      createPost(payload).then(({ data }) => data),
+    onMutate: () => options.toast?.({ toastKey, mode: 'loading' }),
+    onError: (e) =>
+      options.toast?.({
+        toastKey,
+        mode: 'error',
+        content: `Operation failed: ${e.message}`,
+      }),
+    onSuccess: () => {
+      options.toast?.({ toastKey, mode: 'success', content: 'Post created' });
+      queryClient.invalidateQueries({ queryKey: [postsKey] });
+      options.onSuccess?.();
+    },
   });
 };

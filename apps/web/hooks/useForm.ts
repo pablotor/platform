@@ -11,28 +11,21 @@ import { z, ZodError } from 'zod';
  * React19 took
  */
 const useForm = <U extends Record<keyof U, unknown>>(
-  onSubmit: (formPayload: U) => void | Promise<void>,
+  onSubmit: (formPayload: U) => unknown | Promise<unknown>,
   validationSchema: z.ZodObject,
   options: {
     defaultValues?: Partial<U>;
-    successMessage?: string;
   } = {},
 ) => {
   const [errorObject, setErrorObject] = useState<{
-    formSubmit: string;
     [key: string]: string;
-  }>({
-    formSubmit: '',
-  });
-
-  const { toast } = useToast();
+  }>({});
 
   const [actionState, action, isSubmitting] = useActionState<
     Partial<U>,
     FormData
   >(
     async (_state, formData) => {
-      const submitToast = toast({ mode: 'loading' });
       setErrorObject({
         formSubmit: '',
       });
@@ -40,12 +33,7 @@ const useForm = <U extends Record<keyof U, unknown>>(
       try {
         const submitPayload = validationSchema.parse(rawData) as U;
         await onSubmit(submitPayload);
-        submitToast.update({
-          mode: 'success',
-          content: options.successMessage,
-        });
       } catch (e) {
-        submitToast.update({ mode: 'error', content: 'Validation error' });
         if (e instanceof ZodError) {
           console.warn('Validation failed', e.message);
           console.warn({ rawData });
@@ -57,15 +45,6 @@ const useForm = <U extends Record<keyof U, unknown>>(
                 innerError.message,
               ]),
             ),
-          });
-        } else if (e instanceof Error) {
-          submitToast.update({
-            mode: 'error',
-            content: e.message,
-            duration: Infinity,
-          });
-          setErrorObject({
-            formSubmit: e.message,
           });
         } else {
           throw e;

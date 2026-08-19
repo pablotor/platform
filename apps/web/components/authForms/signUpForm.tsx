@@ -11,6 +11,7 @@ import PasswordCreationInput, {
   type PasswordRequirement,
   type PasswordStrength,
 } from '@repo/ui/passwordCreationInput';
+import { useToast } from '@repo/ui/toast/handler';
 import { useRouter } from 'next/navigation';
 
 import { DEFAULT_AUTHENTICATED_ROUTE } from '../../common/routes';
@@ -66,26 +67,38 @@ const PASSWORD_STRENGTH_CONFIG: PasswordStrength[] = [
 
 const SignUpForm = () => {
   const router = useRouter();
+  const { toast } = useToast();
+  const toastKey = 'signup-toast';
   const { action, register, isSubmitting } = useForm<SignUpContract>(
     async (payload) => {
       await authClient.signUp.email(payload, {
+        onRequest: () => {
+          toast({
+            toastKey,
+            mode: 'loading',
+          });
+        },
         onSuccess: () => {
           router.refresh();
           router.push(DEFAULT_AUTHENTICATED_ROUTE);
+          toast({
+            toastKey,
+            mode: 'success',
+            content: 'Registration complete',
+          });
         },
         onError: ({ error }) => {
-          console.error('Signup error: ', error.message);
-          throw new Error(
-            error.message ||
-              "We couldn't sign you up. If this error persist contact support",
-          );
+          const errorMessage = `Sign Up error: ${error.message || "We couldn't sign you up. If this error persist contact support"}`;
+          console.error(errorMessage);
+          toast({
+            toastKey,
+            mode: 'error',
+            content: errorMessage,
+          });
         },
       });
     },
     SignUpSchema,
-    {
-      successMessage: 'Registration complete',
-    },
   );
 
   return (

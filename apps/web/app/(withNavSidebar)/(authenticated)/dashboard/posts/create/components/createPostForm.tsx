@@ -3,22 +3,30 @@
 import { CreatePost, CreatePostSchema } from '@repo/contracts';
 import Button from '@repo/ui/button';
 import Input from '@repo/ui/input';
+import { useToast } from '@repo/ui/toast/handler';
+import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
 import ROUTES from '../../../../../../../common/routes';
 import useForm from '../../../../../../../hooks/useForm';
-import apiClient from '../../../../../../../lib/apiClient';
+import { postCreateMutationOptions } from '../../../../../../../lib/queryOptions/postsOptions';
 import ContentFormWrapper from './contentFormWrapper';
 
 const CreatePostForm = () => {
   const router = useRouter();
-  const { action, register } = useForm<CreatePost>(async (payload) => {
-    await apiClient.post('/posts', payload, {
+  const { toast } = useToast();
+  const { mutateAsync: createPostAsync } = useMutation(
+    postCreateMutationOptions({
+      toast,
       onSuccess: () => {
         router.push(ROUTES.authenticated.dashboard.posts.root);
       },
-    });
-  }, CreatePostSchema);
+    }),
+  );
+  const { action, register } = useForm<CreatePost>(
+    createPostAsync,
+    CreatePostSchema,
+  );
   return (
     <form action={action} className="flex flex-col h-full">
       <div className="flex justify-between">
