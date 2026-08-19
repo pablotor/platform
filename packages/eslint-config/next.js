@@ -18,7 +18,7 @@ export const nextJsConfig = [
   js.configs.recommended,
   eslintConfigPrettier,
   ...tseslint.configs.recommended,
-  ...tankstackQuery.configs.recommended,
+  ...tankstackQuery.configs['flat/recommended-strict'],
   {
     ...pluginReact.configs.flat.recommended,
     languageOptions: {
