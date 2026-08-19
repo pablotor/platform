@@ -5,7 +5,7 @@ import {
 } from '@tanstack/react-query';
 import type { SearchParams } from 'nuqs/server';
 
-import postsOptions from '../../../../../lib/queryOptions/postsQueryOptions';
+import { postsQueryOptions } from '../../../../../lib/queryOptions/postsOptions';
 import { getUser } from '../../../../../lib/userContext';
 import PostListHeader from './components/postListHeader';
 import PostListPanel from './components/postListPanel';
@@ -20,7 +20,9 @@ const DashboardPostsPage = async ({ searchParams }: PageProps) => {
   const user = await getUser();
 
   const queryClient = new QueryClient();
-  await queryClient.prefetchQuery(postsOptions({ authorId: user?.id, order }));
+  await queryClient.prefetchQuery(
+    postsQueryOptions({ authorId: user?.id, order }),
+  );
 
   return (
     <div className="mx-auto flex max-w-4xl flex-col gap-6 px-6 py-10">

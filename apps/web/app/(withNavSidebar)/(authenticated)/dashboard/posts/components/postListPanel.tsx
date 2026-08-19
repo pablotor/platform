@@ -3,7 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useQueryStates } from 'nuqs';
 
-import postsQueryOptions from '../../../../../../lib/queryOptions/postsQueryOptions';
+import { postsQueryOptions } from '../../../../../../lib/queryOptions/postsOptions';
 import { postsSearchParams } from '../postsSearchParams';
 import EmptyState from './emptyState';
 import PostList from './postList';

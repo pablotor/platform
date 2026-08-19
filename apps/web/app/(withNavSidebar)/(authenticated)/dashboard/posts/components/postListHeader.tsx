@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { useQueryStates } from 'nuqs';
 
 import ROUTES from '../../../../../../common/routes';
-import postsQueryOptions from '../../../../../../lib/queryOptions/postsQueryOptions';
+import { postsQueryOptions } from '../../../../../../lib/queryOptions/postsOptions';
 import { postsSearchParams } from '../postsSearchParams';
 
 type postListHeaderProps = {

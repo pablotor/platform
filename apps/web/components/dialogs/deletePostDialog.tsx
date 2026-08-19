@@ -3,7 +3,10 @@
 import type { PostResponse } from '@repo/contracts';
 import Button from '@repo/ui/button';
 import Dialog from '@repo/ui/dialog';
-import { useState } from 'react';
+import { useToast } from '@repo/ui/toast/handler';
+import { useMutation } from '@tanstack/react-query';
+
+import { postDeleteMutationOptions } from '../../lib/queryOptions/postsOptions';
 
 type DeletePostDialogProps = {
   post: PostResponse;
@@ -16,16 +19,13 @@ const DeletePostDialog = ({
   open,
   onOpenChange,
 }: DeletePostDialogProps) => {
-  const [isDeleting, setIsDeleting] = useState(false);
-
-  const handleDelete = async () => {
-    setIsDeleting(true);
-    // TODO: call DELETE /posts/:slug via apiClient, then close the dialog
-    // and refresh the list (router.refresh() or equivalent revalidation).
-    // Not implemented yet — this is the confirm-dialog shell only.
-    setIsDeleting(false);
-    onOpenChange(false);
-  };
+  const { toast } = useToast();
+  const { mutate: handleDelete, isPending: isDeleting } = useMutation(
+    postDeleteMutationOptions(post.slug, {
+      toast,
+      onSettled: () => onOpenChange(false),
+    }),
+  );
 
   return (
     <Dialog
@@ -40,7 +40,7 @@ const DeletePostDialog = ({
           </Button>
           <Button
             variant="destructive"
-            onClick={handleDelete}
+            onClick={() => handleDelete()}
             disabled={isDeleting}
           >
             {isDeleting ? 'Deleting…' : 'Delete post'}

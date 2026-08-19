@@ -103,7 +103,7 @@ const baseRequest = async <
     options.onError(error);
   }
 
-  const data: R = await response.json();
+  const data: R = await response.json().catch(() => undefined);
 
   options?.onSuccess?.(data);
 
