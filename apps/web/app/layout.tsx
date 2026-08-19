@@ -1,11 +1,11 @@
 import './globals.css';
 
-import { ToastProvider } from '@repo/ui/toast/provider';
 import clsx from 'clsx';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
-import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import { PropsWithChildren } from 'react';
+
+import Providers from './providers';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -55,9 +55,7 @@ const RootLayout = async ({ children }: Readonly<PropsWithChildren>) => (
         ubuntuSans.variable,
       )}
     >
-      <NuqsAdapter>
-        <ToastProvider>{children}</ToastProvider>
-      </NuqsAdapter>
+      <Providers>{children}</Providers>
     </body>
   </html>
 );
