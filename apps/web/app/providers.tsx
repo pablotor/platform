@@ -2,7 +2,7 @@ import { ToastProvider } from '@repo/ui/toast/provider';
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import { PropsWithChildren } from 'react';
 
-import QueryClientProvider from './providers/queryClientProvider';
+import QueryClientProvider from '../providers/queryClientProvider';
 
 const Providers = ({ children }: PropsWithChildren) => (
   <NuqsAdapter>
