@@ -1,4 +1,3 @@
-import { useToast } from '@repo/ui/toast/handler';
 import { ComponentProps, useActionState, useCallback, useState } from 'react';
 import { z, ZodError } from 'zod';
 
@@ -26,9 +25,7 @@ const useForm = <U extends Record<keyof U, unknown>>(
     FormData
   >(
     async (_state, formData) => {
-      setErrorObject({
-        formSubmit: '',
-      });
+      setErrorObject({});
       const rawData = Object.fromEntries(formData.entries()) as Partial<U>;
       try {
         const submitPayload = validationSchema.parse(rawData) as U;
@@ -37,15 +34,14 @@ const useForm = <U extends Record<keyof U, unknown>>(
         if (e instanceof ZodError) {
           console.warn('Validation failed', e.message);
           console.warn({ rawData });
-          setErrorObject({
-            formSubmit: '',
-            ...Object.fromEntries(
+          setErrorObject(
+            Object.fromEntries(
               e.issues.map((innerError) => [
                 innerError.path,
                 innerError.message,
               ]),
             ),
-          });
+          );
         } else {
           throw e;
         }
@@ -91,7 +87,6 @@ const useForm = <U extends Record<keyof U, unknown>>(
   return {
     action,
     register,
-    submitError: errorObject.formSubmit,
     isSubmitting,
   };
 };
