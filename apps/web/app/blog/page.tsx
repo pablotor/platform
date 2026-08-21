@@ -1,6 +1,8 @@
 import { Fragment } from 'react';
 
-import { FeaturedPost, Post, PostRow } from './postCard';
+import LatestPost from './components/latestPost';
+import { Post } from './components/postCardsCommon';
+import { PostRow } from './components/postRow';
 
 /**
  * Swap for a real data fetch (DB query / API call). Shape matches the
@@ -76,9 +78,9 @@ async function getPosts(): Promise<Post[]> {
 
 const BlogPage = async () => {
   const posts = await getPosts();
-  const [featured, ...rest] = posts;
+  const [latest, ...rest] = posts;
 
-  if (!featured) return;
+  if (!latest) return;
 
   return (
     <main>
@@ -92,16 +94,17 @@ const BlogPage = async () => {
         />
 
         <div className="relative mx-auto flex max-w-5xl flex-row-reverse flex-nowrap gap-12 px-6 py-16 sm:py-20">
-          {/* Featured post — right side on large screens */}
+          {/* Latest post — right side on large screens */}
           <div className="flex-1 lg:w-1/2">
-            <FeaturedPost post={featured} />
+            <LatestPost post={latest} />
           </div>
 
           {/* Secondary stack — left side, separated by hairlines */}
-          <div className="hidden lg:flex lg:w-5/12 flex-col justify-center gap-6">
+          {/* WEIRD BUG: hidden wins over lg:flex, so it had to be changed to max-lg:hidden */}
+          <div className="max-lg:hidden lg:flex lg:w-5/12 flex-col justify-center gap-6">
             {rest.slice(0, 3).map((post, index, array) => (
               <Fragment key={`post-${post.slug}-key`}>
-                <PostRow post={post} variant="secondary" />
+                <PostRow post={post} variant="secondary" hideExcerpt />
                 {index + 1 !== array.length && (
                   <div className="h-px w-8 bg-border" />
                 )}
@@ -118,6 +121,14 @@ const BlogPage = async () => {
             Older posts
           </h2>
           <div className="flex flex-col gap-8">
+            {rest.slice(0, 3).map((post, index, array) => (
+              <div key={`post-${post.slug}-key`} className="lg:hidden">
+                <PostRow post={post} variant="secondary" />
+                {index + 1 !== array.length && (
+                  <div className="h-px w-8 bg-border" />
+                )}
+              </div>
+            ))}
             {rest.slice(3).map((post, index, array) => (
               <Fragment key={`post-${post.slug}-key`}>
                 <PostRow post={post} variant="primary" />
