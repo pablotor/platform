@@ -13,13 +13,14 @@ type HeaderVariant = 'public' | 'authenticated' | 'authFlow';
 
 type HeaderProps = {
   variant: HeaderVariant;
+  withNavSidebar?: boolean;
   user?: UserContextData | null;
 };
 
-const Header = ({ variant, user }: HeaderProps) => (
+const Header = ({ variant, withNavSidebar, user }: HeaderProps) => (
   <header className="sticky top-0 z-50 shrink-0 w-full border-b border-border bg-background/80 backdrop-blur-md">
     <nav className="mx-auto flex h-(--header-height) max-w-5xl items-center justify-between px-6">
-      {variant === 'authenticated' && <NavSidebarButton />}
+      {withNavSidebar && <NavSidebarButton />}
 
       <Button
         variant="ghost"

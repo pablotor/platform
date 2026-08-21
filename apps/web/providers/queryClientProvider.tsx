@@ -3,7 +3,7 @@
 import { QueryClientProvider as BaseQueryClientProvider } from '@tanstack/react-query';
 import { PropsWithChildren } from 'react';
 
-import getQueryClient from '../../lib/queryClient';
+import getQueryClient from '../lib/queryClient';
 
 const QueryClientProvider = ({ children }: PropsWithChildren) => {
   // NOTE: Avoid useState when initializing the query client if you don't
