@@ -2,29 +2,25 @@ import Link from 'next/link';
 
 import ROUTES from '../common/routes';
 import GithubLogo from './logos/github';
+import PablotorLogo from './logos/pablotor';
 import PoweredBy from './poweredBy';
 
 const Footer = () => {
   const githubUrl = process.env.NEXT_PUBLIC_GITHUB_URL;
-  const year = new Date().getFullYear();
 
   return (
     <footer className="border-t border-border bg-background">
-      <div className="mx-auto flex max-w-5xl flex-col gap-6 px-6 py-12">
+      <div className="mx-auto flex max-w-5xl flex-col gap-6 px-6 pt-6 pb-12">
         {/* Top row: wordmark + nav */}
-        <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
-          {/* Wordmark — mirrors the header, no link needed since
-              we're already on the platform */}
-          <span className="text-lg font-bold tracking-tight">
-            <span className="gradient-primary text-gradient">PabloTor</span>{' '}
-            <span className="text-muted-foreground font-light">Platform</span>
-          </span>
-
+        <div className="flex justify-between items-center">
           {/* Nav links */}
-          <nav
-            aria-label="Footer navigation"
-            className="flex flex-wrap gap-x-6 gap-y-2"
-          >
+          <nav aria-label="Footer navigation" className="flex flex-col">
+            <Link
+              href={ROUTES.public.blog.root}
+              className="text-link text-body-sm"
+            >
+              Blog
+            </Link>
             <Link
               href={ROUTES.public.docs.root}
               className="text-link text-body-sm"
@@ -38,6 +34,7 @@ const Footer = () => {
               Dashboard
             </Link>
           </nav>
+          <PablotorLogo variant="vertical" />
         </div>
 
         {/* Divider */}
@@ -45,9 +42,9 @@ const Footer = () => {
 
         {/* Bottom row: copyright + powered by + github */}
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-3">
+          <div className="flex-col gap-1 sm:flex-row flex sm:items-center sm:gap-3">
             <span className="text-body-xs text-muted-foreground">
-              © {year} PabloTor. All rights reserved.
+              © 2026 PabloTor. All rights reserved.
             </span>
             <span className="hidden text-muted-foreground/40 sm:inline">·</span>
             <PoweredBy />
