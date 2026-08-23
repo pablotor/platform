@@ -14,10 +14,7 @@ const LatestPost = ({ post }: { post: Post }) => (
   <article
     id={`card-${post.slug}`}
     data-id={post.slug}
-    className="relative flex flex-col gap-3 border-l-2 border-transparent pl-6"
-    style={{
-      borderImage: 'linear-gradient(to bottom, #3b82f6, #4338ca) 1',
-    }}
+    className="relative flex flex-col gap-3 border-l-2 pl-6"
   >
     {/* Latest badge — uses primary-foreground on brand-primary surface,
         the correct token pairing for light text on a brand-colored bg */}
@@ -30,7 +27,7 @@ const LatestPost = ({ post }: { post: Post }) => (
       {post.kicker && <Kicker>{post.kicker}</Kicker>}
       <h2 className="text-display">
         <Link
-          className="text-link decoration-transparent hover:decoration-current"
+          className="text-link decoration-transparent border-transparent text-gradient bg-linear-to-b from-brand-primary-from to-brand-primary hover:decoration-current"
           href={ROUTES.public.blog.post(post.slug)}
         >
           {post.title}

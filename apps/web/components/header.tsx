@@ -35,9 +35,11 @@ const Header = ({
         variant="ghost"
         as={Link}
         href={
-          logoHref || variant === 'authenticated'
-            ? DEFAULT_AUTHENTICATED_ROUTE
-            : DEFAULT_PUBLIC_ROUTE
+          logoHref
+            ? logoHref
+            : variant === 'authenticated'
+              ? DEFAULT_AUTHENTICATED_ROUTE
+              : DEFAULT_PUBLIC_ROUTE
         }
         className="flex items-center gap-2"
       >
