@@ -1,12 +1,19 @@
 import {
+  BadRequestException,
   ConflictException,
-  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import type { CreatePost, PatchPost, PostQuery } from '@repo/contracts';
+import type {
+  CreatePost,
+  PostEntity,
+  PostPublicQuery,
+  PostQuery,
+  PostStatus,
+  UpdatePost,
+} from '@repo/contracts';
 
-import { PostsRepository, PostWithAuthor } from './posts.repository';
+import { PostsRepository, PublishedPostWithAuthor } from './posts.repository';
 import { buildSlug } from './posts.slug';
 
 const MAX_SLUG_ATTEMPTS = 20;
@@ -15,50 +22,95 @@ const MAX_SLUG_ATTEMPTS = 20;
 export class PostsService {
   constructor(private readonly postsRepository: PostsRepository) {}
 
-  async create(data: CreatePost, authorId: string): Promise<PostWithAuthor> {
-    const slug = await this.resolveAvailableSlug(buildSlug(data.title));
-    return this.postsRepository.create({ ...data, slug, authorId });
-  }
-
-  async patch(
-    slug: string,
-    data: PatchPost,
-    requesterId: string,
-  ): Promise<PostWithAuthor> {
-    const post = await this.findPostOrThrow(slug);
-    this.assertOwnership(post, requesterId);
-    const { title, content } = data;
-    return this.postsRepository.update(post.id, { title, content });
-  }
-
-  async delete(slug: string, requesterId: string): Promise<void> {
-    const post = await this.findPostOrThrow(slug);
-    this.assertOwnership(post, requesterId);
-    await this.postsRepository.delete(post.id);
-  }
-
-  findMany(query: PostQuery): Promise<PostWithAuthor[]> {
-    return this.postsRepository.findMany(query);
-  }
-
-  findBySlug(slug: string): Promise<PostWithAuthor> {
-    return this.findPostOrThrow(slug);
-  }
-
-  private async findPostOrThrow(slug: string): Promise<PostWithAuthor> {
-    const post = await this.postsRepository.findBySlug(slug);
+  private async findPostOrThrow(
+    id: string,
+    authorId: string,
+  ): Promise<PostEntity> {
+    const post = await this.postsRepository.find(id, authorId);
     if (!post) {
       throw new NotFoundException('Post not found');
     }
     return post;
   }
 
-  private assertOwnership(post: PostWithAuthor, requesterId: string): void {
-    if (post.author.id !== requesterId) {
-      throw new ForbiddenException(
-        'You do not have permission to modify this post',
+  async create(data: CreatePost, requesterId: string): Promise<PostEntity> {
+    const slug = await this.resolveAvailableSlug(
+      data.slug || buildSlug(data.title),
+    );
+    return this.postsRepository.create({
+      ...data,
+      slug,
+      authorId: requesterId,
+    });
+  }
+
+  async update(
+    id: string,
+    data: UpdatePost,
+    requesterId: string,
+  ): Promise<PostEntity> {
+    const post = await this.postsRepository.find(id, requesterId);
+    if (!post) {
+      throw new NotFoundException('Post not found');
+    }
+    if (post.status === 'ARCHIVED') {
+      throw new BadRequestException('An archived post cannot be modified');
+    }
+    return this.postsRepository.update(id, data, requesterId);
+  }
+
+  async updatePublicationStatus(
+    id: string,
+    status: PostStatus,
+    requesterId: string,
+  ): Promise<PostEntity> {
+    if (status === 'DRAFT') {
+      throw new BadRequestException(
+        'A post publication status cannot be changed to draft.',
       );
     }
+    const post = await this.postsRepository.find(id, requesterId);
+    if (!post) {
+      throw new NotFoundException('Post not found');
+    }
+    if (post.status === 'ARCHIVED') {
+      throw new BadRequestException('An archived post cannot be modified');
+    }
+    if (post.status === status) {
+      throw new BadRequestException(`Post is already ${status}.`);
+    }
+    if (post.status === 'DRAFT' && status === 'UNPUBLISHED') {
+      throw new BadRequestException(
+        'A draft post can only be published or archived.',
+      );
+    }
+    return this.postsRepository.updateStatus(id, status, requesterId);
+  }
+
+  async delete(id: string, requesterId: string): Promise<void> {
+    await this.postsRepository.delete(id, requesterId);
+  }
+
+  findMany(query: PostQuery, requesterId: string): Promise<PostEntity[]> {
+    return this.postsRepository.findMany(query, requesterId);
+  }
+
+  findManyPublished(
+    query: PostPublicQuery,
+  ): Promise<PublishedPostWithAuthor[]> {
+    return this.postsRepository.findManyPublished(query);
+  }
+
+  find(id: string, requesterId: string): Promise<PostEntity> {
+    return this.findPostOrThrow(id, requesterId);
+  }
+
+  async findPublishedBySlug(slug: string): Promise<PublishedPostWithAuthor> {
+    const post = await this.postsRepository.findPublishedBySlug(slug);
+    if (!post) {
+      throw new NotFoundException('Post not found');
+    }
+    return post;
   }
 
   private async resolveAvailableSlug(baseSlug: string): Promise<string> {
