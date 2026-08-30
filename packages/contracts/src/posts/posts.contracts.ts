@@ -2,13 +2,20 @@ import { z } from 'zod';
 
 import { responseTimestamp } from '../common/responseTimestamp';
 import { PostEntitySchema } from './posts.entity';
-import { PostTitleSchema } from './posts.primitives';
+import {
+  PostSlugSchema,
+  PostStatusSchema,
+  PostTitleSchema,
+} from './posts.primitives';
 
-// Create: client supplies title + content only. Server derives id, slug,
-// authorId, and timestamps. Extra validations added to reject titles
-// like "!!!" that would generate an invalid slug
 export const CreatePostSchema = PostEntitySchema.pick({
   content: true,
+  excerpt: true,
+  kicker: true,
+  category: true,
+  seoTitle: true,
+  seoDescription: true,
+  isFeatured: true,
 }).extend({
   title: PostTitleSchema.refine(
     (value) =>
@@ -20,38 +27,88 @@ export const CreatePostSchema = PostEntitySchema.pick({
       message: 'must contain more than 5 letters or numbers',
     },
   ),
+  slug: PostSlugSchema.optional(),
 });
 export type CreatePost = z.infer<typeof CreatePostSchema>;
 
-// Patch: same shape, all optional — partial update, per the confirmed
+// Update: same shape, all optional — partial update, per the confirmed
 // decision that editing a post doesn't require resending the whole thing.
-// Slug is deliberately excluded — it's immutable after creation.
-export const PatchPostSchema = CreatePostSchema.partial();
-export type PatchPost = z.infer<typeof PatchPostSchema>;
+export const UpdatePostSchema = CreatePostSchema.omit({
+  isFeatured: true,
+})
+  .extend({
+    isFeatured: z.boolean(),
+  })
+  .partial();
 
-// Query: list filters + sort direction + pagination bounds. No `total` in
-// the response for v1 (confirmed) — page/limit still bound result size.
+export type UpdatePost = z.infer<typeof UpdatePostSchema>;
+
+export const UpdatePostStatusSchema = PostEntitySchema.pick({
+  id: true,
+}).extend({
+  status: PostStatusSchema,
+});
+
+export type UpdatePostStatus = z.infer<typeof UpdatePostStatusSchema>;
+
+// GET posts/:id
+// Authenticated post info
+export const PostResponseSchema = PostEntitySchema.omit({
+  publishedAt: true,
+  createdAt: true,
+  updatedAt: true,
+}).extend({
+  publishedAt: responseTimestamp.nullish(),
+  createdAt: responseTimestamp,
+  updatedAt: responseTimestamp,
+});
+
+export type PostResponse = z.infer<typeof PostResponseSchema>;
+
+// GET posts/
+// Authenticated post query. Gathers all post from authenticated user
 export const PostQuerySchema = z.object({
-  authorId: z.string().optional(),
   order: z.enum(['asc', 'desc']).default('desc'),
   page: z.coerce.number().int().positive().default(1),
   limit: z.coerce.number().int().positive().max(100).default(20),
 });
+
 export type PostQuery = z.infer<typeof PostQuerySchema>;
 
-// Response: public shape. Embeds minimal author info (via a Prisma `include`
-// at the repository layer, confirmed) rather than a bare authorId, so the
-// frontend can render "by <name>" without a second fetch.
-export const PostResponseSchema = PostEntitySchema.omit({
+export const PostQueryResponseSchema = z.array(
+  PostResponseSchema.omit({ content: true }),
+);
+
+// GET public/posts/:slug
+// Public post data
+export const PostPublicResponseSchema = PostResponseSchema.omit({
+  id: true,
+  status: true,
   authorId: true,
+  publishedAt: true,
   createdAt: true,
-  updatedAt: true,
 }).extend({
   author: z.object({
     id: z.string(),
     name: z.string(),
   }),
-  createdAt: responseTimestamp,
-  updatedAt: responseTimestamp,
+  publishedAt: responseTimestamp,
 });
-export type PostResponse = z.infer<typeof PostResponseSchema>;
+
+export type PostPublicResponse = z.infer<typeof PostPublicResponseSchema>;
+
+// GET public/posts/
+// Public published posts listing data
+export const PostPublicQuerySchema = PostQuerySchema.extend({
+  authorId: z.string().optional(),
+});
+
+export type PostPublicQuery = z.infer<typeof PostPublicQuerySchema>;
+
+export const PostPublicQueryResponseSchema = z.array(
+  PostPublicResponseSchema.omit({ content: true }),
+);
+
+export type PostPublicQueryResponse = z.infer<
+  typeof PostPublicQueryResponseSchema
+>;
