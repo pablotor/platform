@@ -61,10 +61,10 @@ export class PostsService {
 
   async updatePublicationStatus(
     id: string,
-    status: PostStatus,
+    newStatus: PostStatus,
     requesterId: string,
   ): Promise<PostEntity> {
-    if (status === 'DRAFT') {
+    if (newStatus === 'DRAFT') {
       throw new BadRequestException(
         'A post publication status cannot be changed to draft.',
       );
@@ -76,15 +76,24 @@ export class PostsService {
     if (post.status === 'ARCHIVED') {
       throw new BadRequestException('An archived post cannot be modified');
     }
-    if (post.status === status) {
-      throw new BadRequestException(`Post is already ${status}.`);
+    if (post.status === newStatus) {
+      throw new BadRequestException(`Post is already ${newStatus}.`);
     }
-    if (post.status === 'DRAFT' && status === 'UNPUBLISHED') {
+    if (post.status === 'DRAFT' && newStatus === 'UNPUBLISHED') {
       throw new BadRequestException(
         'A draft post can only be published or archived.',
       );
     }
-    return this.postsRepository.updateStatus(id, status, requesterId);
+    return this.postsRepository.updateStatus(
+      id,
+      {
+        status: newStatus,
+        ...(post.status === 'DRAFT' && newStatus === 'PUBLISHED'
+          ? { publishedAt: new Date() }
+          : {}),
+      },
+      requesterId,
+    );
   }
 
   async delete(id: string, requesterId: string): Promise<void> {

@@ -123,14 +123,12 @@ export class PostsRepository {
 
   updateStatus(
     id: string,
-    status: PostStatus,
+    data: { status: PostStatus; publishedAt?: Date },
     authorId: string,
   ): Promise<PostEntity> {
     return this.prisma.blogPost.update({
       where: { id, authorId },
-      data: {
-        status,
-      },
+      data,
       include: { author: { select: AUTHOR_SELECT } },
     });
   }
