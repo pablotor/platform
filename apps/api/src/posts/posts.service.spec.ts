@@ -331,7 +331,7 @@ describe('PostsService', () => {
       );
       expect(postsRepository.updateStatus).toHaveBeenCalledWith(
         existing.id,
-        PUBLISHED,
+        { status: PUBLISHED, publishedAt: expect.any(Date) },
         requesterId,
       );
       expect(result).toBe(updated);
@@ -349,7 +349,7 @@ describe('PostsService', () => {
 
       expect(postsRepository.updateStatus).toHaveBeenCalledWith(
         existing.id,
-        ARCHIVED,
+        { status: ARCHIVED },
         requesterId,
       );
     });
@@ -370,7 +370,7 @@ describe('PostsService', () => {
 
       expect(postsRepository.updateStatus).toHaveBeenCalledWith(
         existing.id,
-        UNPUBLISHED,
+        { status: UNPUBLISHED },
         requesterId,
       );
     });
@@ -394,7 +394,7 @@ describe('PostsService', () => {
 
       expect(postsRepository.updateStatus).toHaveBeenCalledWith(
         existing.id,
-        PUBLISHED,
+        { status: PUBLISHED },
         requesterId,
       );
     });
