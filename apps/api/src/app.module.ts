@@ -6,6 +6,7 @@ import { ZodSerializerInterceptor, ZodValidationPipe } from 'nestjs-zod';
 import { AuthModule } from './common/auth/auth.module';
 import appConfig from './common/config/config';
 import { PrismaService } from './common/prisma/prisma.service';
+import { PrismaClientExceptionFilter } from './common/prisma/prisma-client-exception.filter';
 import {
   ZodHttpExceptionFilter,
   ZodSchemaDeclarationExceptionFilter,
@@ -30,6 +31,10 @@ import { PostsModule } from './posts/posts.module';
   controllers: [],
   providers: [
     PrismaService,
+    {
+      provide: APP_FILTER,
+      useClass: PrismaClientExceptionFilter,
+    },
     {
       provide: APP_PIPE,
       useClass: ZodValidationPipe,
