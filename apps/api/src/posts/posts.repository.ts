@@ -1,5 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import type { PostEntity, PostQuery } from '@repo/contracts';
+import type {
+  PostEntity,
+  PostPublicQuery,
+  PostQuery,
+  PostStatus,
+} from '@repo/contracts';
 
 import { PrismaService } from '../common/prisma/prisma.service';
 
@@ -9,12 +14,43 @@ export type PostWithAuthor = Omit<PostEntity, 'authorId'> & {
   author: { id: string; name: string };
 };
 
+export type PublishedPost = Omit<PostEntity, 'status' | 'publishedAt'> & {
+  status: 'PUBLISHED';
+  publishedAt: Date;
+};
+
+export type PublishedPostWithAuthor = Omit<PublishedPost, 'authorId'> & {
+  author: { id: string; name: string };
+};
+
 export type CreatePostData = Pick<
   PostEntity,
-  'title' | 'slug' | 'content' | 'authorId'
+  | 'authorId'
+  | 'title'
+  | 'slug'
+  | 'content'
+  | 'excerpt'
+  | 'kicker'
+  | 'category'
+  | 'seoTitle'
+  | 'seoDescription'
+  | 'isFeatured'
 >;
 
-export type UpdatePostData = Partial<Pick<PostEntity, 'title' | 'content'>>;
+export type UpdatePostData = Partial<
+  Pick<
+    PostEntity,
+    | 'title'
+    | 'slug'
+    | 'content'
+    | 'excerpt'
+    | 'kicker'
+    | 'category'
+    | 'seoTitle'
+    | 'seoDescription'
+    | 'isFeatured'
+  >
+>;
 
 const AUTHOR_SELECT = { id: true, name: true } as const;
 
@@ -22,24 +58,37 @@ const AUTHOR_SELECT = { id: true, name: true } as const;
 export class PostsRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(data: CreatePostData): Promise<PostWithAuthor> {
+  create(data: CreatePostData): Promise<PostEntity> {
     return this.prisma.blogPost.create({
       data,
-      include: { author: { select: AUTHOR_SELECT } },
     });
   }
 
-  async findBySlug(slug: string): Promise<PostWithAuthor | null> {
+  find(id: string, authorId: string): Promise<PostEntity | null> {
+    return this.prisma.blogPost.findUnique({
+      where: { id, authorId },
+    });
+  }
+
+  findBySlug(slug: string): Promise<PostEntity | null> {
     return this.prisma.blogPost.findUnique({
       where: { slug },
-      include: { author: { select: AUTHOR_SELECT } },
     });
   }
 
-  async findMany(query: PostQuery): Promise<PostWithAuthor[]> {
-    const { authorId, order, page, limit } = query;
+  async findPublishedBySlug(
+    slug: string,
+  ): Promise<PublishedPostWithAuthor | null> {
+    return this.prisma.blogPost.findUnique({
+      where: { slug, status: 'PUBLISHED', publishedAt: { not: null } },
+      include: { author: { select: AUTHOR_SELECT } },
+    }) as Promise<PublishedPostWithAuthor | null>;
+  }
+
+  findMany(query: PostQuery, authorId: string): Promise<PostEntity[]> {
+    const { order, page, limit } = query;
     return this.prisma.blogPost.findMany({
-      where: authorId ? { authorId } : undefined,
+      where: { authorId },
       orderBy: { createdAt: order },
       skip: (page - 1) * limit,
       take: limit,
@@ -47,15 +96,46 @@ export class PostsRepository {
     });
   }
 
-  async update(id: string, data: UpdatePostData): Promise<PostWithAuthor> {
+  findManyPublished(
+    query: PostPublicQuery,
+  ): Promise<PublishedPostWithAuthor[]> {
+    const { authorId, order, page, limit } = query;
+    return this.prisma.blogPost.findMany({
+      where: { status: 'PUBLISHED', ...(authorId ? { authorId } : {}) },
+      orderBy: { createdAt: order },
+      skip: (page - 1) * limit,
+      take: limit,
+      include: { author: { select: AUTHOR_SELECT } },
+    }) as Promise<PublishedPostWithAuthor[]>;
+  }
+
+  update(
+    id: string,
+    data: UpdatePostData,
+    authorId: string,
+  ): Promise<PostEntity> {
     return this.prisma.blogPost.update({
-      where: { id },
+      where: { id, authorId },
       data,
       include: { author: { select: AUTHOR_SELECT } },
     });
   }
 
-  async delete(id: string): Promise<void> {
-    await this.prisma.blogPost.delete({ where: { id } });
+  updateStatus(
+    id: string,
+    status: PostStatus,
+    authorId: string,
+  ): Promise<PostEntity> {
+    return this.prisma.blogPost.update({
+      where: { id, authorId },
+      data: {
+        status,
+      },
+      include: { author: { select: AUTHOR_SELECT } },
+    });
+  }
+
+  async delete(id: string, authorId: string): Promise<void> {
+    await this.prisma.blogPost.delete({ where: { id, authorId } });
   }
 }
