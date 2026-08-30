@@ -8,17 +8,20 @@ import {
   Param,
   Patch,
   Post,
+  Put,
   Query,
 } from '@nestjs/common';
 import type { UserSession } from '@thallesp/nestjs-better-auth';
-import { AllowAnonymous, Session } from '@thallesp/nestjs-better-auth';
+import { Session } from '@thallesp/nestjs-better-auth';
 import { ZodResponse } from 'nestjs-zod';
 
 import {
   CreatePostDto,
-  PatchPostDto,
   PostQueryDto,
+  PostQueryResponseDto,
   PostResponseDto,
+  UpdatePostDto,
+  UpdatePostStatusDto,
 } from './posts.dto';
 import { PostsService } from './posts.service';
 
@@ -32,35 +35,44 @@ export class PostsController {
     return this.postsService.create(dto, session.user.id);
   }
 
-  @Patch(':slug')
+  @Put(':id')
   @ZodResponse({ type: PostResponseDto })
-  patch(
-    @Param('slug') slug: string,
-    @Body() dto: PatchPostDto,
+  put(
+    @Param('id') id: string,
+    @Body() dto: UpdatePostDto,
     @Session() session: UserSession,
   ) {
-    return this.postsService.patch(slug, dto, session.user.id);
+    return this.postsService.update(id, dto, session.user.id);
   }
 
-  @Delete(':slug')
-  @HttpCode(HttpStatus.NO_CONTENT)
-  delete(@Param('slug') slug: string, @Session() session: UserSession) {
-    return this.postsService.delete(slug, session.user.id);
-  }
-
-  // Order matters: the bare GET must be declared before GET ':slug', or
-  // Nest will never reach this one for a request to /posts.
-  @Get()
-  @AllowAnonymous()
-  @ZodResponse({ type: [PostResponseDto] })
-  findMany(@Query() query: PostQueryDto) {
-    return this.postsService.findMany(query);
-  }
-
-  @Get(':slug')
-  @AllowAnonymous()
+  @Patch(':id/:status')
   @ZodResponse({ type: PostResponseDto })
-  findBySlug(@Param('slug') slug: string) {
-    return this.postsService.findBySlug(slug);
+  patchStatus(
+    @Param() params: UpdatePostStatusDto,
+    @Session() session: UserSession,
+  ) {
+    return this.postsService.updatePublicationStatus(
+      params.id,
+      params.status,
+      session.user.id,
+    );
+  }
+
+  @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  delete(@Param('id') id: string, @Session() session: UserSession) {
+    return this.postsService.delete(id, session.user.id);
+  }
+
+  @Get()
+  @ZodResponse({ type: PostQueryResponseDto })
+  findMany(@Query() query: PostQueryDto, @Session() session: UserSession) {
+    return this.postsService.findMany(query, session.user.id);
+  }
+
+  @Get(':id')
+  @ZodResponse({ type: PostResponseDto })
+  findBySlug(@Param('id') id: string, @Session() session: UserSession) {
+    return this.postsService.find(id, session.user.id);
   }
 }
