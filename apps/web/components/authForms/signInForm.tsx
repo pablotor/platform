@@ -15,7 +15,7 @@ const SignInForm = () => {
   const router = useRouter();
   const { toast } = useToast();
   const toastKey = 'signin-toast';
-  const { action, register, isSubmitting } = useForm<SignInContract>(
+  const { registerForm, register, isSubmitting } = useForm<SignInContract>(
     async (payload) =>
       authClient.signIn.email(payload, {
         onRequest: () => {
@@ -48,7 +48,7 @@ const SignInForm = () => {
 
   return (
     <AuthFormWrapper mode="signin">
-      <form action={action} className="flex flex-col gap-4">
+      <form {...registerForm()} className="flex flex-col gap-4">
         <Input
           id="email"
           label="Email"
