@@ -240,9 +240,9 @@ export const SimpleEditor = ({
 
       <div
         className="
-          h-full max-h-full flex flex-col rounded-lg border transition-[color,box-shadow]
+          h-64 max-h-full flex flex-col rounded-lg border border-input shadow-sm
           aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20
-          focus-within:focusable
+          focus-within:focusable transition-[color,box-shadow]
         "
         aria-invalid={!!error}
       >
