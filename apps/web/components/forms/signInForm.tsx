@@ -2,7 +2,7 @@
 
 import { SignInContract, SignInSchema } from '@repo/contracts';
 import Button from '@repo/ui/button';
-import Input from '@repo/ui/input';
+import Input from '@repo/ui/inputs/input';
 import { useToast } from '@repo/ui/toast/handler';
 import { useRouter } from 'next/navigation';
 

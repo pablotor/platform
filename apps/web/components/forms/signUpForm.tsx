@@ -6,7 +6,7 @@ import {
   SignUpSchema,
 } from '@repo/contracts';
 import Button from '@repo/ui/button';
-import Input from '@repo/ui/input';
+import Input from '@repo/ui/inputs/input';
 import PasswordCreationInput, {
   type PasswordRequirement,
   type PasswordStrength,
