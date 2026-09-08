@@ -1,4 +1,4 @@
-import Placeholder from '../../../components/placeholder';
+import Placeholder from '../../../components/screens/placeholder';
 
 // TO BE IMPLEMENTED
 const DocsPage = async () => <Placeholder />;
