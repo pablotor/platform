@@ -1,6 +1,6 @@
 'use client';
 
-import type { PostResponse } from '@repo/contracts';
+import type { PostQueryResponse } from '@repo/contracts';
 import Button from '@repo/ui/button';
 import Dialog from '@repo/ui/dialog';
 import { useToast } from '@repo/ui/toast/handler';
@@ -9,20 +9,23 @@ import { useMutation } from '@tanstack/react-query';
 import { postDeleteMutationOptions } from '../../lib/queryOptions/postsOptions';
 
 type DeletePostDialogProps = {
-  post: PostResponse;
+  post: PostQueryResponse[number];
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  onSuccess?: () => void;
 };
 
 const DeletePostDialog = ({
   post,
   open,
   onOpenChange,
+  onSuccess,
 }: DeletePostDialogProps) => {
   const { toast } = useToast();
   const { mutate: handleDelete, isPending: isDeleting } = useMutation(
-    postDeleteMutationOptions(post.slug, {
+    postDeleteMutationOptions(post.id, {
       toast,
+      onSuccess,
       onSettled: () => onOpenChange(false),
     }),
   );
