@@ -1,16 +1,21 @@
 import Button from '@repo/ui/button';
 import Link from 'next/link';
 
-import ROUTES from '../common/routes';
+import ROUTES from '../../common/routes';
 
-const Placeholder = () => (
+type SimpleLayoutProps = {
+  title: string;
+  content: string;
+};
+
+const SimpleLayout = ({ title, content }: SimpleLayoutProps) => (
   <section className="mx-auto flex h-full max-w-5xl flex-col items-center justify-center px-6 py-10 text-center">
     <h4 className="max-w-2xl text-balance text-title sm:text-display">
-      There&apos;s not a lot to do here yet
+      {title}
     </h4>
 
     <p className="mt-6 max-w-xl text-pretty text-body sm:text-lead text-muted-foreground">
-      Don&apos;t worry. We&apos;ll fix that soon
+      {content}
     </p>
 
     <div className="mt-8 flex items-center gap-3">
@@ -29,4 +34,4 @@ const Placeholder = () => (
   </section>
 );
 
-export default Placeholder;
+export default SimpleLayout;
