@@ -1,8 +1,9 @@
+import { PostPublicQueryResponse } from '@repo/contracts';
 import { Star } from 'lucide-react';
 import Link from 'next/link';
 
 import ROUTES from '../../../common/routes';
-import { Byline, Kicker, type Post } from './postCardsCommon';
+import { Byline, Kicker } from '../../../components/post/postCommon';
 
 /**
  * Latest post — the single lead story at the top of the page.
@@ -10,7 +11,7 @@ import { Byline, Kicker, type Post } from './postCardsCommon';
  * Sits on --background, not a colored band, for cohesion with the rest
  * of the platform.
  */
-const LatestPost = ({ post }: { post: Post }) => (
+const LatestPost = ({ post }: { post: PostPublicQueryResponse[number] }) => (
   <article
     id={`card-${post.slug}`}
     data-id={post.slug}
@@ -38,7 +39,7 @@ const LatestPost = ({ post }: { post: Post }) => (
       )}
       <Byline
         author={post.author.name}
-        date={post.createdAt}
+        date={post.publishedAt}
         className="mt-1"
       />
     </div>

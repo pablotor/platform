@@ -1,11 +1,12 @@
+import { PostPublicQueryResponse } from '@repo/contracts';
 import clsx from 'clsx';
 import Link from 'next/link';
 
 import ROUTES from '../../../common/routes';
-import { Byline, Kicker, type Post } from './postCardsCommon';
+import { Byline, Kicker } from '../../../components/post/postCommon';
 
 type PostRowType = {
-  post: Post;
+  post: PostPublicQueryResponse[number];
   variant: 'primary' | 'secondary';
   hideExcerpt?: boolean;
 };
@@ -47,7 +48,7 @@ export const PostRow = ({
     )}
     <Byline
       author={post.author.name}
-      date={post.createdAt}
+      date={post.publishedAt}
       className="mt-0.5"
     />
   </article>
