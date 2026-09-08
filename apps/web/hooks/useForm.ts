@@ -1,3 +1,4 @@
+import { RegistrableFieldProps } from '@repo/ui/inputs/types';
 import {
   ComponentProps,
   useActionState,
@@ -7,6 +8,15 @@ import {
 } from 'react';
 import { z, ZodError } from 'zod';
 
+export type RegistrableElement =
+  | HTMLInputElement
+  | HTMLTextAreaElement
+  | HTMLSelectElement;
+
+type NullableObject<T> = {
+  [K in keyof T]: T[K] | null;
+};
+
 /**
  * useForm is a simplified version of the useForm library. It is:
  * - Validation first: a zod validation schema is required
@@ -15,11 +25,11 @@ import { z, ZodError } from 'zod';
  * - Action based: uses action instead of onSubmit as it's the direction
  * React19 took
  */
-const useForm = <U extends Record<keyof U, unknown>>(
+const useForm = <U extends Record<string, unknown>>(
   onSubmit: (formPayload: U) => unknown | Promise<unknown>,
   validationSchema: z.ZodObject,
   options: {
-    defaultValues?: Partial<U>;
+    defaultValues?: Partial<NullableObject<U>>;
     onValidationFail?: (error: ZodError) => void;
   } = {},
 ) => {
@@ -28,22 +38,6 @@ const useForm = <U extends Record<keyof U, unknown>>(
   const [errorObject, setErrorObject] = useState<{
     [key: string]: string;
   }>({});
-
-  const setFieldErrors = useCallback(
-    (errors: Record<string, string>) =>
-      setErrorObject((prev) => ({ ...prev, ...errors })),
-    [],
-  );
-
-  const clearFieldErrors = useCallback(
-    (fields: string[]) =>
-      setErrorObject((prev) => {
-        const next = { ...prev };
-        fields.forEach((field) => delete next[field]);
-        return next;
-      }),
-    [],
-  );
 
   const [actionState, action, isSubmitting] = useActionState<
     Partial<U>,
@@ -101,7 +95,6 @@ const useForm = <U extends Record<keyof U, unknown>>(
    */
   const onFormSubmit = useCallback(
     (event: React.SubmitEvent) => {
-      //
       const formData = new FormData(event.target);
       const rawData = Object.fromEntries(formData.entries());
       const result = validationSchema.safeParse(rawData);
@@ -117,6 +110,28 @@ const useForm = <U extends Record<keyof U, unknown>>(
       }
     },
     [validationSchema, options],
+  );
+
+  const validate = useCallback(
+    <K extends keyof U & string>(name: K, value: unknown) =>
+      validationSchema
+        .pick({ [name]: true } as Record<string, true>)
+        .parseAsync({ [name]: value })
+        .then(() =>
+          setErrorObject((prev) => ({
+            ...prev,
+            [name]: '',
+          })),
+        )
+        .catch((error) => {
+          if (error instanceof ZodError) {
+            setErrorObject((prev) => ({
+              ...prev,
+              [name]: error.issues[error.issues.length - 1]?.message || '',
+            }));
+          }
+        }),
+    [validationSchema],
   );
 
   /**
@@ -151,36 +166,20 @@ const useForm = <U extends Record<keyof U, unknown>>(
    * what "uncontrolled but reactive" refers to in the module doc above.
    */
   const register = useCallback(
-    <K extends keyof U>(
+    <
+      K extends keyof U & string,
+      Element extends RegistrableElement = HTMLInputElement,
+    >(
       name: K,
-    ): Partial<Omit<ComponentProps<'input'>, 'defaultValue' | 'name'>> & {
-      name: K;
-      defaultValue: U[K];
-      error?: string;
-    } => ({
+    ): RegistrableFieldProps<U[K], Element> & { name: K } => ({
       name,
-      defaultValue: (actionState[name] as unknown as U[K]) ?? ('' as U[K]),
-      onBlur: (event) =>
-        validationSchema
-          .pick({ [name]: true } as Record<string, true>)
-          .parseAsync({ [name]: event.target.value })
-          .then(() =>
-            setErrorObject((prev) => ({
-              ...prev,
-              [name]: '',
-            })),
-          )
-          .catch((error) => {
-            if (error instanceof ZodError) {
-              setErrorObject((prev) => ({
-                ...prev,
-                [name]: error.issues[error.issues.length - 1]?.message || '',
-              }));
-            }
-          }),
+      defaultValue:
+        (actionState[name] as unknown as NonNullable<U[K]>) ??
+        ('' as NonNullable<U[K]>),
+      onBlur: (event) => validate(name, event.target.value),
       error: errorObject[name as string],
     }),
-    [actionState, errorObject, validationSchema],
+    [actionState, errorObject, validate],
   );
 
   /**
@@ -220,20 +219,60 @@ const useForm = <U extends Record<keyof U, unknown>>(
    */
   const registerForm = useCallback(
     (): Pick<ComponentProps<'form'>, 'ref' | 'action' | 'onSubmit'> => ({
-      ref: formRef,
       action,
       onSubmit: onFormSubmit,
+      ref: formRef,
     }),
     [action, onFormSubmit],
+  );
+
+  /**
+   * If fields is not provided, all fields are checked
+   */
+  const validateFields = useCallback(
+    (fields?: (keyof U)[]) => {
+      if (!formRef.current) {
+        console.error('Form ref was not mounted');
+        return;
+      }
+      const entries = Array.from(new FormData(formRef.current).entries());
+      const rawData = Object.fromEntries(
+        fields ? entries.filter(([key]) => fields.includes(key)) : entries,
+      );
+      const filteredValidationSchema = fields
+        ? validationSchema.pick(
+            Object.fromEntries(fields.map((field) => [field, true])) as Record<
+              string,
+              true
+            >,
+          )
+        : validationSchema;
+      const validationResult = filteredValidationSchema.safeParse(rawData);
+      setErrorObject((prev) => {
+        const newErrors = Object.fromEntries(
+          validationResult.error?.issues.map((innerError) => [
+            innerError.path,
+            innerError.message,
+          ]) || [],
+        );
+        if (!fields) return newErrors;
+        const prevErrors = Object.fromEntries(
+          Object.entries(prev).filter(([key]) => !fields.includes(key)),
+        );
+        return { ...prevErrors, ...newErrors };
+      });
+      return validationResult;
+    },
+    [validationSchema, formRef],
   );
 
   return {
     registerForm,
     register,
     isSubmitting,
-    formRef,
-    setFieldErrors,
-    clearFieldErrors,
+    errorObject,
+    validate,
+    validateFields,
   };
 };
 
