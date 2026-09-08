@@ -1,7 +1,8 @@
-import { useState } from 'react';
-import { Eye, EyeOff, Check, Circle } from 'lucide-react';
-import { ZodString } from 'zod';
 import clsx from 'clsx';
+import { Check, Circle, Eye, EyeOff } from 'lucide-react';
+import { useState } from 'react';
+import { ZodString } from 'zod';
+
 import Input, { InputProps } from './input';
 
 export type PasswordRequirement = {
@@ -43,6 +44,7 @@ const PasswordCreationInput = ({
         label="Password"
         placeholder="Enter your password"
         type={visible ? 'text' : 'password'}
+        defaultValue=""
         onChange={(event) => {
           const validationResult = validationSchema.safeParse(
             event.target.value,
