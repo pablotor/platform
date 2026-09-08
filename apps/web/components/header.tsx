@@ -1,5 +1,6 @@
 import Button from '@repo/ui/button';
 import { NavSidebarButton } from '@repo/ui/navSidebar';
+import clsx from 'clsx';
 import Link from 'next/link';
 
 import ROUTES, {
@@ -28,7 +29,12 @@ const Header = ({
   user,
 }: HeaderProps) => (
   <header className="sticky top-0 z-50 shrink-0 w-full border-b border-border bg-background/80 backdrop-blur-md">
-    <nav className="mx-auto flex h-(--header-height) max-w-5xl items-center justify-between px-6">
+    <nav
+      className={clsx(
+        'mx-auto flex h-(--header-height) items-center justify-between px-6',
+        !withNavSidebar && 'max-w-5xl',
+      )}
+    >
       {withNavSidebar && <NavSidebarButton />}
 
       <Button
