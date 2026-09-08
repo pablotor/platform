@@ -10,10 +10,12 @@ import Providers from './providers';
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
   variable: '--font-geist-sans',
+  preload: false,
 });
 const geistMono = localFont({
   src: './fonts/GeistMonoVF.woff',
   variable: '--font-mono',
+  preload: false,
 });
 const ubuntuSans = localFont({
   src: [
@@ -39,6 +41,7 @@ const ubuntuSans = localFont({
     },
   ],
   variable: '--font-sans',
+  preload: false,
 });
 
 export const metadata: Metadata = {
