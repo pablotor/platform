@@ -80,7 +80,7 @@ describe('PostsController', () => {
       await testApp.request.post('/posts').send(validPayload).expect(201);
 
       expect(postsService.create).toHaveBeenCalledWith(
-        { ...validPayload, isFeatured: false },
+        { ...validPayload },
         'user_1',
       );
     });
@@ -312,7 +312,7 @@ describe('PostsController', () => {
       await testApp.request.get('/posts').expect(200);
 
       expect(postsService.findMany).toHaveBeenCalledWith(
-        expect.objectContaining({ order: 'desc', page: 1, limit: 20 }),
+        expect.objectContaining({ order: 'desc' }),
         'user_1',
       );
     });
@@ -332,7 +332,7 @@ describe('PostsController', () => {
     it('returns 400 on an invalid query param', async () => {
       testApp.setSession(fakeSession('user_1'));
 
-      await testApp.request.get('/posts?page=not-a-number').expect(400);
+      await testApp.request.get('/posts?order=not-a-number').expect(400);
       expect(postsService.findMany).not.toHaveBeenCalled();
     });
 

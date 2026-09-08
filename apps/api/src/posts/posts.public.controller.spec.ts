@@ -77,7 +77,7 @@ describe('PostsController', () => {
       await testApp.request.get('/public/posts').expect(200);
 
       expect(postsService.findManyPublished).toHaveBeenCalledWith(
-        expect.objectContaining({ order: 'desc', page: 1, limit: 20 }),
+        expect.objectContaining({ order: 'desc' }),
       );
     });
 
@@ -92,7 +92,7 @@ describe('PostsController', () => {
     });
 
     it('returns 400 on an invalid query param', async () => {
-      await testApp.request.get('/public/posts?page=not-a-number').expect(400);
+      await testApp.request.get('/public/posts?order=not-a-number').expect(400);
       expect(postsService.findManyPublished).not.toHaveBeenCalled();
     });
   });

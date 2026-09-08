@@ -34,8 +34,9 @@ export type CreatePostData = Pick<
   | 'category'
   | 'seoTitle'
   | 'seoDescription'
-  | 'isFeatured'
->;
+> & {
+  isFeatured?: boolean;
+};
 
 export type UpdatePostData = Partial<
   Pick<
@@ -86,12 +87,12 @@ export class PostsRepository {
   }
 
   findMany(query: PostQuery, authorId: string): Promise<PostEntity[]> {
-    const { order, page, limit } = query;
+    const { order } = query;
     return this.prisma.blogPost.findMany({
       where: { authorId },
       orderBy: { createdAt: order },
-      skip: (page - 1) * limit,
-      take: limit,
+      // skip: (page - 1) * limit,
+      // take: limit,
       include: { author: { select: AUTHOR_SELECT } },
     });
   }
@@ -99,12 +100,12 @@ export class PostsRepository {
   findManyPublished(
     query: PostPublicQuery,
   ): Promise<PublishedPostWithAuthor[]> {
-    const { authorId, order, page, limit } = query;
+    const { authorId, order } = query;
     return this.prisma.blogPost.findMany({
       where: { status: 'PUBLISHED', ...(authorId ? { authorId } : {}) },
       orderBy: { createdAt: order },
-      skip: (page - 1) * limit,
-      take: limit,
+      // skip: (page - 1) * limit,
+      // take: limit,
       include: { author: { select: AUTHOR_SELECT } },
     }) as Promise<PublishedPostWithAuthor[]>;
   }

@@ -418,7 +418,7 @@ describe('PostsService', () => {
 
   describe('findMany', () => {
     it('passes the query and requesterId straight through to the repository', async () => {
-      const query: PostQuery = { order: 'desc', page: 1, limit: 20 };
+      const query: PostQuery = { order: 'desc' };
       const requesterId = randUuid();
       postsRepository.findMany.mockResolvedValue([fakePost()]);
 
@@ -430,7 +430,7 @@ describe('PostsService', () => {
 
   describe('findManyPublished', () => {
     it('passes the query straight through to the repository', async () => {
-      const query: PostQuery = { order: 'asc', page: 1, limit: 20 };
+      const query: PostQuery = { order: 'asc' };
       postsRepository.findManyPublished.mockResolvedValue([
         fakePublishedPost(),
       ]);
