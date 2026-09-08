@@ -13,9 +13,21 @@ const NAV_ITEMS: NavItem[] = [
     href: ROUTES.authenticated.dashboard.root,
   },
   {
-    type: 'link',
+    type: 'group',
     label: 'Posts',
-    href: ROUTES.authenticated.dashboard.posts.root,
+    children: [
+      {
+        type: 'link',
+        label: 'Listing',
+        href: ROUTES.authenticated.dashboard.posts.root,
+      },
+
+      {
+        type: 'link',
+        label: 'Create',
+        href: ROUTES.authenticated.dashboard.posts.create,
+      },
+    ],
   },
 ];
 
