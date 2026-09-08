@@ -1,26 +1,20 @@
 import { z } from 'zod';
 
-// IMPORTANT: DO NOT ADD REFINE TO PRIMITIVE SCHEMAS.
-// WHEN USED IN THE ENTITY SCHEMA, BREAKS THE SERIALIZATION
-// ATTACHED DIRECTLY TO THE CREATE/PATCH/UPDATE CONTRACT
-export const PostTitleSchema = z.string().trim().min(5).max(200);
-
-export const PostContentSchema = z.string().trim().min(1).max(50_000); // markdown, text-only
-
-export const PostSlugSchema = z
+// Raw validators (_title, _slug, …) hold only value-shape rules, no presence modifiers.
+export const _title = z.string().trim().min(5).max(200);
+export const _content = z.string().trim().min(1).max(50_000);
+export const _slug = z
   .string()
+  .min(5)
+  .max(32)
   .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'must be lowercase, hyphen-separated');
-
-export const PostStatusSchema = z.enum([
+export const _status = z.enum([
   'DRAFT',
   'PUBLISHED',
   'UNPUBLISHED',
   'ARCHIVED',
 ]);
-
-export type PostStatus = z.infer<typeof PostStatusSchema>;
-
-export const CategorySchema = z.enum([
+export const _category = z.enum([
   'BACKEND',
   'FRONTEND',
   'ARCHITECTURE',
@@ -28,5 +22,10 @@ export const CategorySchema = z.enum([
   'CODE',
   'EDITORIAL',
 ]);
+export const _excerpt = z.string();
+export const _kicker = z.string();
+export const _seoTitle = z.string();
+export const _seoDescription = z.string();
 
-export type Category = z.infer<typeof CategorySchema>;
+export type Category = z.infer<typeof _category>;
+export type PostStatus = z.infer<typeof _status>;

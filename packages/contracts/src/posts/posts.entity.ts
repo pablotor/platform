@@ -1,37 +1,40 @@
 import { z } from 'zod';
 
 import {
-  CategorySchema,
-  PostContentSchema,
-  PostSlugSchema,
-  PostStatusSchema,
-  PostTitleSchema,
+  _category,
+  _content,
+  _excerpt,
+  _kicker,
+  _seoDescription,
+  _seoTitle,
+  _slug,
+  _status,
+  _title,
 } from './posts.primitives';
 
 // Mirrors the BlogPost Prisma model exactly. Never exposed directly as an
-// API contract — always compose a purpose-built Create/Patch/Query/Response
-// schema from this instead.
+// API contract. It composes raw validators with .nullish()/.default().
 export const PostEntitySchema = z.object({
   id: z.string(),
 
   // Core content
-  title: PostTitleSchema,
-  slug: PostSlugSchema,
-  content: PostContentSchema,
-  excerpt: z.string().nullish(),
-  kicker: z.string().nullish(),
+  title: _title,
+  slug: _slug,
+  content: _content,
+  excerpt: _excerpt.nullish(),
+  kicker: _kicker.nullish(),
 
   authorId: z.string(),
 
   // Metadata
-  category: CategorySchema.nullish(),
+  category: _category.nullish(),
 
-  seoTitle: z.string().nullish(),
-  seoDescription: z.string().nullish(),
+  seoTitle: _seoTitle.nullish(),
+  seoDescription: _seoDescription.nullish(),
 
   // Publishing
   isFeatured: z.boolean().default(false),
-  status: PostStatusSchema.default('DRAFT'),
+  status: _status.default('DRAFT'),
   publishedAt: z.date().nullish(),
 
   createdAt: z.date(),
