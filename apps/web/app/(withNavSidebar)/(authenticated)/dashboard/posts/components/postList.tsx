@@ -1,9 +1,9 @@
-import type { PostResponse } from '@repo/contracts';
+import type { PostQueryResponse } from '@repo/contracts';
 
 import PostListItem from './postListItem';
 
 type PostListProps = {
-  posts: PostResponse[];
+  posts: PostQueryResponse;
   view: 'list' | 'compact' | 'grid';
 };
 

@@ -1,8 +1,8 @@
 'use client';
 
-import type { PostResponse } from '@repo/contracts';
+import type { PostQueryResponse } from '@repo/contracts';
 import Dropdown from '@repo/ui/dropdown';
-import { Edit3, Eye, Info, MoreHorizontal, Trash2 } from 'lucide-react';
+import { Edit3, Eye, MoreHorizontal, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 
@@ -10,7 +10,7 @@ import ROUTES from '../../../../../../common/routes';
 import DeletePostDialog from '../../../../../../components/dialogs/deletePostDialog';
 
 type PostRowActionsProps = {
-  post: PostResponse;
+  post: PostQueryResponse[number];
 };
 
 const PostRowActions = ({ post }: PostRowActionsProps) => {
@@ -30,7 +30,7 @@ const PostRowActions = ({ post }: PostRowActionsProps) => {
             asChild: true,
             children: (
               <Link
-                href={ROUTES.public.blog.post(post.slug)}
+                href={ROUTES.authenticated.dashboard.posts.preview(post.id)}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -39,19 +39,19 @@ const PostRowActions = ({ post }: PostRowActionsProps) => {
               </Link>
             ),
           },
+          // {
+          //   asChild: true,
+          //   children: (
+          //     <Link href={ROUTES.authenticated.dashboard.posts.info(post.id)}>
+          //       <Info className="size-4" />
+          //       View details
+          //     </Link>
+          //   ),
+          // },
           {
             asChild: true,
             children: (
-              <Link href={ROUTES.authenticated.dashboard.posts.info(post.slug)}>
-                <Info className="size-4" />
-                View details
-              </Link>
-            ),
-          },
-          {
-            asChild: true,
-            children: (
-              <Link href={ROUTES.authenticated.dashboard.posts.edit(post.slug)}>
+              <Link href={ROUTES.authenticated.dashboard.posts.edit(post.id)}>
                 <Edit3 className="size-4" />
                 Edit
               </Link>

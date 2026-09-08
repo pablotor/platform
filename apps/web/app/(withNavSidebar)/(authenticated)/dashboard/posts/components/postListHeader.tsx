@@ -11,14 +11,10 @@ import ROUTES from '../../../../../../common/routes';
 import { postsQueryOptions } from '../../../../../../lib/queryOptions/postsOptions';
 import { postsSearchParams } from '../postsSearchParams';
 
-type postListHeaderProps = {
-  authorId: string;
-};
-
-const PostListHeader = ({ authorId }: postListHeaderProps) => {
+const PostListHeader = () => {
   const [{ order }] = useQueryStates(postsSearchParams);
   const { data: posts } = useQuery({
-    ...postsQueryOptions({ authorId, order }),
+    ...postsQueryOptions({ order }),
   });
 
   return (

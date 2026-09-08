@@ -9,17 +9,13 @@ import EmptyState from './emptyState';
 import PostList from './postList';
 import PostsToolbar from './postsToolbar';
 
-type PostListPanelProps = {
-  authorId: string;
-};
-
-const PostListPanel = ({ authorId }: PostListPanelProps) => {
+const PostListPanel = () => {
   const [{ order, view }] = useQueryStates(postsSearchParams);
   const {
     data: posts,
     // isLoading,
     isSuccess,
-  } = useQuery({ ...postsQueryOptions({ authorId, order }) });
+  } = useQuery({ ...postsQueryOptions({ order }) });
 
   return (
     <>
