@@ -24,7 +24,7 @@ type UserMenuProps = {
 };
 
 const triggerClassName = clsx(
-  'relative group flex cursor-pointer items-center gap-1 font-sans outline-none',
+  'relative group flex cursor-pointer items-center gap-1 font-sans outline-none md:mr-4',
   'rounded-full border-2 border-border bg-background text-foreground md:border md:p-1 md:pr-2.5',
   'transition-colors duration-120 ease-in-out',
   'hover:border-input hover:bg-accent focus-visible:focusable active:scale-95',

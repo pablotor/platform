@@ -84,7 +84,14 @@ type NavGroupItemProps = {
 
 const NavGroupItem = ({ item, currentPath, linkAs }: NavGroupItemProps) => (
   <div className="flex flex-col">
-    <span className="text-label px-3 pb-1 pt-4 text-muted-foreground first:pt-2">
+    <span
+      className={clsx(
+        'text-ui px-3 pb-2 pt-4 first:pt-2',
+        item.children.some(({ href }) => href === currentPath)
+          ? 'text-muted-foreground'
+          : 'text-foreground',
+      )}
+    >
       {item.label}
     </span>
     <div className="flex flex-col gap-0.5 border-l border-sidebar-border ml-3 pl-2">
