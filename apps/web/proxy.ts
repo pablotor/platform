@@ -1,4 +1,4 @@
-import { headers } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
 import ROUTES, {
@@ -51,7 +51,8 @@ const protectedRoutesProxy = async (request: NextRequest) => {
   });
 
   if (!session) {
-    await authClient.signOut();
+    const cookieStore = await cookies();
+    cookieStore.delete('better-auth.session_token');
     return NextResponse.redirect(
       new URL(ROUTES.public.auth.signin, request.url),
     );
