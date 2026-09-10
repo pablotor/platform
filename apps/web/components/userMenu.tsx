@@ -2,8 +2,10 @@
 
 import BaseUserMenu, { UserMenuItem } from '@repo/ui/userMenu/userMenu';
 import { LogOut, Settings } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
 
+import ROUTES from '../common/routes';
 import authClient from '../lib/authClient';
 import { UserContextData } from '../lib/userContext';
 
@@ -13,6 +15,7 @@ type UserMenuProps = {
 
 const UserMenu = ({ user }: UserMenuProps) => {
   const router = useRouter();
+  const pathname = usePathname();
 
   const handleSignOut = async () => {
     await authClient.signOut();
@@ -22,10 +25,13 @@ const UserMenu = ({ user }: UserMenuProps) => {
 
   const items: UserMenuItem = [
     {
-      label: 'Settings',
-      icon: <Settings size={15} strokeWidth={2} />,
-      // onSelect: () => router.push('/settings'),
+      asChild: true,
       disabled: true,
+      children: (
+        <Link href={ROUTES.authenticated.dashboard.root}>
+          <Settings size={15} strokeWidth={2} /> Settings
+        </Link>
+      ),
     },
     {
       label: 'Log out',
@@ -36,7 +42,7 @@ const UserMenu = ({ user }: UserMenuProps) => {
     },
   ];
 
-  return <BaseUserMenu user={user} items={items} />;
+  return <BaseUserMenu user={user} items={items} currentPath={pathname} />;
 };
 
 export default UserMenu;

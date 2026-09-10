@@ -1,46 +1,17 @@
-import {
-  ArgumentsHost,
-  Catch,
-  HttpException,
-  Logger,
-  Module,
-} from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import {
-  APP_FILTER,
-  APP_INTERCEPTOR,
-  APP_PIPE,
-  BaseExceptionFilter,
-} from '@nestjs/core';
-import {
-  ZodSerializationException,
-  ZodSerializerInterceptor,
-  ZodValidationPipe,
-} from 'nestjs-zod';
-import { ZodError } from 'zod';
+import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
+import { ZodSerializerInterceptor, ZodValidationPipe } from 'nestjs-zod';
 
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { AuthModule } from './common/auth/auth.module';
 import appConfig from './common/config/config';
 import { PrismaService } from './common/prisma/prisma.service';
-
-@Catch(HttpException)
-class HttpExceptionFilter extends BaseExceptionFilter {
-  private logger = new Logger(HttpExceptionFilter.name);
-
-  catch(exception: HttpException, host: ArgumentsHost) {
-    if (exception instanceof ZodSerializationException) {
-      const zodError = exception.getZodError();
-
-      if (zodError instanceof ZodError) {
-        this.logger.error(`ZodSerializationException: ${zodError.message}`);
-      }
-    }
-
-    super.catch(exception, host);
-  }
-}
+import { PrismaClientExceptionFilter } from './common/prisma/prisma-client-exception.filter';
+import {
+  ZodHttpExceptionFilter,
+  ZodSchemaDeclarationExceptionFilter,
+} from './common/zod/zod.filters';
+import { PostsModule } from './posts/posts.module';
 
 @Module({
   imports: [
@@ -55,11 +26,15 @@ class HttpExceptionFilter extends BaseExceptionFilter {
       ],
       load: [appConfig],
     }),
+    PostsModule,
   ],
-  controllers: [AppController],
+  controllers: [],
   providers: [
-    AppService,
     PrismaService,
+    {
+      provide: APP_FILTER,
+      useClass: PrismaClientExceptionFilter,
+    },
     {
       provide: APP_PIPE,
       useClass: ZodValidationPipe,
@@ -70,7 +45,11 @@ class HttpExceptionFilter extends BaseExceptionFilter {
     },
     {
       provide: APP_FILTER,
-      useClass: HttpExceptionFilter,
+      useClass: ZodHttpExceptionFilter,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: ZodSchemaDeclarationExceptionFilter,
     },
   ],
 })

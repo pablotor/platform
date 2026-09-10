@@ -1,3 +1,4 @@
+import * as Slot from '@radix-ui/react-slot';
 import clsx from 'clsx';
 import { X } from 'lucide-react';
 
@@ -10,24 +11,32 @@ import { useUserSidebar } from './userSidebarProvider';
  * Main panel for the mobile userMenu, implementing the sidebar
  */
 
-const SidebarItemRow = ({ item }: { item: DropdownItem }) => (
-  <button
-    type="button"
-    onClick={item.onSelect}
-    disabled={item.disabled}
-    className={clsx(
-      'flex w-full items-center gap-2.5 rounded-lg px-3 py-2.5',
-      'text-ui outline-none transition-colors duration-75 select-none',
-      'disabled:pointer-events-none disabled:opacity-50',
-      item.variant === 'destructive'
-        ? 'text-destructive hover:bg-destructive/10'
-        : 'text-popover-foreground hover:bg-accent hover:text-accent-foreground',
-    )}
-  >
-    {item.icon}
-    {item.label}
-  </button>
-);
+const SidebarItemRow = ({ item }: { item: DropdownItem }) => {
+  const className = clsx(
+    'flex w-full items-center gap-2.5 rounded-lg px-3 py-2.5',
+    'text-ui outline-none transition-colors duration-75 select-none',
+    'cursor-pointer disabled:pointer-events-none',
+    'disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50',
+    item.variant === 'destructive'
+      ? 'text-destructive hover:bg-destructive/10'
+      : 'text-popover-foreground hover:bg-accent hover:text-accent-foreground',
+  );
+  return item.asChild ? (
+    <Slot.Root className={className} aria-disabled={item.disabled}>
+      {item.children}
+    </Slot.Root>
+  ) : (
+    <button
+      type="button"
+      onClick={item.onSelect}
+      disabled={item.disabled}
+      className={className}
+    >
+      {item.icon}
+      {item.label}
+    </button>
+  );
+};
 
 const MobileCloseButton = () => {
   const { close } = useUserSidebar();

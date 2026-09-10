@@ -2,10 +2,9 @@ import {
   ArgumentsHost,
   Catch,
   HttpException,
-  HttpServer,
   HttpStatus,
 } from '@nestjs/common';
-import { APP_FILTER, BaseExceptionFilter, HttpAdapterHost } from '@nestjs/core';
+import { BaseExceptionFilter } from '@nestjs/core';
 
 import { Prisma } from '../../../generated/prisma/client';
 
@@ -26,8 +25,6 @@ export type ErrorCodesStatusMapping = {
 @Catch(Prisma?.PrismaClientKnownRequestError)
 export class PrismaClientExceptionFilter extends BaseExceptionFilter {
   /**
-   * default error codes mapping
-   *
    * Error codes definition for Prisma Client (Query Engine)
    * @see https://www.prisma.io/docs/reference/api-reference/error-reference#prisma-client-query-engine
    */
@@ -36,38 +33,6 @@ export class PrismaClientExceptionFilter extends BaseExceptionFilter {
     P2002: HttpStatus.CONFLICT,
     P2025: HttpStatus.NOT_FOUND,
   };
-
-  private readonly userDefinedMapping?: ErrorCodesStatusMapping;
-
-  /**
-   * @param applicationRef
-   * @param errorCodesStatusMapping
-   */
-  constructor(
-    applicationRef?: HttpServer,
-    errorCodesStatusMapping?: ErrorCodesStatusMapping,
-  ) {
-    super(applicationRef);
-
-    // use custom error codes mapping (overwrite)
-    //
-    // @example:
-    //
-    //   const { httpAdapter } = app.get(HttpAdapterHost);
-    //   app.useGlobalFilters(new PrismaClientExceptionFilter(httpAdapter, {
-    //     P2022: HttpStatus.BAD_REQUEST,
-    //   }));
-    //
-    //   or
-    //
-    //   const { httpAdapter } = app.get(HttpAdapterHost);
-    //   app.useGlobalFilters(new PrismaClientExceptionFilter(httpAdapter, {
-    //     // You can omit either statusCode or errorMessage so that the default one is used.
-    //     P2022: { statusCode: HttpStatus.BAD_REQUEST, errorMessage: "bad request" },
-    //   }));
-    //
-    this.userDefinedMapping = errorCodesStatusMapping;
-  }
 
   /**
    * @param exception
@@ -82,13 +47,9 @@ export class PrismaClientExceptionFilter extends BaseExceptionFilter {
     exception: Prisma.PrismaClientKnownRequestError,
     host: ArgumentsHost,
   ) {
-    const statusCode =
-      this.userDefinedStatusCode(exception) ||
-      this.defaultStatusCode(exception);
+    const statusCode = this.defaultStatusCode(exception);
 
-    const message =
-      this.userDefinedExceptionMessage(exception) ||
-      this.defaultExceptionMessage(exception);
+    const message = this.defaultExceptionMessage(exception);
 
     if (host.getType() === 'http') {
       if (statusCode === undefined) {
@@ -109,28 +70,10 @@ export class PrismaClientExceptionFilter extends BaseExceptionFilter {
     }
   }
 
-  private userDefinedStatusCode(
-    exception: Prisma.PrismaClientKnownRequestError,
-  ): number | undefined {
-    const userDefinedValue = this.userDefinedMapping?.[exception.code];
-    return typeof userDefinedValue === 'number'
-      ? userDefinedValue
-      : userDefinedValue?.statusCode;
-  }
-
   private defaultStatusCode(
     exception: Prisma.PrismaClientKnownRequestError,
   ): number | undefined {
     return this.defaultMapping[exception.code];
-  }
-
-  private userDefinedExceptionMessage(
-    exception: Prisma.PrismaClientKnownRequestError,
-  ): string | undefined {
-    const userDefinedValue = this.userDefinedMapping?.[exception.code];
-    return typeof userDefinedValue === 'number'
-      ? undefined
-      : userDefinedValue?.errorMessage;
   }
 
   private defaultExceptionMessage(
@@ -148,16 +91,3 @@ export class PrismaClientExceptionFilter extends BaseExceptionFilter {
     );
   }
 }
-
-export const providePrismaClientExceptionFilter = (
-  errorCodesStatusMapping?: ErrorCodesStatusMapping,
-) => ({
-  provide: APP_FILTER,
-  useFactory: ({ httpAdapter }: HttpAdapterHost) => {
-    return new PrismaClientExceptionFilter(
-      httpAdapter,
-      errorCodesStatusMapping,
-    );
-  },
-  inject: [HttpAdapterHost],
-});

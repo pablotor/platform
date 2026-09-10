@@ -3,12 +3,16 @@
 import { cva } from 'class-variance-authority';
 import clsx from 'clsx';
 import { LucideIcon } from 'lucide-react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { useEffect } from 'react';
+import { ComponentProps, FC, useEffect } from 'react';
 
 import Button from './button';
 import { createSidebar } from './sidebarFactory';
+
+type LinkAlike = FC<
+  Pick<ComponentProps<'a'>, 'className' | 'tabIndex'> & {
+    href: string | URL;
+  }
+>;
 
 type NavLink = {
   type: 'link';
@@ -42,12 +46,18 @@ const navLinkVariants = cva(
   },
 );
 
-const NavLinkItem = ({ item }: { item: NavLink }) => {
-  const pathname = usePathname();
-  const active = pathname === item.href;
+type NavLinkItemProps = {
+  item: NavLink;
+  currentPath: string;
+  as?: LinkAlike;
+};
+
+const NavLinkItem = ({ item, currentPath, as }: NavLinkItemProps) => {
+  const active = currentPath === item.href;
+  const Component = as ?? 'a';
 
   return (
-    <Link
+    <Component
       href={item.href}
       className={navLinkVariants({ state: active ? 'active' : 'idle' })}
       tabIndex={active ? -1 : 0}
@@ -62,31 +72,69 @@ const NavLinkItem = ({ item }: { item: NavLink }) => {
         />
       )}
       {item.label}
-    </Link>
+    </Component>
   );
 };
 
-const NavGroupItem = ({ item }: { item: NavGroup }) => (
+type NavGroupItemProps = {
+  item: NavGroup;
+  currentPath: string;
+  linkAs?: LinkAlike;
+};
+
+const NavGroupItem = ({ item, currentPath, linkAs }: NavGroupItemProps) => (
   <div className="flex flex-col">
-    <span className="text-label px-3 pb-1 pt-4 text-muted-foreground first:pt-2">
+    <span
+      className={clsx(
+        'text-ui px-3 pb-2 pt-4 first:pt-2',
+        item.children.some(({ href }) => href === currentPath)
+          ? 'text-muted-foreground'
+          : 'text-foreground',
+      )}
+    >
       {item.label}
     </span>
     <div className="flex flex-col gap-0.5 border-l border-sidebar-border ml-3 pl-2">
       {item.children.map((child) => (
-        <NavLinkItem key={child.href} item={child} />
+        <NavLinkItem
+          key={child.href}
+          item={child}
+          currentPath={currentPath}
+          as={linkAs}
+        />
       ))}
     </div>
   </div>
 );
 
-const NavSidebarPanel = ({ items }: { items: NavItem[] }) => (
+type NavSidebarPanelProps = {
+  items: NavItem[];
+  currentPath: string;
+  linkAs?: LinkAlike;
+};
+
+const NavSidebarPanel = ({
+  items,
+  currentPath,
+  linkAs,
+}: NavSidebarPanelProps) => (
   <div className="flex h-full w-60 flex-col border-r border-sidebar-border bg-sidebar px-3 py-4">
     <nav className="flex flex-col gap-0.5">
       {items.map((item) =>
         item.type === 'group' ? (
-          <NavGroupItem key={item.label} item={item} />
+          <NavGroupItem
+            key={item.label}
+            item={item}
+            currentPath={currentPath}
+            linkAs={linkAs}
+          />
         ) : (
-          <NavLinkItem key={item.href} item={item} />
+          <NavLinkItem
+            key={item.href}
+            item={item}
+            currentPath={currentPath}
+            as={linkAs}
+          />
         ),
       )}
     </nav>
@@ -100,28 +148,37 @@ const {
   toggleButtonId: navSidebarButtonId,
 } = createSidebar('nav');
 
-interface NavSidebarProps {
+type NavSidebarProps = {
   items: NavItem[];
-}
+  currentPath: string;
+  linkAs?: LinkAlike;
+};
 
-const NavSidebar = ({ items }: NavSidebarProps) => {
+const NavSidebar = ({ items, currentPath, linkAs }: NavSidebarProps) => {
   const { close } = useNavSidebar();
-  const path = usePathname();
 
   useEffect(() => {
     close();
-  }, [path, close]);
+  }, [currentPath, close]);
 
   return (
     <>
       {/* Desktop: always visible in the document flow */}
       <aside className="hidden w-60 shrink-0 md:flex">
-        <NavSidebarPanel items={items} />
+        <NavSidebarPanel
+          items={items}
+          currentPath={currentPath}
+          linkAs={linkAs}
+        />
       </aside>
 
       {/* Mobile: animated drawer */}
       <NavSidebarDrawer label="Navigation">
-        <NavSidebarPanel items={items} />
+        <NavSidebarPanel
+          items={items}
+          currentPath={currentPath}
+          linkAs={linkAs}
+        />
       </NavSidebarDrawer>
     </>
   );

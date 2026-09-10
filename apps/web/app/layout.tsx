@@ -1,18 +1,21 @@
 import './globals.css';
 
-import { ToastProvider } from '@repo/ui/toast/provider';
 import clsx from 'clsx';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import { PropsWithChildren } from 'react';
 
+import Providers from './providers';
+
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
   variable: '--font-geist-sans',
+  preload: false,
 });
 const geistMono = localFont({
   src: './fonts/GeistMonoVF.woff',
-  variable: '--font-geist-mono',
+  variable: '--font-mono',
+  preload: false,
 });
 const ubuntuSans = localFont({
   src: [
@@ -37,7 +40,8 @@ const ubuntuSans = localFont({
       weight: '700',
     },
   ],
-  variable: '--font-ubuntu-sans',
+  variable: '--font-sans',
+  preload: false,
 });
 
 export const metadata: Metadata = {
@@ -54,7 +58,7 @@ const RootLayout = async ({ children }: Readonly<PropsWithChildren>) => (
         ubuntuSans.variable,
       )}
     >
-      <ToastProvider>{children}</ToastProvider>
+      <Providers>{children}</Providers>
     </body>
   </html>
 );

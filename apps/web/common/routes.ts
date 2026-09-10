@@ -1,15 +1,6 @@
 type RouteLeaf = string | ((...args: string[]) => string);
 type RouteTree = { readonly [key: string]: RouteLeaf | RouteTree };
 
-const staticValuesDeep = (tree: RouteTree): string[] =>
-  Object.values(tree).flatMap((v) =>
-    typeof v === 'string'
-      ? [v]
-      : typeof v === 'function'
-        ? []
-        : staticValuesDeep(v as RouteTree),
-  );
-
 const ROUTES = {
   public: {
     root: '/',
@@ -17,30 +8,49 @@ const ROUTES = {
       signin: '/signin',
       signup: '/signup',
     },
-  },
-  authenticated: {
-    dashboard: '/dashboard',
-    design: {
-      base: '/design',
-      get fundamentals() {
-        return `${this.base}/fundamentals`;
-      },
-      get typography() {
-        return `${this.base}/typography`;
-      },
-      get colors() {
-        return `${this.base}/colors`;
-      },
-      get composition() {
-        return `${this.base}/composition`;
+    blog: {
+      root: '/blog',
+      post: (slug: string) => `/blog/${slug}`,
+    },
+    docs: {
+      root: '/docs',
+      quickstart: '/docs/quickstart',
+      philosophy: '/docs/philosophy',
+      architecture: '/docs/architecture',
+      cheatsheet: '/docs/cheatsheet',
+      design: {
+        fundamentals: '/docs/design/fundamentals',
+        typography: '/docs/design/typography',
+        colors: '/docs/design/colors',
+        composition: '/docs/design/composition',
       },
     },
   },
-} as const;
+  authenticated: {
+    dashboard: {
+      root: '/dashboard',
+      posts: {
+        root: '/dashboard/posts',
+        create: '/dashboard/posts/create',
+        info: (id: string) => `/dashboard/posts/${id}`,
+        preview: (id: string) => `/dashboard/posts/${id}/preview`,
+        edit: (id: string) => `/dashboard/posts/${id}/edit`,
+      },
+    },
+  },
+} as const satisfies RouteTree;
 
-export const PUBLIC_ROUTES = staticValuesDeep(ROUTES.public);
 export const DEFAULT_PUBLIC_ROUTE = ROUTES.public.root;
-export const AUTHENTICATED_ROUTES = staticValuesDeep(ROUTES.authenticated);
-export const DEFAULT_AUTHENTICATED_ROUTE = ROUTES.authenticated.dashboard;
+export const DEFAULT_AUTHENTICATED_ROUTE = ROUTES.authenticated.dashboard.root;
+
+// Only signin/signup should bounce an already-authenticated user away
+export const GUEST_ONLY_ROUTES: readonly string[] = [
+  ROUTES.public.auth.signin,
+  ROUTES.public.auth.signup,
+];
+
+export const PROTECTED_PATH_PREFIXES: readonly string[] = [
+  ROUTES.authenticated.dashboard.root,
+];
 
 export default ROUTES;
