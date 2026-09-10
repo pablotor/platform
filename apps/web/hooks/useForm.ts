@@ -17,6 +17,60 @@ type NullableObject<T> = {
   [K in keyof T]: T[K] | null;
 };
 
+const validationHelper = <
+  RawData extends Record<string, unknown>,
+  ParsedPayload extends Record<string, unknown> = RawData,
+>(
+  validationSchema: z.ZodObject,
+  data: RawData,
+  fields?: (keyof RawData)[],
+):
+  | {
+      success: true;
+      payload: ParsedPayload;
+      errorRecord: undefined;
+    }
+  | {
+      success: false;
+      errorRecord: Record<Partial<keyof RawData>, string>;
+      error: ZodError;
+    } => {
+  const dataEntries = Object.entries(data);
+  const filteredData = Object.fromEntries(
+    fields ? dataEntries.filter(([key]) => fields.includes(key)) : dataEntries,
+  );
+  const filteredValidationSchema = fields
+    ? validationSchema.pick(
+        Object.fromEntries(fields.map((field) => [field, true])) as Record<
+          string,
+          true
+        >,
+      )
+    : validationSchema;
+
+  try {
+    const payload = filteredValidationSchema.parse(
+      filteredData,
+    ) as ParsedPayload;
+    return {
+      success: true,
+      payload,
+      errorRecord: undefined,
+    };
+  } catch (error) {
+    if (!(error instanceof ZodError)) throw error;
+    console.warn('Validation failed', error.message);
+    console.warn(filteredData);
+    return {
+      success: false,
+      errorRecord: Object.fromEntries(
+        error.issues.map((issue) => [issue.path, issue.message]),
+      ),
+      error,
+    };
+  }
+};
+
 /**
  * useForm is a simplified version of the useForm library. It is:
  * - Validation first: a zod validation schema is required
@@ -35,37 +89,37 @@ const useForm = <U extends Record<string, unknown>>(
 ) => {
   const formRef = useRef<HTMLFormElement>(null);
 
-  const [errorObject, setErrorObject] = useState<{
+  const [errorRecord, setErrorRecord] = useState<{
     [key: string]: string;
   }>({});
+
+  const resetErrorRecord = useCallback(
+    (fields?: string[]) =>
+      setErrorRecord((prev) =>
+        fields
+          ? { ...prev, ...Object.fromEntries(fields.map((key) => [key, ''])) }
+          : {},
+      ),
+    [],
+  );
 
   const [actionState, action, isSubmitting] = useActionState<
     Partial<U>,
     FormData
   >(
     async (_state, formData) => {
-      setErrorObject({});
-      const rawData = Object.fromEntries(formData.entries()) as Partial<U>;
+      const newFormState = Object.fromEntries(Object.entries(formData)) as U;
+      const payload = validationSchema.parse(newFormState) as U;
       try {
-        const submitPayload = validationSchema.parse(rawData) as U;
-        await onSubmit(submitPayload);
-      } catch (e) {
-        if (e instanceof ZodError) {
-          console.warn('Validation failed', e.message);
-          console.warn({ rawData });
-          setErrorObject(
-            Object.fromEntries(
-              e.issues.map((innerError) => [
-                innerError.path,
-                innerError.message,
-              ]),
-            ),
-          );
-        } else {
-          throw e;
-        }
+        await onSubmit(payload);
+      } catch (error) {
+        console.error(
+          'Error while submitting form with id: ',
+          formRef.current?.id,
+        );
+        console.error(error);
       }
-      return rawData;
+      return newFormState;
     },
     (options.defaultValues || {}) as Awaited<Partial<U>>,
   );
@@ -95,43 +149,31 @@ const useForm = <U extends Record<string, unknown>>(
    */
   const onFormSubmit = useCallback(
     (event: React.SubmitEvent) => {
+      resetErrorRecord();
       const formData = new FormData(event.target);
       const rawData = Object.fromEntries(formData.entries());
-      const result = validationSchema.safeParse(rawData);
+      const result = validationHelper(validationSchema, rawData);
 
       if (!result.success) {
         event.preventDefault();
-        setErrorObject(
-          Object.fromEntries(
-            result.error.issues.map((issue) => [issue.path[0], issue.message]),
-          ),
-        );
+        setErrorRecord(result.errorRecord);
         options.onValidationFail?.(result.error);
       }
     },
-    [validationSchema, options],
+    [resetErrorRecord, validationSchema, options],
   );
 
   const validate = useCallback(
-    <K extends keyof U & string>(name: K, value: unknown) =>
-      validationSchema
-        .pick({ [name]: true } as Record<string, true>)
-        .parseAsync({ [name]: value })
-        .then(() =>
-          setErrorObject((prev) => ({
-            ...prev,
-            [name]: '',
-          })),
-        )
-        .catch((error) => {
-          if (error instanceof ZodError) {
-            setErrorObject((prev) => ({
-              ...prev,
-              [name]: error.issues[error.issues.length - 1]?.message || '',
-            }));
-          }
-        }),
-    [validationSchema],
+    <K extends keyof U & string>(name: K, value: unknown) => {
+      resetErrorRecord([name]);
+      const result = validationHelper(validationSchema, { [name]: value }, [
+        name,
+      ]);
+      if (!result.success) {
+        setErrorRecord((prev) => ({ ...prev, ...result.errorRecord }));
+      }
+    },
+    [resetErrorRecord, validationSchema],
   );
 
   /**
@@ -174,12 +216,11 @@ const useForm = <U extends Record<string, unknown>>(
     ): RegistrableFieldProps<U[K], Element> & { name: K } => ({
       name,
       defaultValue:
-        (actionState[name] as unknown as NonNullable<U[K]>) ??
-        ('' as NonNullable<U[K]>),
+        (actionState[name] as NonNullable<U[K]>) ?? ('' as NonNullable<U[K]>),
       onBlur: (event) => validate(name, event.target.value),
-      error: errorObject[name as string],
+      error: errorRecord[name],
     }),
-    [actionState, errorObject, validate],
+    [actionState, errorRecord, validate],
   );
 
   /**
@@ -226,53 +267,11 @@ const useForm = <U extends Record<string, unknown>>(
     [action, onFormSubmit],
   );
 
-  /**
-   * If fields is not provided, all fields are checked
-   */
-  const validateFields = useCallback(
-    (fields?: (keyof U)[]) => {
-      if (!formRef.current) {
-        console.error('Form ref was not mounted');
-        return;
-      }
-      const entries = Array.from(new FormData(formRef.current).entries());
-      const rawData = Object.fromEntries(
-        fields ? entries.filter(([key]) => fields.includes(key)) : entries,
-      );
-      const filteredValidationSchema = fields
-        ? validationSchema.pick(
-            Object.fromEntries(fields.map((field) => [field, true])) as Record<
-              string,
-              true
-            >,
-          )
-        : validationSchema;
-      const validationResult = filteredValidationSchema.safeParse(rawData);
-      setErrorObject((prev) => {
-        const newErrors = Object.fromEntries(
-          validationResult.error?.issues.map((innerError) => [
-            innerError.path,
-            innerError.message,
-          ]) || [],
-        );
-        if (!fields) return newErrors;
-        const prevErrors = Object.fromEntries(
-          Object.entries(prev).filter(([key]) => !fields.includes(key)),
-        );
-        return { ...prevErrors, ...newErrors };
-      });
-      return validationResult;
-    },
-    [validationSchema, formRef],
-  );
-
   return {
     registerForm,
     register,
     isSubmitting,
-    errorObject,
     validate,
-    validateFields,
   };
 };
 
