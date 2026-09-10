@@ -5,19 +5,29 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import remarkGfm from 'remark-gfm';
 
+import ROUTES from '../../common/routes';
+import BackTo, { BackToProps } from '../backTo';
 import { Byline, Kicker } from './postCommon';
 
+type PostLayoutProps = {
+  post: PostPublicResponse | PostResponse;
+  backTo?: BackToProps;
+};
+
 const PostLayout = ({
-  title,
-  content,
-  excerpt,
-  kicker,
-  category,
-  slug,
-  publishedAt,
-  updatedAt,
-  ...rest
-}: PostPublicResponse | PostResponse) => (
+  post: {
+    title,
+    content,
+    excerpt,
+    kicker,
+    category,
+    slug,
+    publishedAt,
+    updatedAt,
+    ...rest
+  },
+  backTo,
+}: PostLayoutProps) => (
   <article>
     {/* ── Hero section ───────────────────────────────────────────── */}
     <div className="relative w-full">
@@ -29,6 +39,11 @@ const PostLayout = ({
       />
 
       <div className="relative mx-auto flex max-w-3xl flex-nowrap gap-12 px-6 py-16 sm:py-20">
+        {backTo && (
+          <div className="absolute top-10 right-0">
+            <BackTo {...backTo} />
+          </div>
+        )}
         <div
           id={`card-${slug}`}
           data-id={slug}

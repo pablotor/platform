@@ -57,6 +57,14 @@ const PostControls = ({ postId }: PostControlsProps) => {
               variant="outline"
               size="sm"
               as={Link}
+              href={ROUTES.authenticated.dashboard.posts.preview(postId)}
+            >
+              Preview
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              as={Link}
               href={ROUTES.authenticated.dashboard.posts.edit(postId)}
             >
               Edit

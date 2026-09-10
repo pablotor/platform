@@ -37,7 +37,7 @@ const PostPage = async ({ params }: { params: Promise<{ slug: string }> }) => {
 
   return (
     <main>
-      <PostLayout {...post} />
+      <PostLayout post={post} />
     </main>
   );
 };
