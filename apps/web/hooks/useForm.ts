@@ -35,10 +35,9 @@ const validationHelper = <
       errorRecord: Record<Partial<keyof RawData>, string>;
       error: ZodError;
     } => {
-  const dataEntries = Object.entries(data);
-  const filteredData = Object.fromEntries(
-    fields ? dataEntries.filter(([key]) => fields.includes(key)) : dataEntries,
-  );
+  const filteredData = fields
+    ? Object.fromEntries(fields.map((key) => [key, data[key]]))
+    : data;
   const filteredValidationSchema = fields
     ? validationSchema.pick(
         Object.fromEntries(fields.map((field) => [field, true])) as Record<
@@ -108,7 +107,7 @@ const useForm = <U extends Record<string, unknown>>(
     FormData
   >(
     async (_state, formData) => {
-      const newFormState = Object.fromEntries(Object.entries(formData)) as U;
+      const newFormState = Object.fromEntries(formData) as U;
       const payload = validationSchema.parse(newFormState) as U;
       try {
         await onSubmit(payload);
