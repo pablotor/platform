@@ -251,18 +251,18 @@
   outline-offset: calc((--value(integer) + 1) * 1px);
 }
 
-@layer components {
-  .gradient-primary {
-    @apply bg-linear-to-r from-brand-primary-from to-brand-primary;
-  }
-  .gradient-secondary {
-    @apply bg-linear-to-r from-brand-secondary-from to-brand-secondary;
-  }
-  .text-link {
-    @apply text-brand-primary-accent underline-offset-4 decoration-transparent transition-colors duration-200 hover:text-brand-secondary-accent hover:underline hover:decoration-current focus-visible:focusable-outline-3 rounded-[min(var(--radius-md),10px)];
-  }
-  /* clip a gradient background to the text itself */
-  .text-gradient {
-    @apply bg-clip-text text-transparent;
-  }
+@utility text-link {
+  @apply text-brand-primary-accent underline-offset-4 decoration-transparent transition-colors duration-200 hover:text-brand-secondary-accent hover:underline hover:decoration-current focus-visible:focusable-outline-3 rounded-[min(var(--radius-md),10px)];
+}
+
+@utility text-gradient {
+  @apply bg-clip-text text-transparent;
+}
+
+@utility gradient-primary {
+  @apply bg-linear-to-r from-brand-primary-from to-brand-primary;
+}
+
+@utility gradient-secondary {
+  @apply bg-linear-to-r from-brand-secondary-from to-brand-secondary;
 }
