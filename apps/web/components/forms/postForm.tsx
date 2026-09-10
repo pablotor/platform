@@ -1,7 +1,7 @@
 import { CreatePostPayload, UpdatePostPayload } from '@repo/contracts';
 import Button from '@repo/ui/button';
-import Input from '@repo/ui/input';
-import Textarea from '@repo/ui/textarea';
+import Input from '@repo/ui/inputs/input';
+import Textarea from '@repo/ui/inputs/textarea';
 
 import useForm from '../../hooks/useForm';
 import CategorySelect from '../inputs/categorySelect';
