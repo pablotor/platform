@@ -1,8 +1,9 @@
 'use client';
 
-import { ToastMode, ToastRecord } from './types';
-import * as store from './store';
 import React from 'react';
+
+import * as store from './store';
+import { ToastMode, ToastRecord } from './types';
 
 type ToastOptions = {
   toastKey?: string;
@@ -33,11 +34,18 @@ const getId = (toastKey?: string): string => {
   return id;
 };
 
-interface ToastHandle {
+export interface ToastHandle {
   id: string;
   update: (props: Partial<Omit<ToastRecord, 'id'>>) => void;
   dismiss: () => void;
 }
+
+export type Toast = ({
+  toastKey,
+  mode,
+  content,
+  duration,
+}: ToastOptions) => ToastHandle;
 
 /**
  * Show a toast. Returns handles to imperatively update or dismiss it later.
@@ -48,12 +56,7 @@ interface ToastHandle {
  *   // or:
  *   t.update({ mode: 'success', content: 'Saved' })
  */
-const toast = ({
-  toastKey,
-  mode = 'info',
-  content,
-  duration,
-}: ToastOptions): ToastHandle => {
+const toast: Toast = ({ toastKey, mode = 'info', content, duration }) => {
   const id = getId(toastKey);
   const resolvedDuration = duration ?? DEFAULT_DURATIONS[mode];
   const exists = store.exists(id);
@@ -85,6 +88,20 @@ const toast = ({
   };
 };
 
+/**
+ * Allows you to use the toast, access the toastArray, and the dismiss fn
+ *
+ *   const { toast, dismiss, toasts } = useToast()
+ *   const t = toast({ mode: 'loading', content: 'Saving…', key: 'save' })
+ *   // later, from anywhere:
+ *   toast({ key: 'save', mode: 'success', content: 'Saved' })
+ *   // or:
+ *   t.update({ mode: 'success', content: 'Saved' })
+ *   // or:
+ *   dismiss('save')
+ *   // or:
+ *   toasts.map(({ id }) => dismiss(id))
+ */
 export const useToast = () => {
   const state = React.useSyncExternalStore(
     store.subscribe,

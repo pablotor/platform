@@ -1,6 +1,6 @@
 {
   "name": "ptp-api",
-  "version": "0.0.0",
+  "version": "1.0.1",
   "private": true,
   "scripts": {
     "dev": "nest start --watch",
@@ -19,8 +19,8 @@
     "test:watch": "jest --watch",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "pretest:e2e": "prisma generate",
-    "test:e2e": "jest --config ./test/jest-e2e.json",
-    "test:e2e:watch": "jest --config ./test/jest-e2e.json --watch --runInBand"
+    "test:e2e": "jest --config ./test/jest-e2e.config.ts --runInBand",
+    "test:e2e:watch": "yarn test:e2e --watch"
   },
   "dependencies": {
     "@nestjs/common": "^11.1.11",
@@ -38,7 +38,7 @@
     "pg": "^8.21.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.2",
-    "zod": "^4.4.3"
+    "zod": "^4.5.4"
   },
   "devDependencies": {
     "@jest/globals": "^30.2.0",

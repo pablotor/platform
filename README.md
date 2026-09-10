@@ -35,6 +35,10 @@ Then, to run the platform:
 # bring up local infrastructure
 yarn infra:dev:up
 
+# apply database migrations and generate the Prisma client
+yarn workspace ptp-api migrate:dev
+yarn workspace ptp-api prisma:generate
+
 # run the platform
 yarn dev
 ```

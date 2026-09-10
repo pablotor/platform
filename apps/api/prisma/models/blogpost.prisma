@@ -1,0 +1,72 @@
+enum PostStatus {
+  DRAFT
+  PUBLISHED
+  UNPUBLISHED
+  ARCHIVED
+}
+
+// model Category {
+//   id    String     @id @default(cuid())
+//   name  String     @unique
+//   slug  String     @unique
+//   posts BlogPost[]
+//
+//   @@map("category")
+// }
+
+enum Category {
+  BACKEND
+  FRONTEND
+  ARCHITECTURE
+  INFRA
+  CODE
+  EDITORIAL
+}
+
+// model Tag {
+//   id    String     @id @default(cuid())
+//   name  String     @unique
+//   slug  String     @unique
+//   posts BlogPost[] @relation("BlogPostToTag")
+//
+//   @@map("tag")
+// }
+
+model BlogPost {
+  id        String   @id @default(cuid())
+
+  // Core content
+  title     String
+  slug      String   @unique
+  content   String   @db.Text
+  excerpt   String?  @db.Text
+  kicker    String?  @db.Text
+
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  // Metadata
+  category   Category?
+  // categoryId String?
+  // category   Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  // tags       Tag[]     @relation("BlogPostToTag")
+
+  seoTitle       String?
+  seoDescription String?
+
+  // Publishing
+  status      PostStatus @default(DRAFT)
+  publishedAt DateTime?
+  isFeatured  Boolean    @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([authorId])
+  @@index([category])
+  @@index([createdAt])
+  @@index([status])
+  @@index([slug])
+  @@map("blog_post")
+}
+
