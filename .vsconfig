@@ -1,0 +1,25 @@
+{
+  "editor.tabSize": 2,
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "eslint.format.enable": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "prettier.requireConfig": true,
+  "tailwindCSS.experimental.configFile": {
+    "apps/web/app/globals.css": "apps/web/**",
+    "packages/ui/src/styles.css": "packages/ui/**"
+  },
+  "tailwindCSS.classFunctions": [
+    "cva",
+    "clsx"
+  ],
+  "json.schemaDownload.trustedDomains": {
+    "https://turborepo.dev/schema.json": true
+  },
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "js/ts.tsdk.promptToUseWorkspaceVersion": true
+}
