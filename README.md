@@ -82,7 +82,7 @@ PTP is a **contract-centered, domain-separated platform, with a modular monolith
 - API app ([NestJS](https://nestjs.com))
   - Authentication endpoints, powered by [BetterAuth](https://www.better-auth.com/)
   - PostgreSQL client with error handling
-- Demo blogging feature that illustrates how platform works
+- Demo blogging feature that illustrates how the platform works
 - Local development `docker-compose` setup
 
 ## What comes next?
