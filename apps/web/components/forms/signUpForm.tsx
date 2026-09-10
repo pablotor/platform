@@ -10,7 +10,7 @@ import Input from '@repo/ui/inputs/input';
 import PasswordCreationInput, {
   type PasswordRequirement,
   type PasswordStrength,
-} from '@repo/ui/passwordCreationInput';
+} from '@repo/ui/inputs/passwordCreationInput';
 import { useToast } from '@repo/ui/toast/handler';
 import { useRouter } from 'next/navigation';
 
