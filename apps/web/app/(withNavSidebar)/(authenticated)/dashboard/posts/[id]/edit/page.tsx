@@ -14,7 +14,7 @@ type PageProps = {
   params: Promise<{ id: string }>;
 };
 
-const EditPostPage = async ({ params }: PageProps) => {
+const PostEditPage = async ({ params }: PageProps) => {
   const { id } = await params;
   const reqHeaders = await headers();
   const queryClient = new QueryClient();
@@ -33,4 +33,4 @@ const EditPostPage = async ({ params }: PageProps) => {
   );
 };
 
-export default EditPostPage;
+export default PostEditPage;
