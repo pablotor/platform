@@ -1,2 +1,13 @@
+/**
+ * Import this file only if the consuming application does not use Tailwind
+ * CSS itself.
+ *
+ * If the consuming application already uses Tailwind, do not import these
+ * styles. Instead, source the UI package in the application's Tailwind entry
+ * point using `@source`. This allows Tailwind to process the UI components
+ * together with the application's own source and preserve the correct
+ * utility ordering.
+ */
+
 @import 'tailwindcss';
 @import './theme.css';

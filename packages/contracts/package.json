@@ -1,19 +1,29 @@
 {
   "name": "@repo/contracts",
-  "version": "0.0.0",
+  "version": "1.0.1",
   "private": true,
-  "main": "./src/entry.ts",
-  "types": "./src/entry.ts",
-  "exports": {
-    ".": "./src/entry.ts",
-    "./*": "./src/*.ts"
-  },
   "scripts": {
-    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
-    "check-types": "tsc --noEmit"
+    "dev": "yarn build --watch",
+    "build": "tsc -b -v",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\""
+  },
+  "main": "./dist/entry.js",
+  "types": "./dist/entry.d.ts",
+  "files": [
+    "./dist/**"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/entry.js",
+      "require": "./dist/entry.js"
+    },
+    "./*": {
+      "import": "./dist/*.js",
+      "require": "./dist/*.js"
+    }
   },
   "dependencies": {
-    "zod": "^4.4.3"
+    "zod": "^4.5.4"
   },
   "devDependencies": {
     "@repo/eslint-config": "*",

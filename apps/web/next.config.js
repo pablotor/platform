@@ -9,7 +9,7 @@ const nextConfig = {
       },
     ];
   },
-  transpilePackages: ['@repo/contracts', '@repo/ui'],
+  transpilePackages: ['@repo/ui'],
   output: 'standalone',
 };
 

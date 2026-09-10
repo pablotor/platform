@@ -1,6 +1,38 @@
-@import 'tailwindcss';
 @import '@repo/ui/theme.css';
-@import '@repo/ui/styles.css';
+@import 'tailwindcss';
+/**
+ * Why are we sourcing the UI package instead of importing its styles?
+ *
+ * Importing its already-compiled styles can mess up the order of the
+ * generated classes and result in unexpected behavior.
+ *
+ * Tailwind scans your source files for class candidates and generates the
+ * corresponding CSS in a specific order. For example, responsive variants
+ * such as `sm:flex` are generated later than their base utilities, so they
+ * can take precedence when their media query matches.
+ *
+ * When you import the already-compiled styles from the UI package (or any
+ * other package), those styles are added to the final stylesheet as a
+ * separate block. This can cause the order of the utilities in that block
+ * to differ from Tailwind's intended utility order.
+ *
+ * For example, if you write `flex sm:grid`, the generated CSS may end up
+ * with `flex` after the `sm:grid` rule. At the `sm` breakpoint, `flex` can
+ * then override `sm:grid`, even though `sm:grid` appears later in your
+ * class attribute.
+ *
+ * This is one reason some Turborepo boilerplates prefix the UI package's
+ * classes. The prefix prevents collisions because the UI and application
+ * utilities have different names. However, it also means the UI package
+ * needs to use prefixed classes, which makes sharing the Tailwind theme
+ * more complicated.
+ *
+ * By sourcing the UI package instead, Tailwind processes the UI and
+ * application classes in a single build. This preserves Tailwind's
+ * intended utility ordering while allowing the UI package to share the
+ * same theme without requiring a prefix.
+ */
+@source '../../../packages/ui/src/';
 
 @theme inline {
   --font-heading: var(--font-ubuntu-sans), 'Ubuntu', var(--font-sans);

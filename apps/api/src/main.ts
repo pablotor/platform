@@ -1,5 +1,5 @@
 import { ConfigService } from '@nestjs/config';
-import { HttpAdapterHost, NestFactory } from '@nestjs/core';
+import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { cleanupOpenApiDoc } from 'nestjs-zod';
 
@@ -9,16 +9,11 @@ import {
   NestConfig,
   SwaggerConfig,
 } from './common/config/config.interface';
-import { PrismaClientExceptionFilter } from './common/prisma/prisma-client-exception.filter';
 
 const bootstrap = async () => {
   const app = await NestFactory.create(AppModule, {
     bodyParser: false, // Required for Better Auth
   });
-
-  // Prisma Client Exception Filter for unhandled exceptions
-  const { httpAdapter } = app.get(HttpAdapterHost);
-  app.useGlobalFilters(new PrismaClientExceptionFilter(httpAdapter));
 
   const configService = app.get(ConfigService);
   const nestConfig = configService.getOrThrow<NestConfig>('nest');

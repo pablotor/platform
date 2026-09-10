@@ -2,7 +2,6 @@
 
 import clsx from 'clsx';
 import { ChevronDown } from 'lucide-react';
-import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 
 import Dropdown, { type DropdownProps } from '../dropdown';
@@ -21,10 +20,11 @@ export type UserMenuItem = DropdownProps['items'];
 type UserMenuProps = {
   user: UserMenuUser;
   items: UserMenuItem;
+  currentPath: string;
 };
 
 const triggerClassName = clsx(
-  'relative group flex cursor-pointer items-center gap-1 font-sans outline-none',
+  'relative group flex cursor-pointer items-center gap-1 font-sans outline-none md:mr-4',
   'rounded-full border-2 border-border bg-background text-foreground md:border md:p-1 md:pr-2.5',
   'transition-colors duration-120 ease-in-out',
   'hover:border-input hover:bg-accent focus-visible:focusable active:scale-95',
@@ -65,20 +65,19 @@ const MobileSidebarTrigger = ({ user }: { user: UserMenuUser }) => {
   );
 };
 
-const RouteChangeClose = () => {
+const RouteChangeClose = ({ currentPath }: { currentPath: string }) => {
   const { close } = useUserSidebar();
-  const pathname = usePathname();
   useEffect(() => {
     close();
-  }, [close, pathname]);
+  }, [close, currentPath]);
   return null;
 };
 
 // ─── Main component ───────────────────────────────────────────────────────────
 
-const UserMenu = ({ user, items }: UserMenuProps) => (
+const UserMenu = ({ user, items, currentPath }: UserMenuProps) => (
   <UserSidebarProvider>
-    <RouteChangeClose />
+    <RouteChangeClose currentPath={currentPath} />
 
     {/* Desktop: dropdown */}
     <Dropdown

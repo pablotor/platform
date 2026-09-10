@@ -1,8 +1,13 @@
 import Button from '@repo/ui/button';
+import Link from 'next/link';
 
 import ROUTES from '../common/routes';
 
-const Hero = () => (
+type HeroProps = {
+  isAuthenticated?: boolean;
+};
+
+const Hero = ({ isAuthenticated }: HeroProps) => (
   <section className="mx-auto flex max-w-5xl flex-col items-center justify-center px-6 py-10 text-center">
     <span className="mb-6 inline-flex items-center rounded-full border border-border bg-muted/50 px-3 py-1 text-ui text-muted-foreground animate-fade-in">
       An elegant platform... for a more civilized age
@@ -21,17 +26,27 @@ const Hero = () => (
     </p>
 
     <div className="mt-8 flex items-center gap-3">
-      <Button size="lg" as="nextLink" href={ROUTES.public.auth.signup}>
-        Get started
-      </Button>
       <Button
         variant="outline"
         size="lg"
-        as="nextLink"
-        href={ROUTES.public.auth.signin}
+        as={Link}
+        href={ROUTES.public.docs.root}
       >
-        Sign in
+        Docs
       </Button>
+      <Button
+        variant={isAuthenticated ? 'outline' : 'default'}
+        size="lg"
+        as={Link}
+        href={ROUTES.public.blog.root}
+      >
+        Blog
+      </Button>
+      {isAuthenticated && (
+        <Button size="lg" as={Link} href={ROUTES.authenticated.dashboard.root}>
+          Dashboard
+        </Button>
+      )}
     </div>
 
     <div className="mt-14 grid w-full max-w-3xl grid-cols-1 gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-3">
