@@ -59,6 +59,7 @@ const Select = ({
   name,
   disabled,
   error,
+  onBlur,
   showErrorText,
   triggerClassName,
   align = 'start',
@@ -73,6 +74,13 @@ const Select = ({
       defaultValue={defaultValue}
       name={name}
       disabled={disabled}
+      onValueChange={(value) =>
+        error
+          ? onBlur?.({
+              target: { name, value },
+            } as React.FocusEvent<HTMLSelectElement>)
+          : undefined
+      }
     >
       <SelectPrimitive.Trigger
         aria-invalid={!!error}
