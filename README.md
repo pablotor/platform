@@ -6,7 +6,7 @@
 
 ## What, why, and how?
 
-As a founder engineer, I've worked with fullstack JS platforms for a while. And the truth is, I've never felt completely happy with any of them.
+As a founder engineer, I've worked with fullstack JS platforms for a while. And the truth is, I've always wished I had the time to make many things in a better way.
 
 It's not that they were bad. But when building features is the most important part, building the platform itself suffers — sometimes in the form of poor UX, other times in the form of tech debt. I always thought that, if given the time, I could build something better.
 
@@ -78,26 +78,22 @@ PTP is a **contract-centered, domain-separated platform, with a modular monolith
   - Sign up / sign in flows
   - Page security
   - State management
+  - Docs
 - API app ([NestJS](https://nestjs.com))
   - Authentication endpoints, powered by [BetterAuth](https://www.better-auth.com/)
   - PostgreSQL client with error handling
-- Demo blogging feature
+- Demo blogging feature that illustrates how platform works
 - Local development `docker-compose` setup
-- Terraform deployment config (Vercel + Oracle Free Tier)
 
 ## What comes next?
 
-- [ ] Bootstrap CLI — pick your package manager, auto-scaffold the platform
+- [ ] Terraform deployment config (Oracle Free Tier)
 - [ ] CI/CD pipeline
 - [ ] API email integration
 - [ ] User reset password flow
 - [ ] API S3 integration
 - [ ] Document management
 - [ ] Role-based access control (RBAC)
-
-## A note on the deployment stack
-
-The philosophy above is self-hosted, no lock-in. The reference deployment (Vercel for the web app, Oracle Free Tier for the API) isn't a contradiction of that so much as a bootstrapping constraint: running staging and production for the API inside the Oracle free tier's memory limits leaves little room to also host the web app there. The web app doesn't use any Vercel-specific APIs, so moving it off Vercel — onto that same box, or anywhere else — is a deployment change, not a rewrite.
 
 ## Support
 
