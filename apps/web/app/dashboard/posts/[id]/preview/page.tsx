@@ -1,10 +1,10 @@
 import { QueryClient } from '@tanstack/react-query';
 import { headers } from 'next/headers';
 
-import ROUTES from '../../../../../../../common/routes';
-import PostLayout from '../../../../../../../components/post/postLayout';
-import { postByIdQueryOptions } from '../../../../../../../lib/queryOptions/postsOptions';
-import { getUser } from '../../../../../../../lib/userContext';
+import ROUTES from '../../../../../common/routes';
+import PostLayout from '../../../../../components/post/postLayout';
+import { postByIdQueryOptions } from '../../../../../lib/queryOptions/postsOptions';
+import { getUser } from '../../../../../lib/userContext';
 
 const PostPreviewPage = async ({
   params,

@@ -1,7 +1,7 @@
 import Button from '@repo/ui/button';
 import Link from 'next/link';
 
-import ROUTES from '../../../../../../common/routes';
+import ROUTES from '../../../../common/routes';
 
 const EmptyState = () => (
   <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-border p-16 text-center">

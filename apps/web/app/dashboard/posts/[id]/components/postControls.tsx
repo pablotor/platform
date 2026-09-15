@@ -6,13 +6,13 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-import ROUTES from '../../../../../../../common/routes';
-import ArchiveDialog from '../../../../../../../components/dialogs/archivePostDialog';
-import DeletePostDialog from '../../../../../../../components/dialogs/deletePostDialog';
+import ROUTES from '../../../../../common/routes';
+import ArchiveDialog from '../../../../../components/dialogs/archivePostDialog';
+import DeletePostDialog from '../../../../../components/dialogs/deletePostDialog';
 import {
   postByIdQueryOptions,
   postUpdatePublicationStatusMutationOptions,
-} from '../../../../../../../lib/queryOptions/postsOptions';
+} from '../../../../../lib/queryOptions/postsOptions';
 import PublishSwitch from './publishSwitch';
 
 type PostControlsProps = {

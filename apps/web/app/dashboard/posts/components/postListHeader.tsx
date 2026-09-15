@@ -7,8 +7,8 @@ import { Plus } from 'lucide-react';
 import Link from 'next/link';
 import { useQueryStates } from 'nuqs';
 
-import ROUTES from '../../../../../../common/routes';
-import { postsQueryOptions } from '../../../../../../lib/queryOptions/postsOptions';
+import ROUTES from '../../../../common/routes';
+import { postsQueryOptions } from '../../../../lib/queryOptions/postsOptions';
 import { postsSearchParams } from '../postsSearchParams';
 
 const PostListHeader = () => {

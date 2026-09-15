@@ -5,7 +5,7 @@ import {
 } from '@tanstack/react-query';
 import { headers } from 'next/headers';
 
-import { postByIdQueryOptions } from '../../../../../../lib/queryOptions/postsOptions';
+import { postByIdQueryOptions } from '../../../../lib/queryOptions/postsOptions';
 import MetricsPlaceholder from './components/metricsPlaceholder';
 import PostControls from './components/postControls';
 import PostInfoHeader from './components/postInfoHeader';

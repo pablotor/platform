@@ -1,7 +1,7 @@
 import type { PostResponse } from '@repo/contracts';
 
-import ROUTES from '../../../../../../../common/routes';
-import BackTo from '../../../../../../../components/backTo';
+import ROUTES from '../../../../../common/routes';
+import BackTo from '../../../../../components/backTo';
 
 type PostInfoHeaderProps = {
   post: PostResponse;

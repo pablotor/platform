@@ -11,10 +11,10 @@ import { useToast } from '@repo/ui/toast/handler';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
-import ROUTES from '../../../../../../../common/routes';
-import PostForm from '../../../../../../../components/forms/postForm';
-import useForm from '../../../../../../../hooks/useForm';
-import { postUpdateMutationOptions } from '../../../../../../../lib/queryOptions/postsOptions';
+import ROUTES from '../../../../../common/routes';
+import PostForm from '../../../../../components/forms/postForm';
+import useForm from '../../../../../hooks/useForm';
+import { postUpdateMutationOptions } from '../../../../../lib/queryOptions/postsOptions';
 
 type ClientSideEditPostProps = {
   post: PostResponse;

@@ -1,4 +1,4 @@
-import Placeholder from '../../../../components/screens/placeholder';
+import Placeholder from '../../components/screens/placeholder';
 
 // TO BE IMPLEMENTED
 const DashboardPage = async () => <Placeholder />;

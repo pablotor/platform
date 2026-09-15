@@ -6,7 +6,7 @@ import {
 import { headers } from 'next/headers';
 import type { SearchParams } from 'nuqs/server';
 
-import { postsQueryOptions } from '../../../../../lib/queryOptions/postsOptions';
+import { postsQueryOptions } from '../../../lib/queryOptions/postsOptions';
 import PostListHeader from './components/postListHeader';
 import PostListPanel from './components/postListPanel';
 import { loadPostsSearchParams } from './postsSearchParams';

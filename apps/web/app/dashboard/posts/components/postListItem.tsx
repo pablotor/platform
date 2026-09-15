@@ -1,7 +1,7 @@
 import type { PostQueryResponse } from '@repo/contracts';
 import Link from 'next/link';
 
-import ROUTES from '../../../../../../common/routes';
+import ROUTES from '../../../../common/routes';
 import PostRowActions from './postRowActions';
 
 const EXCERPT_LENGTH = 160;

@@ -7,7 +7,7 @@ import {
 } from '@tanstack/react-query';
 import { headers } from 'next/headers';
 
-import { postByIdQueryOptions } from '../../../../../../../lib/queryOptions/postsOptions';
+import { postByIdQueryOptions } from '../../../../../lib/queryOptions/postsOptions';
 import ClientSideEditPost from './clientSideEditPost';
 
 type PageProps = {

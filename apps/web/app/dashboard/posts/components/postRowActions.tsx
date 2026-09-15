@@ -6,8 +6,8 @@ import { Edit3, Eye, MoreHorizontal, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 
-import ROUTES from '../../../../../../common/routes';
-import DeletePostDialog from '../../../../../../components/dialogs/deletePostDialog';
+import ROUTES from '../../../../common/routes';
+import DeletePostDialog from '../../../../components/dialogs/deletePostDialog';
 
 type PostRowActionsProps = {
   post: PostQueryResponse[number];
