@@ -1,15 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  async redirects() {
-    return [
-      {
-        source: '/design',
-        destination: '/design/fundamentals',
-        permanent: true,
-      },
-    ];
-  },
   transpilePackages: ['@repo/ui'],
+  turbopack: {
+    rules: {
+      '*.md': {
+        loaders: ['raw-loader'],
+        as: '*.js',
+      },
+    },
+  },
   output: 'standalone',
 };
 
