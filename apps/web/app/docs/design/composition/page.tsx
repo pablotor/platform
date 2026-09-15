@@ -1,8 +1,12 @@
+/* This doc page belongs to a previous iteration and is currently delisted
+ * The information might not be accurate or relevant
+ */
+
 import Button from '@repo/ui/button';
 import { ArrowRight, Settings, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 
-import ROUTES from '../../../../../common/routes';
+import ROUTES from '../../../../common/routes';
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 

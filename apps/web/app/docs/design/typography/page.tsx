@@ -1,9 +1,13 @@
+/* This doc page belongs to a previous iteration and is currently delisted
+ * The information might not be accurate or relevant
+ */
+
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
 import Link from 'next/link';
 
-import ROUTES from '../../../../../common/routes';
-import CodeDiff from '../../../../../components/codeDiff';
+import ROUTES from '../../../../common/routes';
+import CodeDiff from '../../../../components/codeDiff';
 
 const Divider = () => <hr className="border-border" />;
 
