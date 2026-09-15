@@ -14,10 +14,8 @@ const ROUTES = {
     },
     docs: {
       root: '/docs',
-      quickstart: '/docs/quickstart',
-      philosophy: '/docs/philosophy',
-      architecture: '/docs/architecture',
-      cheatsheet: '/docs/cheatsheet',
+      gettingStarted: '/docs/getting-started',
+      projectStructure: '/docs/project-structure',
       design: {
         fundamentals: '/docs/design/fundamentals',
         typography: '/docs/design/typography',
