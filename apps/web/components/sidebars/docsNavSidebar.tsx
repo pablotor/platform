@@ -14,49 +14,13 @@ const NAV_ITEMS: NavItem[] = [
   },
   {
     type: 'link',
-    label: 'Quickstart',
-    href: ROUTES.public.docs.quickstart,
+    label: 'Getting started',
+    href: ROUTES.public.docs.gettingStarted,
   },
   {
     type: 'link',
-    label: 'Philosophy',
-    href: ROUTES.public.docs.philosophy,
-  },
-  {
-    type: 'link',
-    label: 'Architecture',
-    href: ROUTES.public.docs.architecture,
-  },
-  {
-    type: 'link',
-    label: 'CheatSheet',
-    href: ROUTES.public.docs.cheatsheet,
-  },
-  {
-    type: 'group',
-    label: 'Design',
-    children: [
-      {
-        type: 'link',
-        label: 'Fundamentals',
-        href: ROUTES.public.docs.design.fundamentals,
-      },
-      {
-        type: 'link',
-        label: 'Typography',
-        href: ROUTES.public.docs.design.typography,
-      },
-      {
-        type: 'link',
-        label: 'Colors',
-        href: ROUTES.public.docs.design.colors,
-      },
-      {
-        type: 'link',
-        label: 'Composition',
-        href: ROUTES.public.docs.design.composition,
-      },
-    ],
+    label: 'Project structure',
+    href: ROUTES.public.docs.projectStructure,
   },
 ];
 
