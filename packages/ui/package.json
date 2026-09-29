@@ -28,6 +28,7 @@
   },
   "devDependencies": {
     "@base-ui/react": "^1.6.0",
+    "@floating-ui/dom": "^1.8.0",
     "@repo/eslint-config": "*",
     "@repo/typescript-config": "*",
     "@tailwindcss/cli": "^4.3.0",
@@ -36,10 +37,15 @@
     "@types/react": "19.2.16",
     "@types/react-dom": "19.2.3",
     "eslint": "^9.31.0",
+    "framer-motion": "^12.40.0",
+    "lucide-react": "^1.17.0",
+    "react": "^19.2.16",
+    "react-dom": "^19.2.7",
     "sass": "^1.102.0",
     "sass-embedded": "^1.100.0",
     "tailwindcss": "^4.3.0",
-    "typescript": "5.9"
+    "typescript": "5.9",
+    "zod": "^4.4.3"
   },
   "peerDependencies": {
     "framer-motion": "^12.40.0",

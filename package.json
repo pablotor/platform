@@ -20,7 +20,7 @@
     "@repo/eslint-config": "*",
     "@repo/typescript-config": "*",
     "prettier": "^3.2.5",
-    "turbo": "^2.9.16"
+    "turbo": "^2.11.5"
   },
   "engines": {
     "node": ">=22"
@@ -32,6 +32,6 @@
   ],
   "resolutions": {
     "postcss": "^8.5",
-    "multer": "^2.2"
+    "sharp": "^0.35"
   }
 }
